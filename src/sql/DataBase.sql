@@ -6,7 +6,7 @@ DROP DATABASE Ecoride;
 USE Ecoride;
 
 CREATE TABLE brand (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_brand INT PRIMARY KEY AUTO_INCREMENT,
     label VARCHAR(30) NOT NULL UNIQUE
 );
 
@@ -38,8 +38,8 @@ CREATE TABLE car (
     color VARCHAR(20) NOT NULL,
     id_brand INT NOT NULL,
     id_user INT NOT NULL,
-    FOREIGN KEY (id_brand) REFERENCES brand (id),
-    FOREIGN KEY (id_user) REFERENCES user (id)
+    FOREIGN KEY (id_brand) REFERENCES brand (id_brand),
+    FOREIGN KEY (id_user) REFERENCES user (id_user)
 );
 
 CREATE TABLE ridesharing (
@@ -56,8 +56,8 @@ CREATE TABLE ridesharing (
     created_at DATETIME NOT NULL,
     id_driver INT NOT NULL,
     id_car INT NOT NULL,
-    FOREIGN KEY (id_driver) REFERENCES user (id),
-    FOREIGN KEY (id_car) REFERENCES car (id)
+    FOREIGN KEY (id_driver) REFERENCES user (id_user),
+    FOREIGN KEY (id_car) REFERENCES car (id_car)
 );
 
 CREATE TABLE participate (
