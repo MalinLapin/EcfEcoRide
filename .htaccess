@@ -1,0 +1,34 @@
+<!-- Sécurité Apache: MAsquer les informations du serveur et de la signature -->
+ServerTokens Prod
+ServerSignature Off
+
+<!-- Redirection vers public/ -->
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_UURI} !^/public/ [NC] <!-- Ignorer la casse -->
+    RewriteCond %{REQUEST_UURI} !^index.php [NC] <!-- Evite les boucles si index.php est déjà ciblé -->
+    RewriteRule ^(.*)$ /public/$1 [L]
+</IfModule>
+
+<!-- Sécurité des fichiers sensibles -->
+<FilesMatch "\.(env|log|sql|md|json|lock|yml|yaml|ini)$">
+    Require all denied     <!-- Apache 2.4+ équivalent de Order Allow, deny Deny from all-->
+    <!-- denied = cacher-->
+</FilesMatch>
+
+<!-- Protection des repertoires -->
+<DirectoryMatch "(config|src|tests|storage|vendor|bootstrap|resources)">
+    Require all denied
+</DirectoryMatch>
+
+<!-- Headers de sécurité -->
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Strict-Transport-Security "max-age = 31536000; includeSubDomains" <!-- Uniquement si l'on veut travailler en https sinon commenter la ligne -->
+    Header always set Content-Security-Policy "default-src 'self'; sript-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+</IfModule mod_headers.c>
+
+
+
