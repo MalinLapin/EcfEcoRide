@@ -20,6 +20,11 @@ class Entity
         return $entity;
     }
 
+    /**
+     * Hydrate l'entité avec les données fournies.
+     * @param array $data Les données à utiliser pour hydrater l'entité.
+     * @return void
+     */
     public function hydrate(array $data):void
     {
         foreach ($data as $key => $value)
