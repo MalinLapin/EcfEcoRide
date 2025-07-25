@@ -20,5 +20,13 @@ class Config
         }
     }
 
-    
+    /**
+     * @param string $key le nom de la variable
+     * @param mixed $default une valeur par défaut à retrouner si la variable n'existe pas
+     * @return mixed la valeur de la variable ou la valeur par défaut
+     */
+    public static function get(string $key, $default = null)
+    {
+        return $_ENV[$key] ?? $default;
+    }
 }
