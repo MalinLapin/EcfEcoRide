@@ -18,7 +18,10 @@ enum Role: string
         case Employe = 'Employe';// Rôle pour les employés du service client ou de la gestion des covoiturages.
 }
 
-// Fichier contenant notre classe UserModel qui étend la classe Model.
+/**
+ * Fichier contenant notre classe UserModel qui étend la classe BaseModel.
+ * Cette classe représente un utilisateur du système.
+ */
 class UserModel extends BaseModel
 {
     private string $table = 'user'; // Nom de la table associée à ce modèle.
