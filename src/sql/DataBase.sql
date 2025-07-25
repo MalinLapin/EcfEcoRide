@@ -34,6 +34,7 @@ CREATE TABLE car (
     id_car INT PRIMARY KEY AUTO_INCREMENT,
     model VARCHAR(20),
     registration_number VARCHAR(20) NOT NULL,
+    first_registration DATE NOT NULL,
     energy_type VARCHAR(20) NOT NULL,
     color VARCHAR(20) NOT NULL,
     id_brand INT NOT NULL,
