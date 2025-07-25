@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+
 class BrandModel extends BaseModel
 {
     private string $table = 'brand'; // Nom de la table associée à ce modèle.
