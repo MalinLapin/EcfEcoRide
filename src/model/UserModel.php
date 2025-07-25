@@ -5,10 +5,23 @@ namespace App\Model;
 use PDO;
 use DateTimeImmutable;
 
+/**
+ * Enumération pour représenter les différents rôles d'un utilisateur.
+ * Cette énumération permet de définir clairement les rôles possibles d'un utilisateur,
+ * ce qui aide à éviter les erreurs de typage et de logique dans le code.
+ */
+enum Role: string
+{
+        case User = 'User'; // Rôle par défaut pour les utilisateurs normaux.
+        case Admin = 'Admin'; // Rôle pour les administrateurs du système.
+        case Driver = 'Driver'; // Rôle pour les conducteurs de covoiturage.
+        case Employe = 'Employe';// Rôle pour les employés du service client ou de la gestion des covoiturages.
+}
 
-
-
-// Fichier contenant notre classe UserModel qui étend la classe Model.
+/**
+ * Fichier contenant notre classe UserModel qui étend la classe BaseModel.
+ * Cette classe représente un utilisateur du système.
+ */
 class UserModel extends BaseModel
 {
     private string $table = 'user'; // Nom de la table associée à ce modèle.
@@ -23,7 +36,7 @@ class UserModel extends BaseModel
     private string $photo; //String car chemin pour la photo et non la photo elle meme.
     private float $grade; //Note générale de l'utilisateur
     private bool $isActive; //Etat de l'utilisateur (actif ou suspendu).
-    private string $role; // Rôle de l'utilisateur (admin, user, driver ou employe).
+    private Role $role; // Rôle de l'utilisateur
     
     
 
@@ -247,7 +260,7 @@ class UserModel extends BaseModel
     /**
      * Get the value of role
      */
-    public function getRole(): string
+    public function getRole(): Role
     {
         return $this->role;
     }
@@ -255,7 +268,7 @@ class UserModel extends BaseModel
     /**
      * Set the value of role
      */
-    public function setRole(string $role): self
+    public function setRole(Role $role): self
     {
         $this->role = $role;
 

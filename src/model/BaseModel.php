@@ -4,7 +4,11 @@ namespace App\Model;
 
 use DateTimeImmutable;
 
-class BaseModel
+/**
+ * BaseModel est une classe abstraite qui sert de base pour les modèles de données.
+ * Elle fournit des méthodes pour hydrater les entités à partir de données brutes.
+ */
+abstract class BaseModel
 {
 
     /**
