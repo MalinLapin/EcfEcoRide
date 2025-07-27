@@ -75,8 +75,7 @@ abstract class BaseModel
                 
                 $this->{$methodName}($value);
                 
-            }
-            
+            }            
         }
     }
 }
