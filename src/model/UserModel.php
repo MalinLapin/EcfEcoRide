@@ -37,24 +37,6 @@ class UserModel extends BaseModel
     private float $grade; //Note générale de l'utilisateur
     private bool $isActive; //Etat de l'utilisateur (actif ou suspendu).
     private Role $role; // Rôle de l'utilisateur
-    
-    public function __construct(array $data = [])
-    {
-        parent::__construct($data);
-        // On initialise les propriétés de l'utilisateur à partir des données fournies.
-        $this->idUser = $data['idUser'] ?? null;
-        $this->lastName = $data['lastName'] ?? '';
-        $this->firstName = $data['firstName'] ?? '';
-        $this->pseudo = $data['pseudo'] ?? '';
-        $this->email = $data['email'] ?? '';
-        $this->password = $data['password'] ?? '';
-        $this->createdAt = new DateTimeImmutable($data['createdAt'] ?? 'now');
-        $this->creditBalance = $data['creditBalance'] ?? 0;
-        $this->photo = $data['photo'] ?? '';
-        $this->grade = (float) ($data['grade'] ?? 0.0);
-        $this->isActive = (bool) ($data['isActive'] ?? true);
-        $this->role = Role::from($data['role'] ?? Role::User->value);
-    }
 
 
     /**

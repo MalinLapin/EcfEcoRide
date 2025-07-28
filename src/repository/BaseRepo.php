@@ -93,7 +93,7 @@ abstract class Repository
         // On s'assure que le champ ID est présent dans les données
         $idField = $this->getIdField();
         if (!isset($data[$idField])) {
-            throw new \Exception("ID field is required for update.");
+            throw new \Exception("Le champ ID est nécéssaire à la modification.");
         }
 
         // On prépare la requête de mise à jour
