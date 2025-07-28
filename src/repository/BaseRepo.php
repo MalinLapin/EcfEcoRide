@@ -80,6 +80,11 @@ abstract class Repository
         return 'id_' . $this->tableName;
     }
 
+    /**
+     * Met à jour une entrée dans la base de données à partir d'un modèle.
+     * @param BaseModel $model Le modèle à mettre à jour dans la base de données.
+     * @return bool Retourne true si la mise à jour a réussi, false sinon.
+     */
     public function update(BaseModel $model): bool
     {
         // On extrait les données du modèle
@@ -112,6 +117,11 @@ abstract class Repository
         return $stmt->execute();
     }
 
+    /**
+     * Supprime une entrée de la base de données par son ID.
+     * @param int $id L'ID de l'entrée à supprimer.
+     * @return bool Retourne true si la suppression a réussi, false sinon.
+     */
     public function delete(int $id): bool
     {
         // On prépare la requête de suppression
@@ -125,6 +135,11 @@ abstract class Repository
         return $stmt->execute();
     }
 
+    /**
+     * Trouve une entrée par son ID.
+     * @param int $id L'ID de l'entrée à trouver.
+     * @return BaseModel|null Retourne une instance du modèle si trouvé, null sinon.
+     */
     public function findById(int $id): ?BaseModel
     {
         // On prépare la requête de sélection
@@ -147,6 +162,10 @@ abstract class Repository
         return null; // Retourne null si aucun résultat n'est trouvé
     }
 
+    /**
+     * Trouve toutes les entrées de la table associée.
+     * @return BaseModel[] Un tableau d'instances du modèle.
+     */
     public function findAll(): array
     {
         // On prépare la requête de sélection
