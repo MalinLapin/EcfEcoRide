@@ -2,7 +2,8 @@
 
 namespace App\repository;
 use App\model\UserModel;
-use App\model\Role;
+
+
 
 
 class UserRepo extends Repository
@@ -16,7 +17,7 @@ class UserRepo extends Repository
         $stmt->execute();
         $data = $stmt->fetch(\PDO::FETCH_ASSOC);
         if ($data) {
-            return $this->convertToUser($data);
+            return UserModel::createAndHydrate($data);
         } else {
             throw new \Exception("L'utilisateur nommé: {$pseudo} n'as pas été trouver.");
         }        
@@ -31,30 +32,10 @@ class UserRepo extends Repository
         $stmt->execute();
         $data = $stmt->fetch(\PDO::FETCH_ASSOC);
         if ($data) {
-            return $this->convertToUser($data);
+            return UserModel::createAndHydrate($data);
         } else {
             throw new \Exception("L'utilisateur avec l'addresse : {$email} n'as pas été trouver.");
         }
-    }
-
-    
-    //3.Méthode pour convertir un tableau de données en un objet User
-    protected function convertToUser(array $data): UserModel
-    {
-        return new UserModel([
-            'idUser' => $data['idUser'] ?? null,
-            'lastName' => $data['lastName'] ?? '',
-            'firstName' => $data['firstName'] ?? '',
-            'pseudo' => $data['pseudo'] ?? '',
-            'email' => $data['email'] ?? '',
-            'password' => $data['password'] ?? '',
-            'createdAt' => new \DateTimeImmutable($data['createdAt'] ?? 'now'),
-            'creditBalance' => $data['creditBalance'] ?? 0,
-            'photo' => $data['photo'] ?? '',
-            'grade' => (float) ($data['grade'] ?? 0.0),
-            'isActive' => (bool) ($data['isActive'] ?? true),
-            'role' => Role::from($data['role'] ?? Role::User->value),
-        ]);
     }
 
 }
