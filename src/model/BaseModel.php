@@ -44,10 +44,10 @@ abstract class BaseModel
         foreach ($data as $key => $value)
             {
             // Problème avec les noms de colonnes comme first_name.
-            $methodName = str_replace(array('-','_'), ' ',$key); // first name
+            $methodName = str_replace(array('-','_'), ' ', $key); // first name
             $methodName = ucwords($methodName);// First Name
             $methodName = str_replace(' ','', $methodName); // FirstName
-            $methodName = "set".ucfirst($key); // setFirstName
+            $methodName = 'set'.$methodName; // setFirstName
             
             
             // On vérifie si la méthode existe avant de l'appeler
