@@ -8,7 +8,7 @@ namespace App\Model;
  */
 class Preference extends BaseModel
 {
-    private int $idPreference; // Identifiant de la préférence.
+    private ?int $idPreference = null; // Identifiant de la préférence.
     private string $label; // Label de la préférence.
     private bool $isAccepted; // Indique si la préférence est acceptée ou non.    
     private int $idCar; // Identifiant de la voiture associée à cette préférence.

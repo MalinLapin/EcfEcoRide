@@ -10,9 +10,17 @@ use DateTimeImmutable;
 */
 abstract class BaseModel
 {
-    
-    protected array $dateFields = ['created_at', 'updated_at', 'departure_date', 'arrival_date']; // Champs de type date à hydrater.
-    protected array $enumFields = ['role', 'status', 'statusReview']; // Champs d'énumération à hydrater.
+    /**
+     * Champs de type date à transformer en DateTimeImmutable lors de l'hydratation.
+     * Ces champs sont définis pour être automatiquement convertis lors de l'hydratation de l'entité.
+     */
+    protected array $dateFields = ['created_at', 'updated_at', 'departure_date', 'arrival_date'];
+
+    /**
+     * Champs d'énumération à hydrater.
+     * Ces champs sont définis pour être automatiquement convertis en instances d'énumération lors de l'hydratation de l'entité.
+     */
+    protected array $enumFields = ['role', 'status', 'statusReview'];
     /**
     * Crée une instance de l'entité et hydrate ses propriétés avec les données fournies.
     * @param array $data Les données à utiliser pour hydrater l'entité.
@@ -67,12 +75,7 @@ abstract class BaseModel
                             'statusReview' => StatusReview::from($value),
                         };
                     }
-                }
-                
-                // Si la clé est is_active ou is_verified, on convertit la valeur en booléen
-                if ($key === 'is_active' || $key === 'is_verified'){
-                    $value = (bool)$value;
-                }
+                }  
                 
                 $this->{$methodName}($value);
                 

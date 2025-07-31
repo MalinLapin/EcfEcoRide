@@ -240,7 +240,7 @@ class UserModel extends BaseModel
     /**
      * Get the value of isActive
      */
-    public function isIsActive(): bool
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }

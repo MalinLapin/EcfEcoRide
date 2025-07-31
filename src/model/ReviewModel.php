@@ -22,7 +22,7 @@ enum StatusReview: string
  */
 class ReviewModel extends BaseModel
 {
-    private int $idReview; // Identifiant de la revue.
+    private ?int $idReview = null; // Identifiant de la revue.
     private string $content; // Contenu de la revue.
     private int $rating; // Note attribuée dans la revue, généralement entre 1 et 5.
     private DateTimeImmutable $createdAt; // Date de création de la revue.
