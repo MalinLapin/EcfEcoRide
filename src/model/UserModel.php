@@ -12,10 +12,10 @@ use DateTimeImmutable;
  */
 enum Role: string
 {
-        case User = 'User'; // Rôle par défaut pour les utilisateurs normaux.
-        case Admin = 'Admin'; // Rôle pour les administrateurs du système.
-        case Driver = 'Driver'; // Rôle pour les conducteurs de covoiturage.
-        case Employe = 'Employe';// Rôle pour les employés du service client ou de la gestion des covoiturages.
+        case User = 'user'; // Rôle par défaut pour les utilisateurs normaux.
+        case Admin = 'admin'; // Rôle pour les administrateurs du système.
+        case Driver = 'driver'; // Rôle pour les conducteurs de covoiturage.
+        case Employe = 'employe';// Rôle pour les employés du service client ou de la gestion des covoiturages.
 }
 
 /**

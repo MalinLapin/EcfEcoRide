@@ -6,8 +6,9 @@ use App\Model\RidesharingModel;
 
 
 
-class RidesharingRepo extends Repository
+class RidesharingRepo extends BaseRepo
 {
+    protected string $tableName = 'ridesharing'; // Nom de la table dans la base de données
     public function getRidesharingByParams(array $data): array
     {
         

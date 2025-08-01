@@ -1,7 +1,7 @@
 -- Active: 1741707596826@@127.0.0.1@3306
-CREATE DATABASE IF NOT EXISTS Ecoride_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+DROP DATABASE IF EXISTS Ecoride_test;
 
-DROP DATABASE Ecoride_test;
+CREATE DATABASE Ecoride_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 USE Ecoride_test;
 

@@ -1,1 +1,1 @@
-{"version":1,"defects":[],"times":{"RidesharingModelTest::testHydrateSetsProperties":0.585,"UserModelTest::testHydrateSetsProperties":0.001}}
+{"version":1,"defects":{"UserRepoTest::testFindByEmailReturnsNullIfNotExist":8,"UserRepoTest::testFindByEmailReturnsExpectedUser":8,"UserModelTest::testHydrateSetsProperties":8},"times":{"UserModelTest::testHydrateSetsProperties":0.001,"UserRepoTest::testFindByEmailReturnsNullIfNotExist":0,"UserRepoTest::testFindByEmailReturnsExpectedUser":0.018,"RidesharingModelTest::testHydrateSetsProperties":0.01}}

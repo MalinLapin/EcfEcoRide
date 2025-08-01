@@ -9,7 +9,7 @@ use App\Model\BaseModel;
  * Classe de base pour les repositories.
  * Fournit une connexion à la base de données via PDO.
  */
-abstract class Repository
+abstract class BaseRepo
 {
     protected \PDO $pdo;
     // Le nom de la table associée au repository
