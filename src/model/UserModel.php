@@ -37,8 +37,6 @@ class UserModel extends BaseModel
     private float $grade; //Note générale de l'utilisateur
     private bool $isActive; //Etat de l'utilisateur (actif ou suspendu).
     private Role $role; // Rôle de l'utilisateur
-    
-    
 
 
     /**
@@ -242,7 +240,7 @@ class UserModel extends BaseModel
     /**
      * Get the value of isActive
      */
-    public function isIsActive(): bool
+    public function getIsActive(): bool
     {
         return $this->isActive;
     }

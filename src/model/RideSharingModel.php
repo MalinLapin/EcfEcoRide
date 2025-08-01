@@ -20,7 +20,7 @@ enum Status: string
 // Fichier contenant notre classe RideSharingModel qui étend la classe BaseModel.
 class RideSharingModel extends BaseModel
 {
-    private int $idRideSharing; // Identifiant du covoiturage.
+    private ?int $idRideSharing = null; // Identifiant du covoiturage.
     private DateTimeImmutable $departureDate; //Date de départ
     private string $departureCity; //Ville de départ
     private string $departureAdress; //Adresse de départ

@@ -17,6 +17,7 @@ class CarModel extends BaseModel
     private int $idBrand; // Identifiant de la marque associée à la voiture.
     private int $idUser; // Identifiant de l'utilisateur propriétaire de la voiture.   
 
+    
     /**
      * Get the value of table
      */
