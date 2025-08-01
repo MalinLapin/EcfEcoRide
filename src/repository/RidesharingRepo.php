@@ -6,7 +6,7 @@ use App\Model\RidesharingModel;
 
 
 
-class RidesharingRepo extends Repository
+class RidesharingRepo extends BaseRepo
 {
     protected string $tableName = 'ridesharing';
 
