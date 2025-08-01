@@ -53,7 +53,12 @@ CREATE TABLE ridesharing (
     arrival_date DATETIME,
     available_seats INT NOT NULL,
     price_par_seat INT NOT NULL,
-    status VARCHAR(50) NOT NULL,
+    status ENUM(
+        'pending',
+        'ongoing',
+        'completed',
+        'cancelled'
+    ) NOT NULL DEFAULT 'pending',
     created_at DATETIME NOT NULL,
     id_driver INT NOT NULL,
     id_car INT NOT NULL,
