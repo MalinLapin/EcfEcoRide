@@ -7,7 +7,6 @@ use DateTimeImmutable;
 // Fichier contenant notre classe CarModel qui étend la classe BaseModel.
 class CarModel extends BaseModel
 {
-    private string $table = 'car'; // Nom de la table associée à ce modèle.
     private ?int $idCar = null; // Identifiant de la voiture, initialisé à null.
     private string $model; // Modèle de la voiture.
     private string $registrationNumber; // Numéro d'immatriculation de la voiture.
@@ -17,25 +16,11 @@ class CarModel extends BaseModel
     private int $idBrand; // Identifiant de la marque associée à la voiture.
     private int $idUser; // Identifiant de l'utilisateur propriétaire de la voiture.   
 
+    public function __construct(array $data = [])
+    {
+        $this->hydrate($data);    
+    }
     
-    /**
-     * Get the value of table
-     */
-    public function getTable(): string
-    {
-        return $this->table;
-    }
-
-    /**
-     * Set the value of table
-     */
-    public function setTable(string $table): self
-    {
-        $this->table = $table;
-
-        return $this;
-    }
-
     /**
      * Get the value of idCar
      */
