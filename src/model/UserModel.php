@@ -12,10 +12,9 @@ use DateTimeImmutable;
  */
 enum Role: string
 {
-        case User = 'User'; // Rôle par défaut pour les utilisateurs normaux.
-        case Admin = 'Admin'; // Rôle pour les administrateurs du système.
-        case Driver = 'Driver'; // Rôle pour les conducteurs de covoiturage.
-        case Employe = 'Employe';// Rôle pour les employés du service client ou de la gestion des covoiturages.
+        case user = 'user'; // Rôle par défaut pour les utilisateurs normaux.
+        case admin = 'admin'; // Rôle pour les administrateurs du système.
+        case employe = 'employe';// Rôle pour les employés du service client ou de la gestion des covoiturages.
 }
 
 /**
@@ -24,7 +23,6 @@ enum Role: string
  */
 class UserModel extends BaseModel
 {
-    private string $table = 'user'; // Nom de la table associée à ce modèle.
     private ?int $idUser = null; // Identifiant de l'utilisateur, initialisé à null.
     private string $lastName; // Nom de famille de l'utilisateur.
     private string $firstName; // Prénom de l'utilisateur.
@@ -33,30 +31,18 @@ class UserModel extends BaseModel
     private string $password; // Mot de passe de l'utilisateur.
     private DateTimeImmutable $createdAt; // Date de création du compte utilisateur.
     private int $creditBalance; //Solde de crédit
-    private string $photo; //String car chemin pour la photo et non la photo elle meme.
-    private float $grade; //Note générale de l'utilisateur
-    private bool $isActive; //Etat de l'utilisateur (actif ou suspendu).
-    private Role $role; // Rôle de l'utilisateur
+    private ?string $photo; //String car chemin pour la photo et non la photo elle meme.
+    private ?float $grade; //Note générale de l'utilisateur
+    private bool $isActive = true; //Etat de l'utilisateur (actif ou suspendu).
+    private Role $role = Role::user; // Rôle de l'utilisateur
 
 
-    /**
-     * Get the value of table
-     */
-    public function getTable(): string
+    public function __construct(array $data = [])
     {
-        return $this->table;
+        $this->hydrate($data);    
     }
 
-    /**
-     * Set the value of table
-     */
-    public function setTable(string $table): self
-    {
-        $this->table = $table;
-
-        return $this;
-    }
-
+    
     /**
      * Get the value of idUser
      */

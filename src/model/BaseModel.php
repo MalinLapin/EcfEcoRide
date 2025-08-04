@@ -10,17 +10,22 @@ use DateTimeImmutable;
 */
 abstract class BaseModel
 {
-    /**
-     * Champs de type date à transformer en DateTimeImmutable lors de l'hydratation.
-     * Ces champs sont définis pour être automatiquement convertis lors de l'hydratation de l'entité.
-     */
-    protected array $dateFields = ['created_at', 'updated_at', 'departure_date', 'arrival_date'];
+    
+    //Champs de type dateTime pour hydratation
+    private array $dateFields = ['created_at', 'updated_at', 'departure_date', 'arrival_date', 'first_registration'];
 
-    /**
-     * Champs d'énumération à hydrater.
-     * Ces champs sont définis pour être automatiquement convertis en instances d'énumération lors de l'hydratation de l'entité.
-     */
-    protected array $enumFields = ['role', 'status', 'statusReview'];
+    //Champs de type enum pour hydratation
+    private array $enumFields = ['role', 'status', 'statusReview'];
+
+    //Champs de type int pour hydratation
+    private array $intFields =['id_brand', 'id_car', 'id_user', 'id_preference', 'id_review', 'id_redactor', 'id_target', 'id_ridesharing', 'available_seats', 'price_par_seat', 'id_driver', 'credit_balance'];
+
+    private array $floatFields = ['grade'];
+
+    private array $boolFields = ['is_accepted', 'is_active'];
+
+
+    
     /**
     * Crée une instance de l'entité et hydrate ses propriétés avec les données fournies.
     * @param array $data Les données à utiliser pour hydrater l'entité.
@@ -54,29 +59,51 @@ abstract class BaseModel
             if(method_exists($this,$methodName))
                 {
                     
-                // Si la clé est une date, on la convertit en DateTimeImmutable
-                // On vérifie si la clé est dans les champs de date définis
+                // Champs date convertie en intance de DateTimeImmutable
                 if(in_array($key, $this->dateFields))
                     {
                     // On s'assure que la valeur est une chaîne de caractères avant de la convertir
                     if(is_string($value))
                         {
-                        $value = new DateTimeImmutable($value);
-                    }
-                }             
+                            $value = new DateTimeImmutable($value);
+                        }
+                    }             
                 
-                // Si la clé est un enum, on le convertit en instance de l'enum
-                if (in_array($key, $this->enumFields)){
-                    // On s'assure que la valeur est une chaîne de caractères avant de la convertir
-                    if(is_string($value)){
-                        $value = match ($key) {
+                // Champs enum convertie en instance d'enum
+                if (in_array($key, $this->enumFields))
+                {
+                        // On s'assure que la valeur est une chaîne de caractères avant de la convertir
+                    if(is_string($value))
+                    {
+                        $value = match ($key)
+                        {
                             'role' => Role::from($value),
                             'status' => Status::from($value),
                             'statusReview' => StatusReview::from($value),
                         };
                     }
-                }  
+                }   
+
+                // Champs int
+                if (in_array($key, $this->intFields))
+                {
+                    $value = (int)$value;
+                }
+
+                // Champs float
+                if (in_array($key, $this->floatFields))
+                {
+                    $value = (float)$value;
+                }
+
+                // Champs bool
+                if (in_array($key, $this->boolFields)) 
+                {
+                    // Gère les formats "1"/"0", true/false, int, string
+                    $value = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                }
                 
+                // On renvoie la méthode set correspondante avec sa valeur.                
                 $this->{$methodName}($value);
                 
             }            

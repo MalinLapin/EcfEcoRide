@@ -13,6 +13,12 @@ class Preference extends BaseModel
     private bool $isAccepted; // Indique si la préférence est acceptée ou non.    
     private int $idCar; // Identifiant de la voiture associée à cette préférence.
 
+
+    public function __construct(array $data = [])
+    {
+        $this->hydrate($data);    
+    }
+    
     /**
      * Get the value of idPreference
      */

@@ -9,6 +9,7 @@ use App\Model\RidesharingModel;
 class RidesharingRepo extends BaseRepo
 {
     protected string $tableName = 'ridesharing';
+    protected string $className = RidesharingModel::class;
 
     /**
      * Récupère les trajets de covoiturage en fonction des paramètres fournis.

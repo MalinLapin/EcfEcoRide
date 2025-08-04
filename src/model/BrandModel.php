@@ -5,26 +5,12 @@ namespace App\Model;
 
 class BrandModel extends BaseModel
 {
-    private string $table = 'brand'; // Nom de la table associée à ce modèle.
     private ?int $idBrand = null; // Identifiant de la marque, initialisé à null.
     private string $label; // Label de la marque.
 
-    /**
-     * Get the value of table
-     */
-    public function getTable(): string
+    public function __construct(array $data = [])
     {
-        return $this->table;
-    }
-
-    /**
-     * Set the value of table
-     */
-    public function setTable(string $table): self
-    {
-        $this->table = $table;
-
-        return $this;
+        $this->hydrate($data);    
     }
 
     /**
