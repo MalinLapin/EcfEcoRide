@@ -4,6 +4,7 @@ namespace App\repository;
 
 use App\config\Database;
 use App\Model\BaseModel;
+use BackedEnum;
 
 /**
  * Classe de base pour les repositories.
@@ -28,12 +29,12 @@ abstract class BaseRepo
      * @param BaseModel $model Le modèle à insérer dans la base de données.
      * @return bool Retourne true si l'insertion a réussi, false sinon.
      */
-    public function create(BaseModel $model):bool
+    public function create(BaseModel $model):?int
     {
         // On vérifie que le modèle est une instance de BaseModel
         $data = $this->extractData($model);
 
-        // On s'assure que le champ ID n'est pas inclus dans les données à insérer
+        // On s'assure que le champ ID n'est pas inclus dans les données à insérer car il est auto incrémenter.
         $idField = $this->getIdField();        
         unset($data[$idField]);
 
@@ -46,9 +47,11 @@ abstract class BaseRepo
         $stmt = $this->pdo->prepare($sql);
         // On lie les valeurs aux paramètres de la requête
         foreach ($data as $key => $value) {
-            $stmt->bindValue(":{$key}", $value);
+            $stmt->bindValue(":{$key}", $this->prepareParamForDatabase($value));
+
         }
-        return $stmt->execute();
+        $stmt->execute();
+        return $this->pdo->lastInsertId();
     }
 
     /**
@@ -62,12 +65,23 @@ abstract class BaseRepo
         $data = [];
         // On utilise la réflexion pour accéder aux propriétés du modèle
         $reflection = new \ReflectionClass($model);
+
         // On parcourt les propriétés du modèle et on les ajoute au tableau de données
         foreach ($reflection->getProperties() as $property) {
-            $property->setAccessible(true);
-            $data[$property->getName()] = $property->getValue($model);
+            $property->setAccessible(true);          
+            $data[self::camelToSnake($property->getName())] = $property->getValue($model);
         }
         return $data;
+    }
+
+    /**
+     * Convertie le camelCase en snake_case pour coller aux noms des colonnes de ma Bdd.
+     * @param string $input string a convertir
+     * @return string Nouvelle string en snake_case.
+     */
+    public static function camelToSnake(string $input): string 
+    {
+        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $input));
     }
 
     /**
@@ -111,10 +125,12 @@ abstract class BaseRepo
 
         // On lie les valeurs aux paramètres de la requête
         foreach ($data as $key => $value) {
-            $stmt->bindValue(":{$key}", $value);
+            $stmt->bindValue(":{$key}", self::prepareParamForDatabase($value));
         }
 
-        return $stmt->execute();
+        $stmt->execute();
+        // On test si le nombre de ligne à bien été modifier
+        return $stmt->rowCount() > 0;
     }
 
     /**
@@ -132,7 +148,8 @@ abstract class BaseRepo
         // On lie l'ID à la requête
         $stmt->bindValue(":{$idField}", $id, \PDO::PARAM_INT);
         
-        return $stmt->execute();
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
     }
 
     /**
@@ -166,7 +183,7 @@ abstract class BaseRepo
      * Trouve toutes les entrées de la table associée.
      * @return BaseModel[] Un tableau d'instances du modèle.
      */
-    public function findAll(): array
+    public function findAll(): ?array
     {
         // On prépare la requête de sélection
         $sql = "SELECT * FROM {$this->tableName}";
@@ -176,12 +193,40 @@ abstract class BaseRepo
         // On récupère tous les résultats
         $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         
-        // On crée une liste de modèles à partir des résultats
-        $models = [];
-        foreach ($results as $result) {
-            $models[] = new $this->className($result);
+        // Si résultat :
+        if($results)
+        {
+            // On crée une liste de modèles à partir des résultats
+            $models = [];
+            foreach ($results as $result) {
+                $models[] = new $this->className($result);
+            }
+            
+            return $models; // Retourne un tableau de modèles
         }
-        
-        return $models; // Retourne un tableau de modèles
+
+        // Si aucun résultat on retourne null
+        return null;
+    }
+
+    /**
+     * Prépare une valeur à être insérée en BDD.
+     * Si c'est une date, la transforme au bon format MySQL. Sinon, retourne la valeur telle quelle.
+     * Si c'est une enum, la transforme sa valeur en string.
+     * @param mixed $value La valeur en transforme pour une entré en Bdd.
+     * @return mixed
+     */
+    protected function prepareParamForDatabase($value):mixed
+    {
+        if ($value instanceof \DateTimeInterface) {
+            return $value->format('Y-m-d H:i:s');
+        }
+
+        if ($value instanceof \BackedEnum)
+        {
+            return $value->value;
+        }
+        return $value;
     }
 }
+
