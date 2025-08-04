@@ -21,20 +21,15 @@ CREATE TABLE user (
     credit_balance INT,
     photo VARCHAR(255),
     grade DECIMAL(2, 1),
-    role ENUM(
-        'user',
-        'employe',
-        'driver',
-        'admin'
-    ) NOT NULL DEFAULT 'user',
-    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    role VARCHAR(20) NOT NULL DEFAULT 'user',
+    is_active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE car (
     id_car INT PRIMARY KEY AUTO_INCREMENT,
     model VARCHAR(20),
     registration_number VARCHAR(20) NOT NULL,
-    first_registration DATE NOT NULL,
+    first_registration DATETIME NOT NULL,
     energy_type VARCHAR(20) NOT NULL,
     color VARCHAR(20) NOT NULL,
     id_brand INT NOT NULL,
@@ -53,12 +48,7 @@ CREATE TABLE ridesharing (
     arrival_date DATETIME,
     available_seats INT NOT NULL,
     price_par_seat INT NOT NULL,
-    status ENUM(
-        'pending',
-        'ongoing',
-        'completed',
-        'cancelled'
-    ) NOT NULL DEFAULT 'pending',
+    status VARCHAR(20) NOT NULL DEFAULT 'pending',
     created_at DATETIME NOT NULL,
     id_driver INT NOT NULL,
     id_car INT NOT NULL,

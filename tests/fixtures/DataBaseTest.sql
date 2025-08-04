@@ -21,12 +21,7 @@ CREATE TABLE user (
     credit_balance INT,
     photo VARCHAR(255),
     grade DECIMAL(2, 1),
-    role ENUM(
-        'user',
-        'employe',
-        'driver',
-        'admin'
-    ) NOT NULL DEFAULT 'user',
+    role VARCHAR(20) NOT NULL DEFAULT 'user',
     is_active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
@@ -34,7 +29,7 @@ CREATE TABLE car (
     id_car INT PRIMARY KEY AUTO_INCREMENT,
     model VARCHAR(20),
     registration_number VARCHAR(20) NOT NULL,
-    first_registration DATE NOT NULL,
+    first_registration DATETIME NOT NULL,
     energy_type VARCHAR(20) NOT NULL,
     color VARCHAR(20) NOT NULL,
     id_brand INT NOT NULL,
@@ -53,12 +48,7 @@ CREATE TABLE ridesharing (
     arrival_date DATETIME,
     available_seats INT NOT NULL,
     price_par_seat INT NOT NULL,
-    status ENUM(
-        'pending',
-        'ongoing',
-        'completed',
-        'cancelled'
-    ) NOT NULL DEFAULT 'pending',
+    status VARCHAR(20) NOT NULL DEFAULT 'pending',
     created_at DATETIME NOT NULL,
     id_driver INT NOT NULL,
     id_car INT NOT NULL,
@@ -124,7 +114,7 @@ VALUES (
         75,
         'axel.jpg',
         4.2,
-        'driver'
+        'user'
     ),
     (
         'Uny',
@@ -136,13 +126,13 @@ VALUES (
         75,
         'mystere.jpg',
         4.2,
-        'driver'
+        'user'
     ),
     (
         'Uny',
         'Milka',
         'milkauny',
-        'milka@uny@test.com',
+        'milka.uny@test.com',
         '$2y$10$eW8z5Z1b7f3a5d9F4Q6uUO0k1j5Y1Z5h1Z5h1Z5h1Z5h1Z5h1Z5h1',
         NOW(),
         30,
@@ -171,7 +161,7 @@ INSERT INTO
 VALUES (
         'Corolla',
         'ABC123',
-        '2020-01-15',
+        '2020-01-15 00:00:00',
         'Petrol',
         'Red',
         1,
@@ -180,7 +170,7 @@ VALUES (
     (
         'Focus',
         'XYZ456',
-        '2019-05-20',
+        '2019-05-20 00:00:00',
         'Diesel',
         'Blue',
         2,
@@ -189,7 +179,7 @@ VALUES (
     (
         'X5',
         'LMN789',
-        '2021-03-10',
+        '2021-03-10 00:00:00',
         'Electric',
         'Black',
         3,
@@ -198,7 +188,7 @@ VALUES (
     (
         'A-Class',
         'OPQ012',
-        '2018-07-25',
+        '2018-07-25 00:00:00',
         'Hybrid',
         'White',
         4,
@@ -207,7 +197,7 @@ VALUES (
     (
         'Civic',
         'RST345',
-        '2022-11-30',
+        '2022-11-30 00:00:00',
         'Petrol',
         'Green',
         1,
