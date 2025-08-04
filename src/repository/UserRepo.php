@@ -8,8 +8,10 @@ use App\model\UserModel;
 
 class UserRepo extends BaseRepo
 {
-    protected string $tableName = 'user'; // Nom de la table dans la base de données
-    
+
+    protected string $tableName = 'user';
+    protected string $className = UserModel::class;
+
     //1.Méthode pour récuperer un utilisateur par son pseudo
     public function getUserByPseudo(string $pseudo): ?UserModel
     {
@@ -21,7 +23,7 @@ class UserRepo extends BaseRepo
         if ($data) {
             return UserModel::createAndHydrate($data);
         } else {
-            throw new \Exception("L'utilisateur nommé: {$pseudo} n'as pas été trouver.");
+            return null;
         }        
     }
     
