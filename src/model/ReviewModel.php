@@ -11,9 +11,9 @@ use DateTimeImmutable;
  */
 enum StatusReview: string
 {
-    case Pending = 'pending'; // La revue est en attente de traitement.
-    case Approved = 'approved'; // La revue a été approuvée.
-    case Rejected = 'rejected'; // La revue a été rejetée.
+    case pending = 'pending'; // La revue est en attente de traitement.
+    case approved = 'approved'; // La revue a été approuvée.
+    case rejected = 'rejected'; // La revue a été rejetée.
 }
 
 /**
@@ -27,10 +27,13 @@ class ReviewModel extends BaseModel
     private int $rating; // Note attribuée dans la revue, généralement entre 1 et 5.
     private DateTimeImmutable $createdAt; // Date de création de la revue.
     private StatusReview $status; // Statut de la revue, défini par l'énumération StatusReview.
-    private int $idRedacteur; // Identifiant de l'utilisateur qui a créé la revue.
+    private int $idRedactor; // Identifiant de l'utilisateur qui a créé la revue.
     private int $idTarget; // Identifiant de l'utilisateur qui est la cible de la revue.
 
-    
+    public function __construct(array $data = [])
+    {
+        $this->hydrate($data);    
+    }
 
     /**
      * Get the value of idReview
@@ -127,15 +130,15 @@ class ReviewModel extends BaseModel
      */
     public function getIdRedacteur(): int
     {
-        return $this->idRedacteur;
+        return $this->idRedactor;
     }
 
     /**
      * Set the value of idRedacteur
      */
-    public function setIdRedacteur(int $idRedacteur): self
+    public function setIdRedacteur(int $idRedactor): self
     {
-        $this->idRedacteur = $idRedacteur;
+        $this->idRedactor = $idRedactor;
 
         return $this;
     }

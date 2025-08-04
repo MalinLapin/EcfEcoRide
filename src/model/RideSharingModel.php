@@ -11,16 +11,16 @@ use DateTimeImmutable;
  */
 enum Status: string
 {
-        case Pending = 'pending'; // le covoiturage est crée mais pas lancé
-        case Ongoing = "ongoing"; // le covoiturage est en cours
-        case Completed = "completed"; // le covoiturage est fini
-        case Cancelled = "cancelled"; // le covoiturage à été annuler par le chauffeur ou un employer/admin
+        case pending = 'pending'; // le covoiturage est crée mais pas lancé
+        case ongoing = "ongoing"; // le covoiturage est en cours
+        case completed = "completed"; // le covoiturage est fini
+        case cancelled = "cancelled"; // le covoiturage à été annuler par le chauffeur ou un employer/admin
 }
 
 // Fichier contenant notre classe RideSharingModel qui étend la classe BaseModel.
-class RideSharingModel extends BaseModel
+class RidesharingModel extends BaseModel
 {
-    private ?int $idRideSharing = null; // Identifiant du covoiturage.
+    private ?int $idRidesharing = null; // Identifiant du covoiturage.
     private DateTimeImmutable $departureDate; //Date de départ
     private string $departureCity; //Ville de départ
     private string $departureAdress; //Adresse de départ
@@ -34,20 +34,25 @@ class RideSharingModel extends BaseModel
     private int $idDriver; // Identifiant du conducteur
     private int $idCar; // Identifiant de la voiture utilisée pour le covoiturage
 
+    public function __construct(array $data = [])
+    {
+        $this->hydrate($data);    
+    }
+
     /**
      * Get the value of idRideSharing
      */
-    public function getIdRideSharing(): int
+    public function getIdRidesharing(): int
     {
-        return $this->idRideSharing;
+        return $this->idRidesharing;
     }
 
     /**
      * Set the value of idRideSharing
      */
-    public function setIdRideSharing(int $idRideSharing): self
+    public function setIdRidesharing(int $idRidesharing): self
     {
-        $this->idRideSharing = $idRideSharing;
+        $this->idRidesharing = $idRidesharing;
 
         return $this;
     }

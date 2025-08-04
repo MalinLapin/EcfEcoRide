@@ -1,5 +1,6 @@
 # Fichiers de configuration sensibles et spécifiques à l'environnement
 .env
+.env.test
 .env.*local
 .env.production.local
 .env.staging.local
