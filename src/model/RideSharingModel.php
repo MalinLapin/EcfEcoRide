@@ -11,10 +11,10 @@ use DateTimeImmutable;
  */
 enum Status: string
 {
-        case pending = 'pending'; // le covoiturage est crée mais pas lancé
-        case ongoing = "ongoing"; // le covoiturage est en cours
-        case completed = "completed"; // le covoiturage est fini
-        case cancelled = "cancelled"; // le covoiturage à été annuler par le chauffeur ou un employer/admin
+        case pending = 'pending'; // le covoiturage est en attente.
+        case ongoing = 'ongoing'; // le covoiturage est en cours
+        case completed = 'completed'; // le covoiturage est fini
+        case cancelled = 'cancelled'; // le covoiturage annulé par le chauffeur ou un employer/admin
 }
 
 // Fichier contenant notre classe RideSharingModel qui étend la classe BaseModel.
@@ -23,13 +23,13 @@ class RidesharingModel extends BaseModel
     private ?int $idRidesharing = null; // Identifiant du covoiturage.
     private DateTimeImmutable $departureDate; //Date de départ
     private string $departureCity; //Ville de départ
-    private string $departureAdress; //Adresse de départ
+    private string $departureAddress; //Adresse de départ
     private string $arrivalCity; //Ville d'arriver
-    private string $arrivalAdress; //Adresse d'arriver
-    private DateTimeImmutable $arrivalDate; //Date d'arriver
-    private int $availableSeats; //Place disponnible
-    private int $priceParSeat; //Prix par place
-    private Status $status; //Est défini par notre énum pour éviter des erreur de tipo ou de type.
+    private ?string $arrivalAddress; //Adresse d'arriver
+    private ?DateTimeImmutable $arrivalDate = null; //Date d'arriver
+    private int $availableSeats; //Places disponibles
+    private int $pricePerSeat; //Prix par place
+    private Status $status = Status::pending; //Est défini par notre énum pour éviter des erreur de typo ou de type.
     private DateTimeImmutable $createdAt; //Date de création du covoiturage
     private int $idDriver; // Identifiant du conducteur
     private int $idCar; // Identifiant de la voiture utilisée pour le covoiturage
@@ -96,17 +96,17 @@ class RidesharingModel extends BaseModel
     /**
      * Get the value of departureAdress
      */
-    public function getDepartureAdress(): string
+    public function getDepartureAddress(): string
     {
-        return $this->departureAdress;
+        return $this->departureAddress;
     }
 
     /**
      * Set the value of departureAdress
      */
-    public function setDepartureAdress(string $departureAdress): self
+    public function setDepartureAddress(string $departureAddress): self
     {
-        $this->departureAdress = $departureAdress;
+        $this->departureAddress = $departureAddress;
 
         return $this;
     }
@@ -132,17 +132,17 @@ class RidesharingModel extends BaseModel
     /**
      * Get the value of arrivalAdress
      */
-    public function getArrivalAdress(): string
+    public function getArrivalAddress(): string
     {
-        return $this->arrivalAdress;
+        return $this->arrivalAddress;
     }
 
     /**
      * Set the value of arrivalAdress
      */
-    public function setArrivalAdress(string $arrivalAdress): self
+    public function setArrivalAddress(?string $arrivalAddress): self
     {
-        $this->arrivalAdress = $arrivalAdress;
+        $this->arrivalAddress = $arrivalAddress;
 
         return $this;
     }
@@ -158,7 +158,7 @@ class RidesharingModel extends BaseModel
     /**
      * Set the value of arrivalDate
      */
-    public function setArrivalDate(DateTimeImmutable $arrivalDate): self
+    public function setArrivalDate(?DateTimeImmutable $arrivalDate): self
     {
         $this->arrivalDate = $arrivalDate;
 
@@ -186,17 +186,17 @@ class RidesharingModel extends BaseModel
     /**
      * Get the value of priceParSeat
      */
-    public function getPriceParSeat(): int
+    public function getPricePerSeat(): int
     {
-        return $this->priceParSeat;
+        return $this->pricePerSeat;
     }
 
     /**
      * Set the value of priceParSeat
      */
-    public function setPriceParSeat(int $priceParSeat): self
+    public function setPricePerSeat(int $pricePerSeat): self
     {
-        $this->priceParSeat = $priceParSeat;
+        $this->pricePerSeat = $pricePerSeat;
 
         return $this;
     }

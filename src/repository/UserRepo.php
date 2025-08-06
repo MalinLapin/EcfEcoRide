@@ -6,7 +6,7 @@ use App\model\UserModel;
 
 
 
-class UserRepo extends Repository
+class UserRepo extends BaseRepo
 {
     protected string $tableName = 'user';
     protected string $className = UserModel::class;

@@ -18,7 +18,7 @@ abstract class BaseModel
     private array $enumFields = ['role', 'status', 'statusReview'];
 
     //Champs de type int pour hydratation
-    private array $intFields =['id_brand', 'id_car', 'id_user', 'id_preference', 'id_review', 'id_redactor', 'id_target', 'id_ridesharing', 'available_seats', 'price_par_seat', 'id_driver', 'credit_balance'];
+    private array $intFields =['id_brand', 'id_car', 'id_user', 'id_preference', 'id_review', 'id_redactor', 'id_target', 'id_ridesharing', 'available_seats', 'price_per_seat', 'id_driver', 'credit_balance'];
 
     private array $floatFields = ['grade'];
 

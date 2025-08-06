@@ -16,7 +16,7 @@ class UserRepoTest extends TestCase
      * Cette méthode est appelée une seule fois avant l'exécution de tous les tests de cette classe.
      * Elle initialise la connexion à la base de données en utilisant les variables d'environnement définies dans le fichier .
      */
-    public static function setUpBeforeClass(): void
+    protected function setUp(): void
     {
         // Connexion à la BDD test (garde ça cohérent avec ta config)
         $dbHost = $_ENV['DB_HOST'];
@@ -112,7 +112,7 @@ class UserRepoTest extends TestCase
      * Méthode de test pour la modification d'un utilisateur qui n'existe pas en bdd
      * @return void
      * On créer un User fictif que nous cherchons à modifier.
-     * On verifie que si la modification est un succes ou non.
+     * On verifie si la modification est un succes ou non.
      */
     public function testErrorUpdateUser() :void
     {
@@ -130,7 +130,6 @@ class UserRepoTest extends TestCase
         $user->setPhoto('none.jpg');
         $user->setGrade(0.0);
         $user->setCreatedAt(new DateTimeImmutable());
-        $success = $repo->update($user);
                 
         $success = $repo->update($user);
         $this->assertFalse($success);
@@ -256,10 +255,10 @@ class UserRepoTest extends TestCase
     public function testGetByPseudo(): void
     {
         $repo = new UserRepo(self::$pdo);
-        $user = $repo->getUserByPseudo('elinauny');
+        $user = $repo->getUserByPseudo('marcuny');
         $this->assertNotNull($user);
         $this->assertSame('Uny', $user->getLastName());
-        $this->assertSame('elina', $user->getFirstName());
+        $this->assertSame('Marc', $user->getFirstName());
     }
 
     /**
