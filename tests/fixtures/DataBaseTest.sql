@@ -42,12 +42,12 @@ CREATE TABLE ridesharing (
     id_ridesharing INT PRIMARY KEY AUTO_INCREMENT,
     departure_date DATETIME NOT NULL,
     departure_city VARCHAR(50) NOT NULL,
-    departure_adress VARCHAR(255),
+    departure_address VARCHAR(255),
     arrival_city VARCHAR(50) NOT NULL,
-    arrival_adress VARCHAR(255),
+    arrival_address VARCHAR(255),
     arrival_date DATETIME,
     available_seats INT NOT NULL,
-    price_par_seat INT NOT NULL,
+    price_per_seat INT NOT NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'pending',
     created_at DATETIME NOT NULL,
     id_driver INT NOT NULL,
@@ -59,6 +59,7 @@ CREATE TABLE ridesharing (
 CREATE TABLE participate (
     id_participant INT NOT NULL,
     id_ridesharing INT NOT NULL,
+    nb_seats INT NOT NULL,
     PRIMARY KEY (
         id_participant,
         id_ridesharing
@@ -208,24 +209,24 @@ INSERT INTO
     ridesharing (
         departure_date,
         departure_city,
-        departure_adress,
+        departure_address,
         arrival_city,
-        arrival_adress,
+        arrival_address,
         arrival_date,
         available_seats,
-        price_par_seat,
+        price_per_seat,
         status,
         created_at,
         id_driver,
         id_car
     )
 VALUES (
-        '2023-10-01 08:00:00',
+        '2026-10-01 08:00:00',
         'Paris',
         '123 Rue de Paris',
         'Lyon',
         '456 Avenue de Lyon',
-        '2023-10-01 12:00:00',
+        '2026-10-01 12:00:00',
         3,
         20,
         'pending',
@@ -234,7 +235,35 @@ VALUES (
         1
     ),
     (
-        '2023-10-02 09:00:00',
+        '2026-10-01 08:00:00',
+        'Paris',
+        '123 Rue de Paris',
+        'Lyon',
+        '456 Avenue de Lyon',
+        NULL,
+        0,
+        20,
+        'pending',
+        NOW(),
+        3,
+        1
+    ),
+    (
+        '2026-10-01 08:00:00',
+        'Paris',
+        '123 Rue de Paris',
+        'Lyon',
+        '3 Avenue des test',
+        NULL,
+        3,
+        20,
+        'pending',
+        NOW(),
+        3,
+        1
+    ),
+    (
+        '2025-08-05 09:00:00',
         'Marseille',
         '789 Boulevard de Marseille',
         'Nice',
@@ -248,7 +277,7 @@ VALUES (
         2
     ),
     (
-        '2023-10-03 07:30:00',
+        '2025-10-03 07:30:00',
         'Bordeaux',
         '654 Avenue de Bordeaux',
         'Toulouse',
@@ -262,7 +291,7 @@ VALUES (
         3
     ),
     (
-        '2023-10-04 10:15:00',
+        '2024-10-04 10:15:00',
         'Nantes',
         '159 Boulevard de Nantes',
         'Rennes',
@@ -276,7 +305,7 @@ VALUES (
         4
     ),
     (
-        '2023-10-05 06:45:00',
+        '2024-10-05 06:45:00',
         'Strasbourg',
         '852 Avenue de Strasbourg',
         'Mulhouse',
@@ -290,7 +319,7 @@ VALUES (
         5
     ),
     (
-        '2023-10-06 08:30:00',
+        '2025-10-06 08:30:00',
         'Lille',
         '258 Boulevard de Lille',
         'Roubaix',
@@ -316,3 +345,14 @@ VALUES (2, 1),
     (4, 5),
     (2, 6),
     (4, 6);
+
+UPDATE ridesharing
+SET
+    available_seats = available_seats - 2
+WHERE
+    id_ridesharing = 2
+    AND available_seats >= 2;
+
+SELECT available_seats FROM ridesharing WHERE id_ridesharing = 2;
+
+SHOW CREATE TABLE ridesharing

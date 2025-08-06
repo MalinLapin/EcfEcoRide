@@ -42,12 +42,12 @@ CREATE TABLE ridesharing (
     id_ridesharing INT PRIMARY KEY AUTO_INCREMENT,
     departure_date DATETIME NOT NULL,
     departure_city VARCHAR(50) NOT NULL,
-    departure_adress VARCHAR(255),
+    departure_address VARCHAR(255),
     arrival_city VARCHAR(50) NOT NULL,
-    arrival_adress VARCHAR(255),
+    arrival_address VARCHAR(255),
     arrival_date DATETIME,
     available_seats INT NOT NULL,
-    price_par_seat INT NOT NULL,
+    price_per_seat INT NOT NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'pending',
     created_at DATETIME NOT NULL,
     id_driver INT NOT NULL,
@@ -59,6 +59,7 @@ CREATE TABLE ridesharing (
 CREATE TABLE participate (
     id_participant INT NOT NULL,
     id_ridesharing INT NOT NULL,
+    nb_seats INT NOT NULL,
     PRIMARY KEY (
         id_participant,
         id_ridesharing
