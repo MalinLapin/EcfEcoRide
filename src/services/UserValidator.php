@@ -24,11 +24,14 @@ class UserValidator
      */
     public static function validatePasswordStrength(string $password): bool
     {
-        return
-            strlen($password) >= 12 && // Depuis 2025 l'ANSSI recommande un mot de passe entre 12 et 16 caractères.
+        if(strlen($password) >= 12 && // Depuis 2025 l'ANSSI recommande un mot de passe entre 12 et 16 caractères.
             preg_match('/[A-Z]/', $password) &&
             preg_match('/[a-z]/', $password) &&
             preg_match('/[0-9]/', $password) &&
-            preg_match('/[\W]/', $password); // caractère spécial
+            preg_match('/[\W]/', $password))// caractère spécial
+        {
+            return true;
+        }
+        return false; 
     }
 }

@@ -56,7 +56,7 @@ class UserRepoTest extends TestCase
         $newUser->setFirstName('Julie');
         $newUser->setPseudo('julie33');
         $newUser->setEmail('julie@test.fr');
-        $newUser->setPassword('password123');
+        $newUser->setPassword('Password1234!');
         $newUser->setRole(Role::user);
         $newUser->setIsActive(true);
         $newUser->setCreditBalance(100);
@@ -123,7 +123,7 @@ class UserRepoTest extends TestCase
         $user->setFirstName('test');
         $user->setPseudo('testUser');
         $user->setEmail('test@user.fr');
-        $user->setPassword('nopass');
+        $user->setPassword('Nopass123456!');
         $user->setRole(Role::user);
         $user->setIsActive(true);
         $user->setCreditBalance(14);
