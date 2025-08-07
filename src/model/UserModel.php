@@ -2,8 +2,9 @@
 
 namespace App\Model;
 
-use PDO;
+
 use DateTimeImmutable;
+use App\services\UserValidator;
 
 /**
  * Enumération pour représenter les différents rôles d'un utilisateur.
@@ -125,11 +126,13 @@ class UserModel extends BaseModel
 
     /**
      * Set the value of email
+     * On vérifie le format de l'email via le service validator.
      */
     public function setEmail(string $email): self
     {
-        $this->email = $email;
-
+        if (UserValidator::validateEmail($email)){
+            $this->email = $email;            
+        }
         return $this;
     }
 
@@ -143,10 +146,15 @@ class UserModel extends BaseModel
 
     /**
      * Set the value of password
+     * On Vérifie la complexiter du mot de passe en passant par le service de validation
+     * Puis on hash le mot de passe en séléctionnant le PASSWORD_DEFAULT afin d'avoir le dernier procéder de hashage fournie par PHP.
      */
     public function setPassword(string $password): self
     {
-        $this->password = $password;
+        if (UserValidator::validatePasswordStrength($password))
+        {
+            $this->password = password_hash($password,PASSWORD_DEFAULT);
+        }
 
         return $this;
     }

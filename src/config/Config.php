@@ -3,6 +3,7 @@
 // Fichier contenant notre classe de configuration. C'est lui qui va charger nos variable d'environement et charger notre .env
 namespace App\config;
 use Dotenv\Dotenv;
+use Exception;
 
 class Config
 {
@@ -13,7 +14,7 @@ class Config
      */
 
 
-    public static function load($path = __DIR__ . '../', $envFile ='.env'):void
+    public static function load($path = __DIR__ . '/../', $envFile ='.env'):void
     {
         //on vérifie si le fichier .env avant de tenter de le charger.
         if(file_exists($path . $envFile))
@@ -22,6 +23,7 @@ class Config
             $dotenv->load();
             // DEBUG : liste toutes les énoncées chargées !
         }
+        throw new Exception("Aucun fichier d'environnement trouvée");
     }
 
 

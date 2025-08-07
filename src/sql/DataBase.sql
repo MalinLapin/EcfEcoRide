@@ -1,7 +1,8 @@
 -- Active: 1741707596826@@127.0.0.1@3306
-CREATE DATABASE IF NOT EXISTS Ecoride CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 DROP DATABASE Ecoride;
+
+CREATE DATABASE IF NOT EXISTS Ecoride CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 USE Ecoride;
 
@@ -22,7 +23,7 @@ CREATE TABLE user (
     photo VARCHAR(255),
     grade DECIMAL(2, 1),
     role VARCHAR(20) NOT NULL DEFAULT 'user',
-    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE car (
