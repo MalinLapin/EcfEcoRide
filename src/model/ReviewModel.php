@@ -22,8 +22,8 @@ enum StatusReview: string
  */
 class ReviewModel extends BaseModel
 {
-    private ?int $idReview = null; // Identifiant de la revue.
-    private string $content; // Contenu de la revue.
+    private ?string $idReview = null; // Identifiant de l'avis. En string car l'id en MongoDb est un ObjectId
+    private string $comment; // Contenu de la revue.
     private int $rating; // Note attribuée dans la revue, généralement entre 1 et 5.
     private DateTimeImmutable $createdAt; // Date de création de la revue.
     private StatusReview $status; // Statut de la revue, défini par l'énumération StatusReview.
@@ -38,7 +38,7 @@ class ReviewModel extends BaseModel
     /**
      * Get the value of idReview
      */
-    public function getIdReview(): int
+    public function getIdReview(): string
     {
         return $this->idReview;
     }
@@ -46,7 +46,7 @@ class ReviewModel extends BaseModel
     /**
      * Set the value of idReview
      */
-    public function setIdReview(int $idReview): self
+    public function setIdReview(string $idReview): self
     {
         $this->idReview = $idReview;
 
@@ -56,17 +56,17 @@ class ReviewModel extends BaseModel
     /**
      * Get the value of content
      */
-    public function getContent(): string
+    public function getComment(): string
     {
-        return $this->content;
+        return $this->comment;
     }
 
     /**
      * Set the value of content
      */
-    public function setContent(string $content): self
+    public function setContent(string $comment): self
     {
-        $this->content = $content;
+        $this->comment = $comment;
 
         return $this;
     }
@@ -128,7 +128,7 @@ class ReviewModel extends BaseModel
     /**
      * Get the value of idRedacteur
      */
-    public function getIdRedacteur(): int
+    public function getIdRedactor(): int
     {
         return $this->idRedactor;
     }
@@ -136,7 +136,7 @@ class ReviewModel extends BaseModel
     /**
      * Set the value of idRedacteur
      */
-    public function setIdRedacteur(int $idRedactor): self
+    public function setIdRedactor(int $idRedactor): self
     {
         $this->idRedactor = $idRedactor;
 
