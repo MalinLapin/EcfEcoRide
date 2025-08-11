@@ -7,10 +7,10 @@ use App\Model\BaseModel;
 use BackedEnum;
 
 /**
- * Classe de base pour les repositories.
+ * Classe de base pour les repositories des models relationnel.
  * Fournit une connexion à la base de données via PDO.
  */
-abstract class BaseRepo
+abstract class BaseRepoSql
 {
     protected \PDO $pdo;
     // Le nom de la table associée au repository
@@ -21,7 +21,7 @@ abstract class BaseRepo
     public function __construct()
     {
         // On récupère l'instance de la base de données
-        $this->pdo = Database::getInstance();
+        $this->pdo = Database::getInstancePDO();
     }
 
     /**
