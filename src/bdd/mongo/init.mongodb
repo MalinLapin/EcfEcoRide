@@ -1,0 +1,41 @@
+// Création de la Bdd NoSql.
+use('EcoRideMongo');
+
+// Création de la collection pour l'entité Review
+db.createCollection("Review", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            required: ["idTarget", "idRedactor", "status", "rating", "comment", "createdAt"],
+            properties: {
+                idTarget: { bsonType: "int" },
+                idRedactor: { bsonType: "int" },
+                status: { bsonType: "string", enum: ["pending", "approved", "rejected"] },
+                rating: { bsonType: "int", minimum: 1, maximum: 5 },
+                comment: { bsonType: "string", maxLength: 1000 },
+                createdAt: { bsonType: "date" }
+            },
+            additionalProperties: true
+        }
+    },
+    validationLevel: "strict",
+    validationAction: "error"
+});
+
+// Création de la collection pour l'entité Preference
+db.createCollection("Preference", {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            required: ["idCar", "label", "isAccepted"],
+            properties: {
+                idCar: { bsonType: "int" },
+                label: { bsonType: "string" },
+                isAccepted: { bsonType: "bool" }
+            },
+            additionalProperties: true
+        }
+    },
+    validationLevel: "strict",
+    validationAction: "error"
+});
