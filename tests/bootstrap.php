@@ -7,6 +7,7 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 use App\config\Config;
 
 
+
 $file = __DIR__ . '/../.env.test';
 if (!file_exists($file)) {
     die('Le fichier .env.test est introuvable ici : ' . $file);
