@@ -6,7 +6,7 @@ namespace App\Model;
  * Fichier contenant notre classe Preference qui étend la classe BaseModel.
  * Cette classe représente une préférence d'un utilisateur pour une voiture.
  */
-class Preference extends BaseModel
+class PreferenceModel extends BaseModel
 {
     private ?string $idPreference = null; // Identifiant des preferences. En string car l'id en MongoDb est un ObjectId
     private bool $label; // Label de la préférence.
