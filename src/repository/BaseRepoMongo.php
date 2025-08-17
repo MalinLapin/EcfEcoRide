@@ -2,27 +2,44 @@
 // src/repository/MongoBaseRepo.php
 namespace App\repository;
 
+use MongoDB\Collection;
 use App\config\Database;
 use App\Model\BaseModel;
-use MongoDB\Collection; // En base de données MongoDb, on utilise la classe Collection (fournie par le driver MongoDb de PHP) pour interagir avec les collections de documents.
-use MongoDB\BSON\ObjectId; // Nous avons besoin de la classe ObjectId pour manipuler les identifiants des documents MongoDb.
-use MongoDB\BSON\UTCDateTime;// Nous avons besoin de la classe UTCDateTime pour manipuler les dates au format MongoDb.
+use MongoDB\BSON\ObjectId;
+use MongoDB\BSON\UTCDateTime;
+use MongoDB\Model\BSONDocument;
+use MongoDB\Database as MongoDatabase;
+use MongoDB\Driver\Exception\BulkWriteException;
 
-/**
- * Classe de base pour les repositories des models non-relationnel.
- */
 abstract class BaseRepoMongo
 {
-    //Comme pour BaseRepoSql, on utilise une propriété pour lma table (ici en MongoDb, on parle de collection).
-    //Il nous faut aussi une propriété pour la classe du modèle associé.
+    // Nom de collection défini dans les sous-classes
+    protected string $collectionName;
+
+    // Nom de la classe du modèle, utilisé dans les sous-classes
+    protected ?string $className = null;
+
+    // Collection MongoDB où les opérations seront effectuées
     protected Collection $collection;
-    protected string $className ;
 
-    public function __construct(string $collectionName)
+    public function __construct(?MongoDatabase $db = null, ?Collection $collection = null)
     {
-        $this->collection = Database::getInstanceMongo()->selectCollection($collectionName);
+        // Si une collection est passée, on l'utilise directement
+        // Sinon, on utilise la collection définie par $this->collectionName
+        if ($collection && $collection instanceof Collection)
+        {
+            if ($collection instanceof Collection) 
+            {
+                $this->collection = $collection;
+                return;
+            }
+            // Si $db est passé, on l'utilise pour sélectionner la collection
+            $db = $db ?? Database::getInstanceMongo();
+            // Vérifie que la collection est définie
+            $this->collection = $db->selectCollection($this->collectionName);
+        }
     }
-
+    
     /**
      * Crée une nouvelle entrée dans la collection à partir d'un modèle.
      * @param object|array $model Le modèle à insérer dans la collection.
@@ -31,11 +48,10 @@ abstract class BaseRepoMongo
      */
     public function create(object|array $model): string
     {
-        // On convertie l'objet ou le tableau en document MongoDb.
         $doc = $this->toDocument($model);
-
+        
         $result = $this->collection->insertOne($doc);
-        return $result->getInsertedId();
+        return (string) $result->getInsertedId();
     }
 
     /**
@@ -51,6 +67,11 @@ abstract class BaseRepoMongo
         // Si on reçoit un objet, on extrait ses propriétés en array
         $data = is_array($model) ? $model : $this->extractData($model);
 
+        // Ajouter created_at si absent
+        if (!isset($data['created_at'])) {
+            $data['created_at'] = new \DateTimeImmutable();
+        }
+
         // On convertit les propriétés DateTime en UTCDateTime ainsi que les enums pour MongoDB.
         foreach ($data as $k => $v) {
             if ($v instanceof \DateTimeInterface) {
@@ -59,8 +80,9 @@ abstract class BaseRepoMongo
                 $data[$k] = $v->value;
             }
         }
+        
         return $data;
-    }
+}
 
     /**
      * UPDATE: met à jour un document existant par son identifiant.
@@ -73,8 +95,9 @@ abstract class BaseRepoMongo
         $filter = $this->idFilter($id);
         $doc = $this->toDocument($model);
 
-        // On retire l'ID du document
-        unset($doc['_id']);
+        // On retire l'ID du document + le created_at
+        unset($doc['id']);
+        unset($doc['created_at']);
 
         $result = $this->collection->updateOne($filter, ['$set' => $doc]);
         return $result->getModifiedCount() > 0;
@@ -84,7 +107,7 @@ abstract class BaseRepoMongo
      * Construit le filtre de recherche pour un id donné.
      * - Si $id est une string au format ObjectId, on convertit en ObjectId.
      * @param string $id
-     * @return array Filtre MongoDB, typiquement ['_id' => new ObjectId(...)]
+     * @return array Filtre MongoDB, typiquement ['id_' => new ObjectId(...)]
      */
     protected function idFilter(string $id): array
     {
@@ -141,24 +164,32 @@ abstract class BaseRepoMongo
      * @param array $doc
      * @return object
      */
-    protected function toModel(array $doc): object
-    {
-        
+    protected function toModel(array|BSONDocument $doc): object
+    {        
+       // Normalisation BSONDocument -> array
+        if ($doc instanceof BSONDocument) {
+            $doc = $doc->getArrayCopy();
+        }
+
         foreach ($doc as $k => $v) {
             if ($v instanceof UTCDateTime) {
-                // Conversion en dateTime
-                $doc[$k] = $v->toDateTime();
-            }
-            if ($v instanceof ObjectId) {
-                // On renvoie l’id en string pour simplicité côté applis
-                $doc[$k] = (string)$v;
+                $doc[$k] = \DateTimeImmutable::createFromInterface($v->toDateTime());
+            } elseif ($v instanceof ObjectId) {
+                $doc[$k] = (string) $v;
             }
         }
-        if ($this->className) {
+
+        if (isset($doc['_id']))
+        {
+            $doc['id'] = $doc['_id'];
+            unset($doc['_id']);
+        }
+
+        if ($this->className)
+        {
             return new $this->className($doc);
         }
-        // Si aucun modèle déclaré, renvoie un objet générique
-        return (object)$doc;
+        return (object) $doc;
     }
 
     // Idem que pour BaseRepoSql, on utilise la réflexion pour extraire les données d'un modèle.
