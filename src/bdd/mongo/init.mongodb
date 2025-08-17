@@ -2,18 +2,18 @@
 use('EcoRideMongo');
 
 // Création de la collection pour l'entité Review
-db.createCollection("Review", {
+db.createCollection("review", {
     validator: {
         $jsonSchema: {
             bsonType: "object",
-            required: ["idTarget", "idRedactor", "status", "rating", "comment", "createdAt"],
+            required: ["id_target", "id_redactor", "status_review", "created_at"],
             properties: {
-                idTarget: { bsonType: "int" },
-                idRedactor: { bsonType: "int" },
-                status: { bsonType: "string", enum: ["pending", "approved", "rejected"] },
+                id_target: { bsonType: "int" },
+                id_redactor: { bsonType: "int" },
+                status_review: { bsonType: "string", enum: ["pending", "approved", "rejected"] },
                 rating: { bsonType: "int", minimum: 1, maximum: 5 },
                 comment: { bsonType: "string", maxLength: 1000 },
-                createdAt: { bsonType: "date" }
+                created_at: { bsonType: "date" }
             },
             additionalProperties: true
         }
@@ -23,15 +23,15 @@ db.createCollection("Review", {
 });
 
 // Création de la collection pour l'entité Preference
-db.createCollection("Preference", {
+db.createCollection("preference", {
     validator: {
         $jsonSchema: {
             bsonType: "object",
-            required: ["idCar", "label", "isAccepted"],
+            required: ["id_car", "label", "is_accepted"],
             properties: {
-                idCar: { bsonType: "int" },
+                id_car: { bsonType: "int" },
                 label: { bsonType: "string" },
-                isAccepted: { bsonType: "bool" }
+                is_accepted: { bsonType: "bool" }
             },
             additionalProperties: true
         }

@@ -4,15 +4,16 @@ namespace App\repository;
 
 use App\Model\ReviewModel;
 
-class ReviewRepository extends BaseRepoMongo
+class ReviewRepo extends BaseRepoMongo
 {
-    protected string $collectionName = 'reviews';
-    protected string $className = ReviewModel::class;
-    
+    protected string $collectionName = 'review';
+    protected ?string $className = ReviewModel::class;
+
+
     // Recherche un avis par son destinataire
     public function findByTarget(int $idTarget): array
     {
-        $cursor = $this->collection->find(['idTarget' => $idTarget]);
+        $cursor = $this->collection->find(['id_target' => $idTarget]);
         $out = [];
         foreach ($cursor as $doc) {
             $out[] = $this->toModel($doc);
@@ -23,7 +24,7 @@ class ReviewRepository extends BaseRepoMongo
     // Recherche un avis par son rédacteur
     public function findByRedactor(int $idRedactor): array
     {
-        $cursor = $this->collection->find(['idRedactor' => $idRedactor]);
+        $cursor = $this->collection->find(['id_redactor' => $idRedactor]);
         $out = [];
         foreach ($cursor as $doc) {
             $out[] = $this->toModel($doc);
@@ -34,7 +35,7 @@ class ReviewRepository extends BaseRepoMongo
     // Recherche un avis par son statut
     public function findByStatus(string $status): array
     {
-        $cursor = $this->collection->find(['status' => $status]);
+        $cursor = $this->collection->find(['status_review' => $status]);
         $out = []; 
         foreach ($cursor as $doc) {
             $out[] = $this->toModel($doc);

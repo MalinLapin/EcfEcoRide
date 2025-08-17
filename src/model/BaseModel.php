@@ -15,7 +15,7 @@ abstract class BaseModel
     private array $dateFields = ['created_at', 'updated_at', 'departure_date', 'arrival_date', 'first_registration'];
 
     //Champs de type enum pour hydratation
-    private array $enumFields = ['role', 'status', 'statusReview'];
+    private array $enumFields = ['role', 'status', 'status_review'];
 
     //Champs de type int pour hydratation
     private array $intFields =['id_brand', 'id_car', 'id_user', 'id_preference', 'id_review', 'id_redactor', 'id_target', 'id_ridesharing', 'available_seats', 'price_per_seat', 'id_driver', 'credit_balance'];
@@ -79,7 +79,7 @@ abstract class BaseModel
                         {
                             'role' => Role::from($value),
                             'status' => Status::from($value),
-                            'statusReview' => StatusReview::from($value),
+                            'status_review' => StatusReview::from($value),
                         };
                     }
                 }   

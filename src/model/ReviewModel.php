@@ -26,7 +26,7 @@ class ReviewModel extends BaseModel
     private string $comment; // Contenu de la revue.
     private int $rating; // Note attribuée dans la revue, généralement entre 1 et 5.
     private DateTimeImmutable $createdAt; // Date de création de la revue.
-    private StatusReview $status; // Statut de la revue, défini par l'énumération StatusReview.
+    private StatusReview $statusReview; // Statut de la revue, défini par l'énumération StatusReview.
     private int $idRedactor; // Identifiant de l'utilisateur qui a créé la revue.
     private int $idTarget; // Identifiant de l'utilisateur qui est la cible de la revue.
 
@@ -64,7 +64,7 @@ class ReviewModel extends BaseModel
     /**
      * Set the value of content
      */
-    public function setContent(string $comment): self
+    public function setComment(string $comment): self
     {
         $this->comment = $comment;
 
@@ -110,17 +110,17 @@ class ReviewModel extends BaseModel
     /**
      * Get the value of status
      */
-    public function getStatus(): StatusReview
+    public function getStatusReview(): StatusReview
     {
-        return $this->status;
+        return $this->statusReview;
     }
 
     /**
      * Set the value of status
      */
-    public function setStatus(StatusReview $status): self
+    public function setStatusReview(StatusReview $statusReview): self
     {
-        $this->status = $status;
+        $this->statusReview = $statusReview;
 
         return $this;
     }

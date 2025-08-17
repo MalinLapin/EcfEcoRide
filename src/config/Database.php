@@ -51,7 +51,6 @@ class Database
     public static function getInstanceMongo():MongoDatabase
     {
         if (self::$db === null) {
-            // Assure-toi d'avoir appelé Config::load(...) au bootstrap
             $uri = Config::get('MONGO_URL');
             $dbName = Config::get('MONGO_DB');
             try{
