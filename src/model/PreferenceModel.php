@@ -9,7 +9,7 @@ namespace App\Model;
 class PreferenceModel extends BaseModel
 {
     private ?string $idPreference = null; // Identifiant des preferences. En string car l'id en MongoDb est un ObjectId
-    private bool $label; // Label de la préférence.
+    private string $label; // Label de la préférence.
     private bool $isAccepted; // Indique si la préférence est acceptée ou non.    
     private int $idCar; // Identifiant de la voiture associée à cette préférence.
 
@@ -58,7 +58,7 @@ class PreferenceModel extends BaseModel
     /**
      * Get the value of isAccepted
      */
-    public function isIsAccepted(): bool
+    public function getIsAccepted(): bool
     {
         return $this->isAccepted;
     }
