@@ -7,7 +7,7 @@ use App\Model\ReviewModel;
 use App\Model\StatusReview;
 use MongoDB\Driver\Exception\BulkWriteException;
 
-final class ReviewRepoTest extends TestCase
+class ReviewRepoTest extends TestCase
 {
     /**
      * Initialisation de la base de données et de la collection review
