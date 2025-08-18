@@ -13,9 +13,8 @@ class Config
      */
 
 
-    public static function load($path = __DIR__ . '../', $envFile ='.env'):void
+    public static function load($path = __DIR__ . '/../', $envFile ='.env'):void
     {
-        //on vérifie si le fichier .env avant de tenter de le charger.
         if(file_exists($path . $envFile))
         {
             $dotenv = Dotenv::createImmutable($path, $envFile);

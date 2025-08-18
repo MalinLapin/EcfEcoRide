@@ -3,13 +3,19 @@
 namespace App\config;
 use PDO;
 use PDOException;
+use MongoDB\Client;
+use MongoDB\Database as MongoDatabase;
+use Exception;
 
 // Fichier contenant notre classe de configuration de la base de données. C'est lui qui va gérer la connexion à la base de données.
 class Database
 {
     
     // Propriété static privée pour stocker l'instance unique de PDO.
-    private static ?PDO $instance = null;
+    private static ?PDO $instancePDO = null;
+
+    // Propriété static privée pour stocker l'instance unique de MongoDatabase.
+    private static ?MongoDatabase $db = null;
 
     //Le constructeur est private pour empècher la création d'objet via new database.
     private function __construct(){}
@@ -17,11 +23,11 @@ class Database
     //La méthode de clonnage est privé pour évite de clonner l'instance.
     private function __clone(){}
 
-    //Permet le point d'accès unique à la bdd
-    public static function getInstance():PDO
+    //Permet le point d'accès unique à la bdd relationnel (Patern Singleton)
+    public static function getInstancePDO():PDO
     {
         // Si l'instance n'a pas été créée
-        if(self::$instance === null)
+        if(self::$instancePDO === null)
         {
             // On construit le DSN (Data Source Name) avec les infos du fichier .env
             $dsn = sprintf("mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4", Config::get('DB_HOST'), Config::get('DB_PORT', '3306'), Config::get('DB_NAME'));
@@ -33,12 +39,36 @@ class Database
 
             try{
                 // On crée l'instance de PDO et on la stock
-                self::$instance = new PDO($dsn, Config::get('DB_USER'), Config::get('DB_PASSWORD'), $options);
+                self::$instancePDO = new PDO($dsn, Config::get('DB_USER'), Config::get('DB_PASSWORD'), $options);
             }catch(PDOException $e){
-                die("Erreur de connexion à la base de données : " . $e->getMessage());
+                die("Erreur de connexion à la base de données Sql : " . $e->getMessage());
             }
         }
-        return self::$instance;
+        return self::$instancePDO;
+    }
+
+    //Permet le point d'accès unique à la bdd non relationnel
+    public static function getInstanceMongo():MongoDatabase
+    {
+        if (self::$db === null) {
+            $uri = Config::get('MONGO_URL');
+            $dbName = Config::get('MONGO_DB');
+            try{
+                $client = new Client($uri, [
+                'typeMap' => [
+                    'root' => 'array',
+                    'document' => 'array',
+                    'array' => 'array',
+                ],
+            ]);
+            self::$db = $client->selectDatabase($dbName);
+            }catch(Exception $e){
+                die("Erreur de connexion à la base de donnée NoSql : ". $e->getMessage());
+            }
+            
+        }
+        return self::$db;
+    
     }
 
 }

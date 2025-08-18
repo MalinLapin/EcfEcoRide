@@ -6,9 +6,9 @@ namespace App\Model;
  * Fichier contenant notre classe Preference qui étend la classe BaseModel.
  * Cette classe représente une préférence d'un utilisateur pour une voiture.
  */
-class Preference extends BaseModel
+class PreferenceModel extends BaseModel
 {
-    private ?int $idPreference = null; // Identifiant de la préférence.
+    private ?string $idPreference = null; // Identifiant des preferences. En string car l'id en MongoDb est un ObjectId
     private string $label; // Label de la préférence.
     private bool $isAccepted; // Indique si la préférence est acceptée ou non.    
     private int $idCar; // Identifiant de la voiture associée à cette préférence.
@@ -22,7 +22,7 @@ class Preference extends BaseModel
     /**
      * Get the value of idPreference
      */
-    public function getIdPreference(): int
+    public function getIdPreference(): string
     {
         return $this->idPreference;
     }
@@ -30,7 +30,7 @@ class Preference extends BaseModel
     /**
      * Set the value of idPreference
      */
-    public function setIdPreference(int $idPreference): self
+    public function setIdPreference(string $idPreference): self
     {
         $this->idPreference = $idPreference;
 
@@ -58,7 +58,7 @@ class Preference extends BaseModel
     /**
      * Get the value of isAccepted
      */
-    public function isIsAccepted(): bool
+    public function getIsAccepted(): bool
     {
         return $this->isAccepted;
     }

@@ -5,7 +5,7 @@ namespace App\repository;
 use App\Model\RidesharingModel;
 use Exception;
 
-class RidesharingRepo extends BaseRepo
+class RidesharingRepo extends BaseRepoSql
 {
     protected string $tableName = 'ridesharing';
     protected string $className = RidesharingModel::class;
