@@ -24,20 +24,46 @@ abstract class BaseRepoMongo
 
     public function __construct(?MongoDatabase $db = null, ?Collection $collection = null)
     {
-        // Si une collection est passée, on l'utilise directement
-        // Sinon, on utilise la collection définie par $this->collectionName
-        if ($collection && $collection instanceof Collection)
-        {
-            if ($collection instanceof Collection) 
-            {
-                $this->collection = $collection;
-                return;
-            }
-            // Si $db est passé, on l'utilise pour sélectionner la collection
-            $db = $db ?? Database::getInstanceMongo();
-            // Vérifie que la collection est définie
-            $this->collection = $db->selectCollection($this->collectionName);
+        // Si la collection n'est pas définie, on utilise la base de données
+        // sinon on utilise la collection passée en paramètre.
+        if ($collection === null && $db === null) {
+            $db = Database::getInstanceMongo();
         }
+        // Vérifie que le nom de la collection est défini
+        // et que la collection est soit passée en paramètre, soit créée à partir de la base de données.
+        if (!isset($this->collectionName) || $this->collectionName === '') {
+            throw new \LogicException('collectionName non défini dans ' . static::class);
+        }
+        // Si la collection est déjà passée en paramètre, on l'utilise directement.
+        // Sinon, on la crée à partir de la base de données.
+        if (!isset($this->collectionName) || $this->collectionName === '') {
+            throw new \LogicException('collectionName non défini dans ' . static::class);
+        }
+
+        // Si la collection est passée en paramètre, on l'utilise.
+        // Sinon, on la crée à partir de la base de données.
+        if ($collection === null) {
+            $collection = $db->selectCollection($this->collectionName);
+        }
+        // Vérifie que la collection est bien une instance de MongoDB\Collection
+        // et l'assigne à la propriété $collection.
+        if (!$collection instanceof Collection) {
+            throw new \RuntimeException('La collection doit être une instance de MongoDB\Collection');
+        }
+        // Si la collection est une instance de Collection, on l'assigne à la propriété $collection.
+        // Sinon, on lève une exception.
+        // Cela permet de s'assurer que la collection est bien initialisée avant de l'utiliser.
+        if ($collection instanceof Collection) {
+            $this->collection = $collection;
+            return;
+        }
+
+        $db = $db ?? Database::getInstanceMongo(); // doit retourner MongoDB\Database
+        if (!$db instanceof MongoDatabase) {
+            throw new \RuntimeException('Database::getInstanceMongo() doit retourner MongoDB\Database');
+        }
+
+        $this->collection = $db->selectCollection($this->collectionName);
     }
     
     /**
