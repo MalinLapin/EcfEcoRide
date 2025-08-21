@@ -4,6 +4,15 @@ namespace App\Model;
 
 use DateTimeImmutable;
 
+
+enum EnergyType: string
+{
+        case electric = 'electric';
+        case hybrid = 'hybrid';
+        case gasoline = 'gasoline';
+        case diesel = 'diesel';
+        case gpl = 'gpl';
+}
 // Fichier contenant notre classe CarModel qui étend la classe BaseModel.
 class CarModel extends BaseModel
 {
@@ -11,7 +20,7 @@ class CarModel extends BaseModel
     private string $model; // Modèle de la voiture.
     private string $registrationNumber; // Numéro d'immatriculation de la voiture.
     private DateTimeImmutable $firstRegistration; // Date de première immatriculation.
-    private string $energyType; // Type d'énergie (électrique, essence, diesel).
+    private EnergyType $energyType; // Type d'énergie (électrique, essence, diesel).
     private string $color; // Couleur de la voiture.
     private int $idBrand; // Identifiant de la marque associée à la voiture.
     private int $idUser; // Identifiant de l'utilisateur propriétaire de la voiture.   
@@ -96,7 +105,7 @@ class CarModel extends BaseModel
     /**
      * Get the value of energyType
      */
-    public function getEnergyType(): string
+    public function getEnergyType(): EnergyType
     {
         return $this->energyType;
     }
@@ -104,7 +113,7 @@ class CarModel extends BaseModel
     /**
      * Set the value of energyType
      */
-    public function setEnergyType(string $energyType): self
+    public function setEnergyType(EnergyType $energyType): self
     {
         $this->energyType = $energyType;
 
