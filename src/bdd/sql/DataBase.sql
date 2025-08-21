@@ -22,21 +22,27 @@ CREATE TABLE user (
     credit_balance INT,
     photo VARCHAR(255),
     grade DECIMAL(2, 1),
-    role VARCHAR(20) NOT NULL DEFAULT 'user',
+    role ENUM('user', 'employe', 'admin') NOT NULL DEFAULT 'user',
     is_active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE car (
     id_car INT PRIMARY KEY AUTO_INCREMENT,
-    model VARCHAR(20),
-    registration_number VARCHAR(20) NOT NULL,
-    first_registration DATETIME NOT NULL,
-    energy_type VARCHAR(20) NOT NULL,
+    model VARCHAR(20) NOT NUll,
+    registration_number VARCHAR(20) NOT NULL UNIQUE,
+    first_registration DATE NOT NULL,
+    energy_type ENUM(
+        'electric',
+        'hybrid',
+        'escence',
+        'diesel',
+        'gpl'
+    ) NOT NULL,
     color VARCHAR(20) NOT NULL,
     id_brand INT NOT NULL,
     id_user INT NOT NULL,
     FOREIGN KEY (id_brand) REFERENCES brand (id_brand),
-    FOREIGN KEY (id_user) REFERENCES user (id_user)
+    FOREIGN KEY (id_user) REFERENCES user (id_user) ON DELETE CASCADE
 );
 
 CREATE TABLE ridesharing (
@@ -47,7 +53,10 @@ CREATE TABLE ridesharing (
     arrival_city VARCHAR(50) NOT NULL,
     arrival_address VARCHAR(255),
     arrival_date DATETIME,
-    available_seats INT NOT NULL,
+    available_seats INT NOT NULL CHECK (
+        available_seats BEETWEEN 1
+        AND 6
+    ), --On limite le nombre de place disponible à 6
     price_per_seat INT NOT NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'pending',
     created_at DATETIME NOT NULL,
@@ -68,6 +77,6 @@ CREATE TABLE participate ( --Table d'association entre les utilisateurs et les t
         id_participant,
         id_ridesharing
     ), -- Assure qu'un utilisateur ne peut pas participer deux fois au même trajet.
-    FOREIGN KEY (id_participant) REFERENCES user (id_user),
+    FOREIGN KEY (id_participant) REFERENCES user (id_user) ON DELETE CASCADE,
     FOREIGN KEY (id_ridesharing) REFERENCES ridesharing (id_ridesharing)
 );
