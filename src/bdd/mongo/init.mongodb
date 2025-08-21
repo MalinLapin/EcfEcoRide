@@ -10,10 +10,13 @@ db.createCollection("review", {
             properties: {
                 id_target: { bsonType: "int" },
                 id_redactor: { bsonType: "int" },
-                status_review: { bsonType: "string", enum: ["pending", "approved", "rejected"] },
+                status_review: { bsonType: "string", enum: ["pending", "approved", "rejected"], default: "pending" },
                 rating: { bsonType: "int", minimum: 1, maximum: 5 },
                 comment: { bsonType: "string", maxLength: 1000 },
-                created_at: { bsonType: "date" }
+                created_at: { bsonType: "date" },
+                reviewed_by: { bsonType: "int" }, // Id de l'employer qui a validé ou rejeté la review
+                reviewed_at: { bsonType: "date" }, // Date de la validation ou du rejet
+                reason: { bsonType: ["string", "null"], maxLength: 500 } // Raison du rejet, peut être null si la review est approuvée
             },
             additionalProperties: true
         }
