@@ -12,7 +12,6 @@ class Config
      * @param string $envFile Nom du fichier d'environnement à charger
      */
 
-
     public static function load($path = __DIR__ . '/../', $envFile ='.env'):void
     {
         if(file_exists($path . $envFile))
@@ -22,7 +21,6 @@ class Config
             // DEBUG : liste toutes les énoncées chargées !
         }
     }
-
 
     /**
      * Récupère une variable d'environnement par sa clé

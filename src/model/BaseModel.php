@@ -15,7 +15,7 @@ abstract class BaseModel
     private array $dateFields = ['created_at', 'updated_at', 'departure_date', 'arrival_date', 'first_registration'];
 
     //Champs de type enum pour hydratation
-    private array $enumFields = ['role', 'status', 'status_review'];
+    private array $enumFields = ['role', 'status', 'status_review', 'energy_type'];
 
     //Champs de type int pour hydratation
     private array $intFields =['id_brand', 'id_car', 'id_user', 'id_preference', 'id_review', 'id_redactor', 'id_target', 'id_ridesharing', 'available_seats', 'price_per_seat', 'id_driver', 'credit_balance'];
@@ -100,7 +100,8 @@ abstract class BaseModel
                 if (in_array($key, $this->boolFields)) 
                 {
                     // Gère les formats "1"/"0", true/false, int, string
-                    $value = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                    $tmp = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                    $value = $tmp === null ? (bool)$value : $tmp;
                 }
                 
                 // On renvoie la méthode set correspondante avec sa valeur.                

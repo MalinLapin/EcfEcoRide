@@ -9,8 +9,7 @@ use Exception;
 
 // Fichier contenant notre classe de configuration de la base de données. C'est lui qui va gérer la connexion à la base de données.
 class Database
-{
-    
+{    
     // Propriété static privée pour stocker l'instance unique de PDO.
     private static ?PDO $instancePDO = null;
 
@@ -36,7 +35,6 @@ class Database
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Lance des exeptions en cas d'erreur SQL
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC// Récupere les résultats sous forme de tableau associatif
             ];
-
             try{
                 // On crée l'instance de PDO et on la stock
                 self::$instancePDO = new PDO($dsn, Config::get('DB_USER'), Config::get('DB_PASSWORD'), $options);
@@ -64,11 +62,9 @@ class Database
             self::$db = $client->selectDatabase($dbName);
             }catch(Exception $e){
                 die("Erreur de connexion à la base de donnée NoSql : ". $e->getMessage());
-            }
-            
+            }            
         }
-        return self::$db;
-    
+        return self::$db;    
     }
 
 }
