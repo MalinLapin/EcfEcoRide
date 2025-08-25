@@ -70,6 +70,7 @@ CREATE TABLE participate ( --Table d'association entre les utilisateurs et les t
     id_participate INT PRIMARY KEY AUTO_INCREMENT, -- Identifiant unique de la participation pour un simplification dans le code.
     id_participant INT NOT NULL,
     id_ridesharing INT NOT NULL,
+    confirmed BOOLEAN NOT NULL DEFAULT FALSE, -- Indique si la participation à subi la double confirmation.
     nb_seats INT NOT NULL DEFAULT 1,
     created_at DATETIME NOT NULL,
     completed_at DATETIME DEFAULT NULL,

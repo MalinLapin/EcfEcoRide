@@ -56,15 +56,19 @@ CREATE TABLE ridesharing (
     FOREIGN KEY (id_car) REFERENCES car (id_car)
 );
 
-CREATE TABLE participate (
+CREATE TABLE participate ( --Table d'association entre les utilisateurs et les trajets de covoiturage
+    id_participate INT PRIMARY KEY AUTO_INCREMENT, -- Identifiant unique de la participation pour un simplification dans le code.
     id_participant INT NOT NULL,
     id_ridesharing INT NOT NULL,
-    nb_seats INT NOT NULL,
-    PRIMARY KEY (
+    confirmed BOOLEAN NOT NULL DEFAULT FALSE,
+    nb_seats INT NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL,
+    completed_at DATETIME DEFAULT NULL,
+    UNIQUE KEY user_ride (
         id_participant,
         id_ridesharing
-    ),
-    FOREIGN KEY (id_participant) REFERENCES user (id_user),
+    ), -- Assure qu'un utilisateur ne peut pas participer deux fois au même trajet.
+    FOREIGN KEY (id_participant) REFERENCES user (id_user) ON DELETE CASCADE,
     FOREIGN KEY (id_ridesharing) REFERENCES ridesharing (id_ridesharing)
 );
 
@@ -336,15 +340,21 @@ VALUES (
 INSERT INTO
     participate (
         id_participant,
-        id_ridesharing
+        id_ridesharing,
+        nb_seats,
+        created_at,
+        completed_at
     )
-VALUES (2, 1),
-    (3, 2),
-    (2, 3),
-    (3, 4),
-    (4, 5),
-    (2, 6),
-    (4, 6);
+VALUES (2, 1, 1, NOW(), NULL),
+    (4, 1, 1, NOW(), NULL),
+    (5, 4, 1, NOW(), NULL),
+    (
+        3,
+        6,
+        1,
+        NOW(),
+        '2023-10-02 11:00:00'
+    );
 
 UPDATE ridesharing
 SET
