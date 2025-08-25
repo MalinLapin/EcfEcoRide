@@ -12,6 +12,7 @@ class ParticipateModel extends BaseModel
     private int $nbSeats = 1; // Nombre de places réservées, initialisé à 1.
     private DateTimeImmutable $createdAt; // Date de création de la participation.
     private ?DateTimeImmutable $completedAt = null; // Date de complétion de la participation, initialisé à null.
+    private bool $confirmed = false; // Indique si la participation a été confirmée, initialisé à false.
 
     public function __construct(array $data = [])
     {
@@ -122,6 +123,24 @@ class ParticipateModel extends BaseModel
     public function setCompletedAt(?DateTimeImmutable $completedAt): self
     {
         $this->completedAt = $completedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of confirmed
+     */
+    public function isConfirmed(): bool
+    {
+        return $this->confirmed;
+    }
+
+    /**
+     * Set the value of confirmed
+     */
+    public function setConfirmed(bool $confirmed): self
+    {
+        $this->confirmed = $confirmed;
 
         return $this;
     }
