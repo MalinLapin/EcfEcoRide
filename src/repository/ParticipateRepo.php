@@ -17,7 +17,7 @@ class ParticipateRepo extends BaseRepoSql
      */
     public function confirmParticipation(int $userId, int $rideId): bool
     {
-        $query = "UPDATE {$this->tableName} SET confirmed = TRUE WHERE id_participant = :uid AND id_ridesharing = :rid AND confirmed = 0";
+        $query = "UPDATE {$this->tableName} SET confirmed = TRUE WHERE id_participant = :id_participate AND id_ridesharing = :id_ridesharing AND confirmed = 0";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(':id_participate', $userId);
         $stmt->bindValue(':id_ridesharing', $rideId);
@@ -51,7 +51,7 @@ class ParticipateRepo extends BaseRepoSql
     {
         $sql = "UPDATE ridesharing
                 SET available_seats = available_seats + :nbSeats
-                WHERE id_ridesharing = :id_ridesharing AND available_seats + :nbSeats <= total_seats;"; // On ne peut pas dépasser le nombre total de places.
+                WHERE id_ridesharing = :id_ridesharing ";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
