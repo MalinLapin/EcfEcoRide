@@ -3,9 +3,6 @@
 namespace App\repository;
 use App\model\UserModel;
 
-
-
-
 class UserRepo extends BaseRepoSql
 {
     protected string $tableName = 'user';
