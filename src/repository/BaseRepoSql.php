@@ -51,7 +51,7 @@ abstract class BaseRepoSql
 
         }
         $stmt->execute();
-        return $this->pdo->lastInsertId();
+        return (int)$this->pdo->lastInsertId();
     }
 
     /**
