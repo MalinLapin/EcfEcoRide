@@ -56,7 +56,7 @@ CREATE TABLE ridesharing (
     FOREIGN KEY (id_car) REFERENCES car (id_car)
 );
 
-CREATE TABLE participate ( --Table d'association entre les utilisateurs et les trajets de covoiturage
+CREATE TABLE participate ( -- Table d'association entre les utilisateurs et les trajets de covoiturage
     id_participate INT PRIMARY KEY AUTO_INCREMENT, -- Identifiant unique de la participation pour un simplification dans le code.
     id_participant INT NOT NULL,
     id_ridesharing INT NOT NULL,
