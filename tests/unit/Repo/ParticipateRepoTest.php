@@ -1,10 +1,10 @@
 <?php
 
-use App\Model\ParticipateModel;
+use App\model\ParticipateModel;
 use App\repository\ParticipateRepo;
 use App\repository\BaseRepoSql;
-use App\Model\UserModel;
-use App\Model\RidesharingModel;
+use App\model\UserModel;
+use App\model\RidesharingModel;
 use PHPUnit\Framework\TestCase;
 
 class ParticipateRepoTest extends TestCase

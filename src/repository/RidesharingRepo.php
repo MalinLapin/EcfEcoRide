@@ -2,7 +2,7 @@
 
 namespace App\repository;
 
-use App\Model\RidesharingModel;
+use App\model\RidesharingModel;
 use Exception;
 
 class RidesharingRepo extends BaseRepoSql

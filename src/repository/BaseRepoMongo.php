@@ -4,7 +4,7 @@ namespace App\repository;
 
 use MongoDB\Collection;
 use App\config\Database;
-use App\Model\BaseModel;
+use App\model\BaseModel;
 use MongoDB\BSON\ObjectId;
 use MongoDB\BSON\UTCDateTime;
 use MongoDB\Model\BSONDocument;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\model;
 
 /**
  * Fichier contenant notre classe Preference qui étend la classe BaseModel.

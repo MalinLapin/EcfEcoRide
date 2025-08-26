@@ -1,6 +1,6 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use App\Model\UserModel;
+use App\model\UserModel;
 
 class UserModelTest extends TestCase
 {

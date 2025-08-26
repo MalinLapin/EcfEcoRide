@@ -3,8 +3,8 @@
 use PHPUnit\Framework\TestCase;
 use App\config\Database;
 use App\repository\ReviewRepo;
-use App\Model\ReviewModel;
-use App\Model\StatusReview;
+use App\model\ReviewModel;
+use App\model\StatusReview;
 use MongoDB\Driver\Exception\BulkWriteException;
 
 class ReviewRepoTest extends TestCase

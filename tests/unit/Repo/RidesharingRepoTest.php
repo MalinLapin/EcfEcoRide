@@ -1,7 +1,7 @@
 <?php
 
-use App\Model\RidesharingModel;
-use App\Model\Status;
+use App\model\RidesharingModel;
+use App\model\Status;
 use App\repository\RidesharingRepo;
 use PHPunit\Framework\TestCase;
 

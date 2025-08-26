@@ -1,8 +1,8 @@
 <?php
 
-use App\Model\Role;
+use App\model\Role;
 use App\repository\UserRepo;
-use App\Model\UserModel;
+use App\model\UserModel;
 use PHPUnit\Framework\TestCase;
 
 class UserRepoTest extends TestCase

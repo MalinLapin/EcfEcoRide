@@ -3,7 +3,7 @@
 namespace App\repository;
 
 use App\config\Database;
-use App\Model\BaseModel;
+use App\model\BaseModel;
 use BackedEnum;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use App\Model\ParticipateModel;
+use App\model\ParticipateModel;
 
 class ParticipateModelTest extends TestCase
 {

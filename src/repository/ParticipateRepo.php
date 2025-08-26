@@ -2,8 +2,8 @@
 
 namespace App\repository;
 
-use App\Model\ParticipateModel;
-use App\Model\UserModel;
+use App\model\ParticipateModel;
+use App\model\UserModel;
 
 class ParticipateRepo extends BaseRepoSql
 {

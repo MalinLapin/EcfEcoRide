@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use App\config\Database;
 use App\repository\PreferenceRepo;
-use App\Model\PreferenceModel;
+use App\model\PreferenceModel;
 use MongoDB\Driver\Exception\BulkWriteException;
 
 class PreferenceRepoTest extends TestCase

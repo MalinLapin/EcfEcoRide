@@ -1,6 +1,6 @@
 <?php
 
-use App\Model\RideSharingModel;
+use App\model\RideSharingModel;
 use PHPUnit\Framework\TestCase;
 
 
