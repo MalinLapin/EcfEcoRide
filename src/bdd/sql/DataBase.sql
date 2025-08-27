@@ -54,11 +54,15 @@ CREATE TABLE ridesharing (
     arrival_address VARCHAR(255),
     arrival_date DATETIME,
     available_seats INT NOT NULL CHECK (
-        available_seats BEETWEEN 1
-        AND 6
-    ), --On limite le nombre de place disponible à 6
+        available_seats BETWEEN 1 AND 6
+    ),
     price_per_seat INT NOT NULL,
-    status VARCHAR(20) NOT NULL DEFAULT 'pending',
+    status ENUM(
+        'pending',
+        'ongoing',
+        'completed',
+        'canceled'
+    ) DEFAULT 'pending',
     created_at DATETIME NOT NULL,
     id_driver INT NOT NULL,
     id_car INT NOT NULL,
@@ -66,18 +70,18 @@ CREATE TABLE ridesharing (
     FOREIGN KEY (id_car) REFERENCES car (id_car)
 );
 
-CREATE TABLE participate ( --Table d'association entre les utilisateurs et les trajets de covoiturage
-    id_participate INT PRIMARY KEY AUTO_INCREMENT, -- Identifiant unique de la participation pour un simplification dans le code.
+CREATE TABLE participate (
+    id_participate INT PRIMARY KEY AUTO_INCREMENT,
     id_participant INT NOT NULL,
     id_ridesharing INT NOT NULL,
-    confirmed BOOLEAN NOT NULL DEFAULT FALSE, -- Indique si la participation à subi la double confirmation.
+    confirmed BOOLEAN NOT NULL DEFAULT FALSE,
     nb_seats INT NOT NULL DEFAULT 1,
     created_at DATETIME NOT NULL,
     completed_at DATETIME DEFAULT NULL,
     UNIQUE KEY user_ride (
         id_participant,
         id_ridesharing
-    ), -- Assure qu'un utilisateur ne peut pas participer deux fois au même trajet.
+    ),
     FOREIGN KEY (id_participant) REFERENCES user (id_user) ON DELETE CASCADE,
     FOREIGN KEY (id_ridesharing) REFERENCES ridesharing (id_ridesharing)
 );
