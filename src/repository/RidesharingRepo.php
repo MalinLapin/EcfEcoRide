@@ -3,6 +3,8 @@
 namespace App\repository;
 
 use App\model\RidesharingModel;
+use App\model\UserModel;
+use App\model\CarModel;
 use Exception;
 
 class RidesharingRepo extends BaseRepoSql
@@ -25,11 +27,11 @@ class RidesharingRepo extends BaseRepoSql
         $currentDateTime = (new \DateTime())->format('Y-m-d H:i:s');
 
         /**
-         * On utilise une jointure pour récupérer les informations de l'utilisateur et la voiture associé au trajet 
+         * On utilise une jointure pour récupérer les informations de l'utilisateur et du trajet 
          * On sélectionne l'ensemble des données du trajet ainsi que l'id, le pseudo, le grade et la photo de l'utilisateur.
-         * Mais aussi les données utiles de la voiture telles que le carburant, le modèle et la couleur.
+         * Mais aussi les données utiles de la voiture telles que le carburant.
          */
-        $query = "SELECT r.*, u.id_user AS user_id, u.pseudo, u.grade, u.photo, c.model, c.energy_type, c.color
+        $query = "SELECT r.*, u.id_user AS user_id, u.pseudo, u.grade, u.photo, c.energy_type
             FROM {$this->tableName} r
             JOIN user u ON r.id_driver = u.id_user
             JOIN car c ON r.id_car = c.id_car
@@ -72,6 +74,70 @@ class RidesharingRepo extends BaseRepoSql
             return $rides;
         }
         return [];
+    }
+
+    /**
+     * Trouve un trajet de covoiturage par son ID avec les détails du conducteur et de la voiture.
+     * 
+     * @param int $id L'identifiant du trajet de covoiturage.
+     * @return RidesharingModel|null Une instance de RidesharingModel avec les détails, ou null si aucun trajet n'est trouvé.
+     * 
+     * Cette méthode utilise une jointure pour récupérer les informations de l'utilisateur (conducteur) et de la voiture associée au trajet.
+     */
+    public function findByIdWithDetails(int $id): ?RidesharingModel
+    {
+        $sql = "SELECT r.*, 
+                u.id_user AS user_idUser, 
+                u.pseudo AS user_pseudo, 
+                u.grade AS user_grade, 
+                u.photo AS user_photo,
+                c.id_car AS car_idCar, 
+                c.energy_type AS car_energyType, 
+                c.model AS car_model, 
+                c.color AS car_color
+            FROM {$this->tableName} r
+            JOIN user u ON r.id_user = u.id_user
+            JOIN car c ON r.id_car = c.id_car
+            WHERE r.id_ridesharing = :id_ridesharing";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(":id_ridesharing", $id, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+
+        if ($result) 
+        {
+            $userData = [];
+            $carData = [];
+            $ridesharingData = [];
+
+            foreach ($result as $key => $value) 
+            {
+                if (str_starts_with($key, 'user_')) {
+                    $userData[substr($key, 5)] = $value; // Enlève "user_"
+                }elseif (str_starts_with($key, 'car_')) {
+                $carData[substr($key, 4)] = $value; // Enlève "car_"
+                }else {
+                $ridesharingData[$key] = $value;
+                }
+            }
+
+            $ridesharing = new RidesharingModel($ridesharingData);
+    
+            // Créer et attacher le driver
+            $driver = new UserModel($userData);
+            $ridesharing->setDriver($driver);
+            
+            // Créer et attacher la car
+            $car = new CarModel($carData);
+            $ridesharing->setCar($car);
+            
+            return $ridesharing;
+        }
+
+        return null; // Retourne null si aucun résultat n'est trouvé
     }
 
     /**
