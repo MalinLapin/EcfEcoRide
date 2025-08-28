@@ -31,8 +31,8 @@ class RidesharingModel extends BaseModel
     private int $pricePerSeat; //Prix par place
     private Status $status = Status::pending; //Est défini par notre énum pour éviter des erreur de typo ou de type.
     private DateTimeImmutable $createdAt; //Date de création du covoiturage
-    private int $idDriver; // Identifiant du conducteur
-    private int $idCar; // Identifiant de la voiture utilisée pour le covoiturage
+    private ?UserModel $driver = null; // Le conducteur du covoiturage
+    private ?CarModel $car = null; // La voiture utilisée pour le covoiturage
 
     public function __construct(array $data = [])
     {
@@ -238,37 +238,37 @@ class RidesharingModel extends BaseModel
     }
 
     /**
-     * Get the value of idDriver
+     * Get the value of driver
      */
-    public function getIdDriver(): int
+    public function getDriver(): ?UserModel
     {
-        return $this->idDriver;
+        return $this->driver;
     }
 
     /**
-     * Set the value of idDriver
+     * Set the value of driver
      */
-    public function setIdDriver(int $idDriver): self
+    public function setDriver(?UserModel $driver): self
     {
-        $this->idDriver = $idDriver;
+        $this->driver = $driver;
 
         return $this;
     }
 
     /**
-     * Get the value of idCar
+     * Get the value of car
      */
-    public function getIdCar(): int
+    public function getCar(): ?CarModel
     {
-        return $this->idCar;
+        return $this->car;
     }
 
     /**
-     * Set the value of idCar
+     * Set the value of car
      */
-    public function setIdCar(int $idCar): self
+    public function setCar(?CarModel $car): self
     {
-        $this->idCar = $idCar;
+        $this->car = $car;
 
         return $this;
     }
