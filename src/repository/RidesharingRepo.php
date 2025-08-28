@@ -13,25 +13,26 @@ class RidesharingRepo extends BaseRepoSql
     protected string $className = RidesharingModel::class;
 
     /**
-     * Récupère les trajets de covoiturage en fonction des paramètres fournis.
+     * Recherche des trajets de covoiturage en fonction de divers paramètres.
      * 
-     * @param array $data Tableau associatif contenant les critères de recherche.
-     * @return array Un tableau d'instances de RidesharingModel correspondant aux critères de recherche, ou un tableau vide si aucun trajet n'est trouvé.
-     * 
-     * Cette méthode construit dynamiquement une requête SQL en fonction des paramètres fournis.
+     * @param array $data Un tableau associatif contenant les paramètres de recherche.
+     * @return RidesharingModel[]|null Un tableau d'instances de RidesharingModel correspondant aux critères de recherche, ou null si aucun trajet n'est trouvé.
      */
-    public function getRidesharingByParams(array $data): array
+    public function getRidesharingByParams(array $data): ?array
     {
         $Sqlparams = [];
-        // On définit la date et l'heure actuelle pour les opérations de comparaison
-        $currentDateTime = (new \DateTime())->format('Y-m-d H:i:s');
 
         /**
          * On utilise une jointure pour récupérer les informations de l'utilisateur et du trajet 
          * On sélectionne l'ensemble des données du trajet ainsi que l'id, le pseudo, le grade et la photo de l'utilisateur.
          * Mais aussi les données utiles de la voiture telles que le carburant.
          */
-        $query = "SELECT r.*, u.id_user AS user_id, u.pseudo, u.grade, u.photo, c.energy_type
+        $query = "SELECT r.*, 
+                        u.id_user AS user_idUser, 
+                        u.pseudo AS user_pseudo, 
+                        u.grade AS user_grade, 
+                        u.photo AS user_photo, 
+                        c.energy_type AS car_energyType
             FROM {$this->tableName} r
             JOIN user u ON r.id_driver = u.id_user
             JOIN car c ON r.id_car = c.id_car
@@ -49,7 +50,7 @@ class RidesharingRepo extends BaseRepoSql
             'status' => ['r.status', '=', 'status'],
             'pseudo_driver' => ['u.pseudo', '=', 'pseudo_driver'],
             'grade_driver' => ['u.grade', '=', 'grade_driver'],
-            'energy_type' => ['c.energy_type', '=', 'energy_type'], // Recherche de voiture avec type d'énergie spécifique (ex: électrique).
+            'energy_type' => ['c.energy_type', '=', 'energy_type'] // Recherche de voiture avec type d'énergie spécifique (ex: électrique).
         ];
 
         // On parcourt les critères pour ajouter les conditions à la requête SQL
@@ -65,15 +66,37 @@ class RidesharingRepo extends BaseRepoSql
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         // Si au moins un trajet est trouvé, on crée une instance du modèle RidesharingModel avec les données récupérées
-        if ($result) {
+        if ($result) 
+        {
             $rides = [];
-            foreach ($result as $row) {
-                $rides[] = RidesharingModel::createAndHydrate($row);
+            foreach ($result as $row) 
+            {
+                // Même logique de séparation que findByIdWithDetails
+                $userData = [];
+                $carData = [];
+                $ridesharingData = [];
+                
+                foreach ($row as $key => $value)
+                {
+                    if (str_starts_with($key, 'user_')) {
+                        $userData[substr($key, 5)] = $value;
+                    } elseif (str_starts_with($key, 'car_')) {
+                        $carData[substr($key, 4)] = $value;
+                    } else {
+                        $ridesharingData[$key] = $value;
+                    }
+                }
+                
+                // Créer et assembler les objets
+                $ridesharing = new RidesharingModel($ridesharingData);
+                $ridesharing->setDriver(new UserModel($userData));
+                $ridesharing->setCar(new CarModel($carData));
+                
+                $rides[] = $ridesharing;
             }
-
             return $rides;
         }
-        return [];
+        return null;
     }
 
     /**
