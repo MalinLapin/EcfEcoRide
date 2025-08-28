@@ -4,7 +4,7 @@ namespace App\model;
 
 
 use DateTimeImmutable;
-use App\services\UserValidator;
+use App\security\Validator;
 
 /**
  * Enumération pour représenter les différents rôles d'un utilisateur.
@@ -130,7 +130,7 @@ class UserModel extends BaseModel
      */
     public function setEmail(string $email): self
     {
-        if (UserValidator::validateEmail($email)){
+        if (Validator::validateEmail($email)){
             $this->email = $email;            
         }
         return $this;
@@ -151,7 +151,7 @@ class UserModel extends BaseModel
      */
     public function setPassword(string $password): self
     {
-        if (UserValidator::validatePasswordStrength($password))
+        if (Validator::validatePasswordStrength($password))
         {
             $this->password = password_hash($password,PASSWORD_DEFAULT);
         }
