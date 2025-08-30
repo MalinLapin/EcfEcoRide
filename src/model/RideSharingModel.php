@@ -33,6 +33,8 @@ class RidesharingModel extends BaseModel
     private DateTimeImmutable $createdAt; //Date de création du covoiturage
     private ?UserModel $driver = null; // Le conducteur du covoiturage
     private ?CarModel $car = null; // La voiture utilisée pour le covoiturage
+    private ?int $nbParticipant; // N'est pas stocker en base de données.
+    
 
     public function __construct(array $data = [])
     {
@@ -269,6 +271,24 @@ class RidesharingModel extends BaseModel
     public function setCar(?CarModel $car): self
     {
         $this->car = $car;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of nbParticipant
+     */
+    public function getNbParticipant(): ?int
+    {
+        return $this->nbParticipant;
+    }
+
+    /**
+     * Set the value of nbParticipant
+     */
+    public function setNbParticipant(?int $nbParticipant): self
+    {
+        $this->nbParticipant = $nbParticipant;
 
         return $this;
     }
