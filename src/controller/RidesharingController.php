@@ -20,8 +20,11 @@ class RidesharingController extends BaseController
         parent::__construct();
     }
     
-    
-    public function showSearchRidesharing(): void // Afficher le formulaire de recherche de covoiturage
+    /**
+     * Afficher le formulaire de recherche de covoiturage
+     * @return void
+     */
+    public function showSearchRidesharing(): void
     {
         $this->render('ridesharing/search-ridesharing', [
             'title' => 'Rechercher un covoiturage',
@@ -29,7 +32,11 @@ class RidesharingController extends BaseController
         ]);
     }
 
-    public function searchRidesharing(): void // Rechercher des covoiturages
+    /**
+     * Gérer la soumission du formulaire de recherche de covoiturage
+     * @return void
+     */
+    public function searchRidesharing(): void 
     {
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
@@ -61,7 +68,7 @@ class RidesharingController extends BaseController
 
         if (empty($data['departure_date']) || !strtotime($data['departure_date'])) {
             $errors['departure_date'] = "La date de départ est requise et doit être au format valide.";
-        } else {
+        } else { // On vérifie que la date de départ est bien dans le futur.
             $departureDateTime = new \DateTime($data['departure_date']);
             $now = new \DateTime();
             if ($departureDateTime < $now) {
@@ -113,15 +120,33 @@ class RidesharingController extends BaseController
             return;
         }
     }
-
-    public function showRidesharingDetail(int $idRidesharing): void  // Afficher les détails d'un covoiturage
+    
+    /**
+     * Afficher les détails d'un covoiturage spécifique
+     * @param int $idRidesharing
+     */
+    public function showRidesharingDetail(int $idRidesharing): void
     {
+        // On vérifie que l'ID est un entier valide
+        $idRidesharing = filter_var($_GET['id'], FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]]);
+        if (!$idRidesharing) {
+            $this->response->error('ID de covoiturage invalide.', 400);
+            return;
+        }
+        
+        $ridesharingDetails = $this->ridesharingRepo->findByIdWithDetails($idRidesharing);
+        
+        // On vérifie que le covoiturage existe
+        if (!$ridesharingDetails) {
+            $this->response->error('Covoiturage non trouvé.', 404);
+            return;
+        }
 
-    }
-
-    public function createRidesharing(): void // Créer un nouveau covoiturage
-    {
-
+        // Affichage des détails du covoiturage 
+        $this->render('ridesharing/ridesharing-detail', [
+            'title' => 'Détails du covoiturage',
+            'ridesharing' => $ridesharingDetails
+        ]);
     }
 
     public function myRidesharing(): void // Afficher les covoiturages de l'utilisateur connecté
@@ -129,8 +154,14 @@ class RidesharingController extends BaseController
 
     }
 
-    public function manageRidesharing(int $idRidesharing): void // Gérer un covoiturage spécifique (pour le conducteur)
+    public function createRidesharing(): void // Créer un nouveau covoiturage
+    {
+        
+    }
+
+    public function manageRidesharing(int $idRidesharing): void // Gérer un covoiturage spécifique (changer son statue selon le besoin)
     {
 
     }
+
 }
