@@ -149,9 +149,31 @@ class RidesharingController extends BaseController
         ]);
     }
 
-    public function myRidesharing(): void // Afficher les covoiturages de l'utilisateur connecté
-    {
 
+    /**
+     * Afficher les covoiturages où l'utilisateur connecté est conducteur ou passager
+     * 
+     * @return void
+     */
+    public function myRidesharing(): void 
+    {
+        // On s'assure que l'utilisateur est connecté
+        $this->requireAuth();
+
+        // Récupération de l'ID de l'utilisateur connecté
+        $userId = $_SESSION['id_user'];
+
+
+        // Récupération des covoiturages où l'utilisateur est conducteur ou passager
+        $listParticipate = $this->ridesharingRepo->findRidesharingByParticipant($userId);
+        $listRidesharing = $this->ridesharingRepo->findRidesharingByDriver($userId);        
+        
+        $this->render('ridesharing/my-ridesharing', [
+            'title' => 'Mes covoiturages',
+            'participates' => $listParticipate,
+            'ridesharings' => $listRidesharing
+        ]);
+        
     }
 
     public function createRidesharing(): void // Créer un nouveau covoiturage
