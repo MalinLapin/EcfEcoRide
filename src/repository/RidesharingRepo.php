@@ -5,6 +5,7 @@ namespace App\repository;
 use App\model\RidesharingModel;
 use App\model\UserModel;
 use App\model\CarModel;
+use App\model\ParticipateModel;
 use Exception;
 
 class RidesharingRepo extends BaseRepoSql
@@ -71,7 +72,7 @@ class RidesharingRepo extends BaseRepoSql
             $rides = [];
             foreach ($result as $row) 
             {
-                // Même logique de séparation que findByIdWithDetails
+                
                 $userData = [];
                 $carData = [];
                 $ridesharingData = [];
@@ -107,7 +108,7 @@ class RidesharingRepo extends BaseRepoSql
      * 
      * Cette méthode utilise une jointure pour récupérer les informations de l'utilisateur (conducteur) et de la voiture associée au trajet.
      */
-    public function findByIdWithDetails(int $id): ?RidesharingModel
+    public function findByIdWithDetails(int $idRidesharing): ?RidesharingModel
     {
         $sql = "SELECT r.*, 
                 u.id_user AS user_idUser, 
@@ -124,7 +125,7 @@ class RidesharingRepo extends BaseRepoSql
             WHERE r.id_ridesharing = :id_ridesharing";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(":id_ridesharing", $id, \PDO::PARAM_INT);
+        $stmt->bindValue(":id_ridesharing", $idRidesharing, \PDO::PARAM_INT);
         $stmt->execute();
 
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -161,6 +162,115 @@ class RidesharingRepo extends BaseRepoSql
         }
 
         return null; // Retourne null si aucun résultat n'est trouvé
+    }
+
+    /**
+     * Trouve les covoiturages d'un conducteur (avec participants uniquement)
+     * 
+     * @param int $idDriver
+     * @return RidesharingModel[]|null
+     * On utilise JOIN et non LEFT JOIN pour ne pas afficher les trajets sans participant.
+     */
+    public function findRidesharingByDriver(int $idDriver): ?array
+    {
+        $query = "SELECT r.status,
+        r.id_ridesharing,
+        r.departure_date,
+        r.departure_city,
+        r.arrival_date,
+        r.arrival_city,
+        r.arrival_address,
+        r.price_per_seat,
+        COUNT(p.id_ridesharing) as nbParticipant
+        FROM {$this->tableName} r
+        JOIN participate p ON r.id_ridesharing = p.id_ridesharing
+        WHERE r.id_driver = :id_driver
+        GROUP BY r.id_ridesharing
+        ORDER BY 
+        CASE 
+            WHEN status = 'ongoing' THEN 1
+            WHEN status = 'pending' THEN 2 
+            ELSE 3 
+        END,
+        departure_date ASC";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt -> bindValue(':id_driver', $idDriver);
+        $stmt -> execute();
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        if($result)
+        {
+            $ridesharingList = [];
+            foreach ($result as $row)
+            {
+                $ridesharing = new RidesharingModel($row);
+                $ridesharingList[] = $ridesharing;
+            }
+            return $ridesharingList;
+        }
+        return null;
+    }
+
+    /**
+     * Trouve les covoiturages auxquels un participant est inscrit.
+     * 
+     * @param int $idParticipant L'identifiant du participant.
+     * @return ParticipateModel[]|null Un tableau d'instances de ParticipateModel avec les détails des trajets, ou null si aucun trajet n'est trouvé.
+     */
+    public function findRidesharingByParticipant(int $idParticipant): ?array
+    {
+        $query = "SELECT r.status,
+        r.id_ridesharing,
+        r.departure_date,
+        r.departure_city,
+        r.arrival_date,
+        r.arrival_city,
+        r.arrival_address,
+        r.price_per_seat,
+        p.nb_seats AS participant_nbSeats
+        FROM {$this->tableName} r
+        JOIN participate p ON r.id_ridesharing = p.id_ridesharing
+        WHERE p.id_participant = :id_participant
+        ORDER BY 
+        CASE 
+            WHEN status = 'ongoing' THEN 1
+            WHEN status = 'pending' THEN 2 
+            ELSE 3 
+        END,
+        departure_date ASC";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt -> bindValue(':id_participant', $idParticipant);
+        $stmt -> execute();
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        if($result)
+        {
+            $participationList = [];
+            
+            foreach ($result as $row)
+            {
+                $participationdata = [];
+
+                $ridesharingData = [];
+                foreach ($row as $key => $value)
+                {
+                    if (str_starts_with($key, 'participant_')) {
+                        $participationdata[substr($key, 12)] = $value;
+                    } else {
+                        $ridesharingData[$key] = $value;
+                    }
+                }
+                $participation = new ParticipateModel($participationdata);
+                $participation -> setRidesharing(new RidesharingModel($ridesharingData));
+                $participationList[] = $participation;
+            }
+            return $participationList;
+        }
+        return null;
     }
 
     /**
