@@ -13,6 +13,7 @@ class ParticipateModel extends BaseModel
     private DateTimeImmutable $createdAt; // Date de création de la participation.
     private ?DateTimeImmutable $completedAt = null; // Date de complétion de la participation, initialisé à null.
     private bool $confirmed = false; // Indique si la participation a été confirmée, initialisé à false.
+    private ?RidesharingModel $ridesharing = null; // Le covoiturage associé à cette participation
 
     public function __construct(array $data = [])
     {
@@ -141,6 +142,24 @@ class ParticipateModel extends BaseModel
     public function setConfirmed(bool $confirmed): self
     {
         $this->confirmed = $confirmed;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ridesharing
+     */
+    public function getRidesharing(): ?RidesharingModel
+    {
+        return $this->ridesharing;
+    }
+
+    /**
+     * Set the value of ridesharing
+     */
+    public function setRidesharing(?RidesharingModel $ridesharing): self
+    {
+        $this->ridesharing = $ridesharing;
 
         return $this;
     }
