@@ -103,4 +103,36 @@ class MailService
             error_log("Erreur lors de l'envoi de l'email : " . $mail->ErrorInfo);
         }
     }
+
+    public function sendRideCancelledEmail($ridesharing, $participant) : void
+    {
+        $mail = $this->createMailer();
+        
+        $templateEmail = file_get_contents(__DIR__ . '/../../templates/emails/rideCancelled.txt');
+
+        $placeholder= ['{{participant_pseudo}}',
+                        '{{departurecity}}',
+                        '{{departureAddress}}',
+                        '{{arrivalCity}}', 
+                        '{{arrivalAddress}}',
+                        '{{departureDate}}'];
+
+        $value = [$participant->getPseudo(),
+                    $ridesharing->getDepartureCity(), 
+                    $ridesharing->getDepartureAddress(), 
+                    $ridesharing->getArrivalCity(), 
+                    $ridesharing->getArrivalAddress(), 
+                    $ridesharing->getDepartureDate()->format('d/m/Y H:i') ];
+
+        try {
+            // Configuration de l'email
+            $mail->addAddress($participant->getEmail(), $participant->getPseudo());
+            $mail->Subject = "Annulation covoiturage Ecoride.";
+            
+            $mail->Body = str_replace($placeholder, $value, $templateEmail);
+            $mail->send();
+        } catch (Exception $e) {
+            error_log("Erreur lors de l'envoi de l'email : " . $mail->ErrorInfo);
+        }
+    }
 }
