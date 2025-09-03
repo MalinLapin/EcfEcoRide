@@ -1,0 +1,12 @@
+Bonjour {{participant_pseudo}},
+
+Votre covoiturage :
+Trajet : {{departurecity}},{{departureAddress}} → {{arrivalCity}},{{arrivalAddress}}
+Date : {{departureDate}}
+
+A été annulé par votre conducteur.
+
+Nous sommes navrées de la gêne occasionnée. Votre portefeuille a été mis à jour.
+
+Cordialement,
+L'équipe EcoRide
