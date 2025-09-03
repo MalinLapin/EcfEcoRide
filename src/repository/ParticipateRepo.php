@@ -88,7 +88,8 @@ class ParticipateRepo extends BaseRepoSql
      */
     public function getParticipantsByRide (int $rideId): array
     {
-        $query = "SELECT u.* FROM user u
+        $query = "SELECT u.pseudo, u.email 
+                    FROM user u
                     JOIN participate p ON u.id_user = p.id_participant
                     WHERE p.id_ridesharing = :id_ridesharing ";
         $stmt = $this->pdo->prepare($query);
@@ -105,4 +106,6 @@ class ParticipateRepo extends BaseRepoSql
         }
         return [];
     }
+
+    
 } 
