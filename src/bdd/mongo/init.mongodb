@@ -30,7 +30,7 @@ db.createCollection("preference", {
     validator: {
         $jsonSchema: {
             bsonType: "object",
-            required: ["id_car", "label", "is_accepted"],
+            required: ["id_ridesharing", "label", "is_accepted"],
             properties: {
                 id_car: { bsonType: "int" },
                 label: { bsonType: "string" },
