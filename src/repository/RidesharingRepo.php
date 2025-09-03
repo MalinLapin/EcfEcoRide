@@ -313,7 +313,7 @@ class RidesharingRepo extends BaseRepoSql
      * @param int $rideId L'identifiant du trajet.
      * @return bool Vrai si la mise à jour a réussi, faux sinon.
      */
-    public function setRideOngoing(int $rideId): bool
+    public function startRide(int $rideId): bool
     {
         $sql = "UPDATE {$this->tableName}
                 SET status = 'ongoing'
