@@ -57,7 +57,7 @@ abstract class BaseController
      */
     protected function getPostData():array
     {
-        return$this->validator->sanitize($_POST);
+        return $this->validator->sanitize($_POST);
     }
 
     /**
