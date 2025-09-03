@@ -11,14 +11,15 @@ class Config
      * @param string $path Dossier contenant le .env
      * @param string $envFile Nom du fichier d'environnement à charger
      */
-
     public static function load($path = __DIR__ . '/../', $envFile ='.env'):void
     {
+        // On vérifie que le fichier .env existe avant de le charger
         if(file_exists($path . $envFile))
         {
+            // On utilise la librairie vlucas/phpdotenv pour charger les variables d'environnement
             $dotenv = Dotenv::createImmutable($path, $envFile);
+            // On charge les variables d'environnement dans $_ENV
             $dotenv->load();
-            // DEBUG : liste toutes les énoncées chargées !
         }
     }
 
