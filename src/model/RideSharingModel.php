@@ -31,8 +31,8 @@ class RidesharingModel extends BaseModel
     private int $pricePerSeat; //Prix par place
     private Status $status = Status::pending; //Est défini par notre énum pour éviter des erreur de typo ou de type.
     private DateTimeImmutable $createdAt; //Date de création du covoiturage
-    private ?UserModel $driver = null; // Le conducteur du covoiturage
-    private ?CarModel $car = null; // La voiture utilisée pour le covoiturage
+    private ?UserModel $driver ; // Le conducteur du covoiturage seul l'id est stocké en base de données. Peut etre null uniquement si l'utilisateur est supprimé.
+    private ?CarModel $car; // La voiture utilisée pour le covoiturage seul l'id est stocké en base de données. Peut etre null uniquement si la voiture est supprimée.
     private ?int $nbParticipant; // N'est pas stocker en base de données.
     
 
@@ -242,7 +242,7 @@ class RidesharingModel extends BaseModel
     /**
      * Get the value of driver
      */
-    public function getDriver(): ?UserModel
+    public function getDriver(): UserModel
     {
         return $this->driver;
     }
@@ -260,7 +260,7 @@ class RidesharingModel extends BaseModel
     /**
      * Get the value of car
      */
-    public function getCar(): ?CarModel
+    public function getCar(): CarModel
     {
         return $this->car;
     }
