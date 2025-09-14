@@ -3,14 +3,8 @@
 namespace App\service;
 
 use App\config\Config;
-use DateTimeImmutable;
-use App\model\CarModel;
-use App\model\UserModel;
-use App\model\Role;
-use App\model\RidesharingModel;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -70,10 +64,10 @@ class MailService
     }
     
 
-    public function sendRideCompletionEmail($ridesharing, $participant) : void
+    public static function sendRideCompletionEmail($ridesharing, $participant) : void
     {
 
-        $mail = $this->createMailer();
+        $mail = self::createMailer();
         
         $templateEmail = file_get_contents(__DIR__ . '/../../templates/emails/rideCompletion.txt');
 
@@ -104,9 +98,9 @@ class MailService
         }
     }
 
-    public function sendRideCancelledEmail($ridesharing, $participant) : void
+    public static function sendRideCancelledEmail($ridesharing, $participant) : void
     {
-        $mail = $this->createMailer();
+        $mail = self::createMailer();
         
         $templateEmail = file_get_contents(__DIR__ . '/../../templates/emails/rideCancelled.txt');
 
