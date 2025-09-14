@@ -35,7 +35,7 @@ abstract class BaseRepoSql
         $data = $this->extractData($model);
 
         // On s'assure que le champ ID n'est pas inclus dans les données à insérer car il est auto incrémenter.
-        $idField = $this->getIdField();        
+        $idField = $this->getPrimaryKeyField();        
         unset($data[$idField]);
 
         // On construit la requête d'insertion
@@ -88,7 +88,7 @@ abstract class BaseRepoSql
      * Récupère le nom du champ ID pour la table associée.
      * @return string Le nom du champ ID.
      */
-    protected function getIdField(): string
+    protected function getPrimaryKeyField(): string
     {
         // La colonne ID est nommée 'id_' suivie du nom de la table.
         return 'id_' . $this->tableName;
@@ -105,7 +105,7 @@ abstract class BaseRepoSql
         $data = $this->extractData($model);
         
         // On s'assure que le champ ID est présent dans les données
-        $idField = $this->getIdField();
+        $idField = $this->getPrimaryKeyField();
         if (!isset($data[$idField])) {
             throw new \Exception("Le champ ID est nécéssaire à la modification.");
         }
@@ -141,7 +141,7 @@ abstract class BaseRepoSql
     public function delete(int $id): bool
     {
         // On prépare la requête de suppression
-        $idField = $this->getIdField();
+        $idField = $this->getPrimaryKeyField();
         $sql = "DELETE FROM {$this->tableName} WHERE {$idField} = :{$idField}";
         $stmt = $this->pdo->prepare($sql);
         
@@ -160,7 +160,7 @@ abstract class BaseRepoSql
     public function findById(int $id): ?BaseModel
     {
         // On prépare la requête de sélection
-        $idField = $this->getIdField();
+        $idField = $this->getPrimaryKeyField();
         $sql = "SELECT * FROM {$this->tableName} WHERE {$idField} = :{$idField}";
         $stmt = $this->pdo->prepare($sql);
         
