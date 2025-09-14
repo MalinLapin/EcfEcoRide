@@ -7,13 +7,14 @@ use DateTimeImmutable;
 class ParticipateModel extends BaseModel
 {
     private ?int $idParticipate = null; // Identifiant unique de la participation, initialisé à null.
-    private int $idParticipant; // Identifiant de l'utilisateur participant.
-    private int $idRidesharing; // Identifiant du trajet de covoiturage.
+    private int $idParticipant; // Identifiant de l'utilisateur participant. (Seul l'id du participant est enregistré en BDD)
+    private int $idRidesharing; // Identifiant du trajet de covoiturage. (Seul l'id du covoiturage est enregistré en BDD)
     private int $nbSeats = 1; // Nombre de places réservées, initialisé à 1.
     private DateTimeImmutable $createdAt; // Date de création de la participation.
     private ?DateTimeImmutable $completedAt = null; // Date de complétion de la participation, initialisé à null.
     private bool $confirmed = false; // Indique si la participation a été confirmée, initialisé à false.
-    private ?RidesharingModel $ridesharing = null; // Le covoiturage associé à cette participation
+    private ?RidesharingModel $ridesharing; // Le covoiturage associé à cette participation (non enregistré en BDD)
+    private ?UserModel $user; // Le participant associé à cette participation (non enregistré en BDD)
 
     public function __construct(array $data = [])
     {
@@ -160,6 +161,24 @@ class ParticipateModel extends BaseModel
     public function setRidesharing(?RidesharingModel $ridesharing): self
     {
         $this->ridesharing = $ridesharing;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */
+    public function getUser(): ?UserModel
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     */
+    public function setUser(?UserModel $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
