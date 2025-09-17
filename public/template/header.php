@@ -24,7 +24,7 @@
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <link rel="stylesheet" href="pages/css/style.css">
+    <link rel="stylesheet" href="/public/pages/css/style.css">
 
     <title>EcoRide - Plateforme de covoiturage écologique.</title>
 
