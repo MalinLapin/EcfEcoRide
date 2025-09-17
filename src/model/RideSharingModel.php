@@ -21,18 +21,18 @@ enum Status: string
 class RidesharingModel extends BaseModel
 {
     private ?int $idRidesharing = null; // Identifiant du covoiturage.
+    private int $idDriver; // Identifiant de l'utilisateur qui sera le conducteur.
+    private int $idCar; // Identifiant de la voiture utiliser pour le covoiturage.
     private DateTimeImmutable $departureDate; //Date de départ
     private string $departureCity; //Ville de départ
     private string $departureAddress; //Adresse de départ
     private string $arrivalCity; //Ville d'arriver
-    private ?string $arrivalAddress; //Adresse d'arriver
+    private string $arrivalAddress; //Adresse d'arriver
     private ?DateTimeImmutable $arrivalDate = null; //Date d'arriver
     private int $availableSeats; //Places disponibles
     private int $pricePerSeat; //Prix par place
     private Status $status = Status::pending; //Est défini par notre énum pour éviter des erreur de typo ou de type.
     private DateTimeImmutable $createdAt; //Date de création du covoiturage
-    private ?UserModel $driver ; // Le conducteur du covoiturage seul l'id est stocké en base de données. Peut etre null uniquement si l'utilisateur est supprimé.
-    private ?CarModel $car; // La voiture utilisée pour le covoiturage seul l'id est stocké en base de données. Peut etre null uniquement si la voiture est supprimée.
     private ?int $nbParticipant; // N'est pas stocker en base de données.
     
 
@@ -42,19 +42,55 @@ class RidesharingModel extends BaseModel
     }
 
     /**
-     * Get the value of idRideSharing
+     * Get the value of idRidesharing
      */
-    public function getIdRidesharing(): int
+    public function getIdRidesharing(): ?int
     {
         return $this->idRidesharing;
     }
 
     /**
-     * Set the value of idRideSharing
+     * Set the value of idRidesharing
      */
-    public function setIdRidesharing(int $idRidesharing): self
+    public function setIdRidesharing(?int $idRidesharing): self
     {
         $this->idRidesharing = $idRidesharing;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of idDriver
+     */
+    public function getIdDriver(): int
+    {
+        return $this->idDriver;
+    }
+
+    /**
+     * Set the value of idDriver
+     */
+    public function setIdDriver(int $idDriver): self
+    {
+        $this->idDriver = $idDriver;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of idCar
+     */
+    public function getIdCar(): int
+    {
+        return $this->idCar;
+    }
+
+    /**
+     * Set the value of idCar
+     */
+    public function setIdCar(int $idCar): self
+    {
+        $this->idCar = $idCar;
 
         return $this;
     }
@@ -96,7 +132,7 @@ class RidesharingModel extends BaseModel
     }
 
     /**
-     * Get the value of departureAdress
+     * Get the value of departureAddress
      */
     public function getDepartureAddress(): string
     {
@@ -104,7 +140,7 @@ class RidesharingModel extends BaseModel
     }
 
     /**
-     * Set the value of departureAdress
+     * Set the value of departureAddress
      */
     public function setDepartureAddress(string $departureAddress): self
     {
@@ -132,7 +168,7 @@ class RidesharingModel extends BaseModel
     }
 
     /**
-     * Get the value of arrivalAdress
+     * Get the value of arrivalAddress
      */
     public function getArrivalAddress(): string
     {
@@ -140,9 +176,9 @@ class RidesharingModel extends BaseModel
     }
 
     /**
-     * Set the value of arrivalAdress
+     * Set the value of arrivalAddress
      */
-    public function setArrivalAddress(?string $arrivalAddress): self
+    public function setArrivalAddress(string $arrivalAddress): self
     {
         $this->arrivalAddress = $arrivalAddress;
 
@@ -152,7 +188,7 @@ class RidesharingModel extends BaseModel
     /**
      * Get the value of arrivalDate
      */
-    public function getArrivalDate(): DateTimeImmutable
+    public function getArrivalDate(): ?DateTimeImmutable
     {
         return $this->arrivalDate;
     }
@@ -186,7 +222,7 @@ class RidesharingModel extends BaseModel
     }
 
     /**
-     * Get the value of priceParSeat
+     * Get the value of pricePerSeat
      */
     public function getPricePerSeat(): int
     {
@@ -194,7 +230,7 @@ class RidesharingModel extends BaseModel
     }
 
     /**
-     * Set the value of priceParSeat
+     * Set the value of pricePerSeat
      */
     public function setPricePerSeat(int $pricePerSeat): self
     {
@@ -240,42 +276,6 @@ class RidesharingModel extends BaseModel
     }
 
     /**
-     * Get the value of driver
-     */
-    public function getDriver(): UserModel
-    {
-        return $this->driver;
-    }
-
-    /**
-     * Set the value of driver
-     */
-    public function setDriver(?UserModel $driver): self
-    {
-        $this->driver = $driver;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of car
-     */
-    public function getCar(): CarModel
-    {
-        return $this->car;
-    }
-
-    /**
-     * Set the value of car
-     */
-    public function setCar(?CarModel $car): self
-    {
-        $this->car = $car;
-
-        return $this;
-    }
-
-    /**
      * Get the value of nbParticipant
      */
     public function getNbParticipant(): ?int
@@ -293,3 +293,5 @@ class RidesharingModel extends BaseModel
         return $this;
     }
 }
+
+    
