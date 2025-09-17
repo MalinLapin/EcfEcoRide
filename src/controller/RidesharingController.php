@@ -10,6 +10,9 @@ use App\model\RidesharingModel;
 use App\repository\RidesharingRepo;
 use App\model\PreferenceModel;
 use App\repository\PreferenceRepo;
+use App\repository\ReviewRepo;
+use App\repository\UserRepo;
+use App\service\MailService;
 
 class RidesharingController extends BaseController
 {
@@ -17,8 +20,10 @@ class RidesharingController extends BaseController
         private TokenManager $tokenManager,
         private Logger $logger,
         private RidesharingRepo $ridesharingRepo,
-        private PreferenceRepo $preferenceRepo,        
-        private Validator $validator) 
+        private PreferenceRepo $preferenceRepo,
+        private UserRepo $userRepo,        
+        private Validator $validator,
+        private ReviewRepo $reviewRepo) 
     {
         parent::__construct();
     }
@@ -145,10 +150,14 @@ class RidesharingController extends BaseController
             return;
         }
 
+        // Récuperer les avis du conducteur.
+        $listReview = $this->reviewRepo->findByTarget($ridesharingDetails->getIdRidesharing());
+
         // Affichage des détails du covoiturage 
-        $this->render('ridesharing/ridesharing-detail', [
+        $this->render("ridesharing/ridesharing-detail?id=$idRidesharing", [
             'title' => 'Détails du covoiturage',
-            'ridesharing' => $ridesharingDetails
+            'ridesharing' => $ridesharingDetails,
+            'listReview' => $listReview
         ]);
     }
 
@@ -171,7 +180,7 @@ class RidesharingController extends BaseController
         $listParticipate = $this->ridesharingRepo->findRidesharingByParticipant($userId);
         $listRidesharing = $this->ridesharingRepo->findRidesharingByDriver($userId);        
         
-        $this->render('ridesharing/my-ridesharing', [
+        $this->render('profile/my-ridesharing', [
             'title' => 'Mes covoiturages',
             'participates' => $listParticipate,
             'ridesharings' => $listRidesharing
@@ -275,9 +284,9 @@ class RidesharingController extends BaseController
             new \DateTimeImmutable($data['departure_date']),
             $data['arrival_city'],
             $data['arrival_address'],
-            (int)$data['nb_seats'],
-            (int)$data['id_car'],
-            (int)$_SESSION['id_user'],
+            $data['nb_seats'],
+            $data['id_car'],
+            $_SESSION['id_user'],
             'pending'
         );
         // Création du covoiturage + recuperation de son ID
@@ -296,7 +305,7 @@ class RidesharingController extends BaseController
             {
                 $preferenceData = [
                     'label' => $pref['label'],
-                    'isAccepted' => (bool)$pref['isAccepted'],
+                    'isAccepted' => $pref['isAccepted'],
                     'idRidesharing' => $ridesharingId
                 ];
                 $preferenceModel = new PreferenceModel($preferenceData);
@@ -349,17 +358,17 @@ class RidesharingController extends BaseController
         }
 
         $ridesharing = $this->ridesharingRepo->findById($data['id_ridesharing']??0);
-        $driver = $ridesharing->getDriver();
+        $driver = $this->userRepo->findById($ridesharing->getIdDriver());
         
         // On vérifie que le covoiturage existe et que l'utilisateur connecté est bien le conducteur.
-        if (!$ridesharing || !$driver || $driver->getIdUser() !== $_SESSION['id_user'])
+        if (!$ridesharing || $driver->getIdUser() !== $_SESSION['id_user'])
         {
             $this->response->error('Covoiturage non trouvé ou accès refusé.', 403);
             return;
         }
         
-        $this->ridesharingRepo->startRide((int)$data['id_ridesharing']);
-        $this->response->redirect("/ridesharing/my-ridesharing");
+        $this->ridesharingRepo->startRide($data['id_ridesharing']);
+        $this->response->redirect("profile/my-ridesharing");
     }
     
     /**
@@ -389,17 +398,22 @@ class RidesharingController extends BaseController
         }
 
         $ridesharing = $this->ridesharingRepo->findById($data['id_ridesharing']??0);
-        $driver = $ridesharing->getDriver();
+        $driver = $this->userRepo->findById($ridesharing->getIdDriver());
         
         // On vérifie que le covoiturage existe et que l'utilisateur connecté est bien le conducteur.
-        if (!$ridesharing || !$driver || $driver->getIdUser() !== $_SESSION['id_user'])
+        if (!$ridesharing || $driver->getIdUser() !== $_SESSION['id_user'])
         {
             $this->response->error('Covoiturage non trouvé ou accès refusé.', 403);
             return;
         }
 
-        $this->ridesharingRepo->endRide((int)$data['id_ridesharing']);
-        $this->response->redirect("/ridesharing/my-ridesharing");
+        $this->ridesharingRepo->endRide($data['id_ridesharing']);
+        
+        // Vérification de la fin de participation.
+
+        // Envoie du mail de fin de covoiturage.
+
+        $this->response->redirect("profile/my-ridesharing");
     }
 
     /**
@@ -429,17 +443,24 @@ class RidesharingController extends BaseController
         }
 
         $ridesharing = $this->ridesharingRepo->findById($data['id_ridesharing']??0);
-        $driver = $ridesharing->getDriver();
+        $driver = $this->userRepo->findById($ridesharing->getIdDriver());
         
         // On vérifie que le covoiturage existe et que l'utilisateur connecté est bien le conducteur.
-        if (!$ridesharing || !$driver || $driver->getIdUser() !== $_SESSION['id_user'])
+        if (!$ridesharing || $driver->getIdUser() !== $_SESSION['id_user'])
         {
             $this->response->error('Covoiturage non trouvé ou accès refusé.', 403);
             return;
         }
         
-        $this->ridesharingRepo->cancelRide((int)$data['id_ridesharing']);
-        $this->response->redirect("/ridesharing/my-ridesharing");
+        $this->ridesharingRepo->cancelRide($data['id_ridesharing']);
+
+        // Envoie du mail d'annulation de covoiturage.
+
+        // Modification du solde de crédit de l'utilisateur.
+
+        // Modifcation du solde de crédit des participants.
+
+        $this->response->redirect("ridesharing/my-ridesharing");
     }
 
 }

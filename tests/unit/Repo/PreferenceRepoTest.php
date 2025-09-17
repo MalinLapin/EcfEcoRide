@@ -48,7 +48,7 @@ class PreferenceRepoTest extends TestCase
     {
         $repo = new PreferenceRepo();
         $id = $repo->create([
-            'id_car' => 123,
+            'id_ridesharing' => 123,
             'label' => 'Préférence de test',
             'is_accepted' => true,
         ]);
@@ -56,7 +56,7 @@ class PreferenceRepoTest extends TestCase
 
         $preference = $repo->findById($id);
         $this->assertInstanceOf(PreferenceModel::class, $preference, 'Le modèle retourné doit être une instance de PreferenceModel');
-        $this->assertEquals(123, $preference->getIdCar(), 'L\'ID de la voiture doit correspondre à celui utilisé lors de la création');
+        $this->assertEquals(123, $preference->getIdRidesharing(), 'L\'ID de la voiture doit correspondre à celui utilisé lors de la création');
         $this->assertEquals('Préférence de test', $preference->getLabel(), 'Le label doit correspondre à celui utilisé lors de la création');
         $this->assertTrue($preference->getIsAccepted(), 'La préférence doit être acceptée');
     }

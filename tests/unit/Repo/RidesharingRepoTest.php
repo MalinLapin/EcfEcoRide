@@ -1,9 +1,11 @@
 <?php
 
-use App\model\RidesharingModel;
 use App\model\Status;
-use App\repository\RidesharingRepo;
+use App\model\CarModel;
+use App\model\UserModel;
+use App\model\RidesharingModel;
 use PHPunit\Framework\TestCase;
+use App\repository\RidesharingRepo;
 
 class RidesharingRepoTest extends TestCase
 {
@@ -59,8 +61,8 @@ class RidesharingRepoTest extends TestCase
         $newRide->setAvailableSeats(2);
         $newRide->setPricePerSeat(3);
         $newRide->setCreatedAt(new DateTimeImmutable());
-        $newRide->setIdDriver(1);
-        $newRide->setIdCar(4);
+        $newRide->setDriver(new UserModel( ['id_user'=>45, 'pseudo'=>'George'] ));
+        $newRide->setCar(new CarModel( ['id_car'=>12, 'brand'=>'Renault', 'model'=>'Clio'] ));
 
         $repo->create($newRide);
 
@@ -127,8 +129,8 @@ class RidesharingRepoTest extends TestCase
         $newRide->setAvailableSeats(2);
         $newRide->setPricePerSeat(4);
         $newRide->setCreatedAt(new DateTimeImmutable());
-        $newRide->setIdDriver(4);
-        $newRide->setIdCar(2);
+        $newRide->setDriver(new UserModel( ['id_user'=>45, 'pseudo'=>'George'] ));
+        $newRide->setCar(new CarModel( ['id_car'=>12, 'brand'=>'Renault', 'model'=>'Clio'] ));
 
         $success = $repo->update($newRide);
         $this->assertFalse($success);
@@ -181,8 +183,8 @@ class RidesharingRepoTest extends TestCase
         $newRide->setAvailableSeats(2);
         $newRide->setPricePerSeat(3);
         $newRide->setCreatedAt(new DateTimeImmutable());
-        $newRide->setIdDriver(1);
-        $newRide->setIdCar(4);
+        $newRide->setDriver(new UserModel( ['id_user'=>45, 'pseudo'=>'George'] ));
+        $newRide->setCar(new CarModel( ['id_car'=>12, 'brand'=>'Renault', 'model'=>'Clio'] ));
 
         $idNewRide = $repo->create($newRide);     
 
@@ -228,12 +230,12 @@ class RidesharingRepoTest extends TestCase
      * On applique la méthode setOngoing()
      * On récupere à nouveau notre trajet mis a jour depuis la Bdd puis on test son changement de status.
      */
-    public function testSetRideOngoing():void
+    public function testStartRide():void
     {
         $repo = new RidesharingRepo(self::$pdo);
         $ride = $repo->findById(3); // On recherche un trajet par son Id
 
-        $repo->setRideOngoing($ride->getIdRidesharing());
+        $repo->StartRide($ride->getIdRidesharing());
 
         $updatedRide = $repo->findById($ride->getIdRidesharing());
         

@@ -13,7 +13,7 @@ class HomeController extends BaseController
     public function index():void
     {
         $ridesharing = new RidesharingRepo();
-        $this->render('home/index', [
+        $this->render('index', [
             'title'=>'Accueil - Ecoride',
         ]);
     }

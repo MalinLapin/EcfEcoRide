@@ -60,7 +60,7 @@ class AuthController extends BaseController
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('/login');
+            $this->response->redirect('/auth/login');
             return;
         }
 
@@ -102,7 +102,7 @@ class AuthController extends BaseController
 
 
             // Redirection vers la page d'acceuil
-            $this->response->redirect('home/index',[
+            $this->response->redirect('index',[
                 'title'=>'Accueil - Ecoride',
                 'pseudo'=>$_SESSION['pseudo'],
                 'role'=>$_SESSION['role'],
@@ -140,7 +140,7 @@ class AuthController extends BaseController
         // On s'assure que la requête est de type POST. Sinon on redirige vers la page d'inscription.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('/register');
+            $this->response->redirect('auth/register');
             return;
         }
 
@@ -221,7 +221,7 @@ class AuthController extends BaseController
                 $_SESSION['pseudo'] = $newUser->getPseudo();
                 
                 // On redirige vers la page des trajets
-                $this->response->redirect('/ridesharing');
+                $this->response->redirect('ridesharing/search-ridesharing');
                 return;
             }
         }catch (\Exception $e) {
