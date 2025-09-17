@@ -9,7 +9,7 @@
     <section class="searchSection">
         <h2 class="montserratBold titleColor">Prenez place :</h2>
         <div class="searchContent">
-            <form method="GET" action="#">
+            <form method="POST" action="#">
                 <div>
                     <label for="departureBar" class="robotoBold">Départ :</label>
                     <input type="text" name="departureBar" id="departureBar" placeholder="Ville, CP, rue">
