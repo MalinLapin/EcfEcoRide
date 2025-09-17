@@ -12,9 +12,7 @@ class ParticipateModel extends BaseModel
     private int $nbSeats = 1; // Nombre de places réservées, initialisé à 1.
     private DateTimeImmutable $createdAt; // Date de création de la participation.
     private ?DateTimeImmutable $completedAt = null; // Date de complétion de la participation, initialisé à null.
-    private bool $confirmed = false; // Indique si la participation a été confirmée, initialisé à false.
-    private ?RidesharingModel $ridesharing; // Le covoiturage associé à cette participation (non enregistré en BDD)
-    private ?UserModel $user; // Le participant associé à cette participation (non enregistré en BDD)
+    private bool $confirmed = false; // Indique si la participation a été confirmée, initialisé à false. (seulle les confirmations validé seront enregistré en Bdd)
 
     public function __construct(array $data = [])
     {
@@ -143,42 +141,6 @@ class ParticipateModel extends BaseModel
     public function setConfirmed(bool $confirmed): self
     {
         $this->confirmed = $confirmed;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of ridesharing
-     */
-    public function getRidesharing(): ?RidesharingModel
-    {
-        return $this->ridesharing;
-    }
-
-    /**
-     * Set the value of ridesharing
-     */
-    public function setRidesharing(?RidesharingModel $ridesharing): self
-    {
-        $this->ridesharing = $ridesharing;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of user
-     */
-    public function getUser(): ?UserModel
-    {
-        return $this->user;
-    }
-
-    /**
-     * Set the value of user
-     */
-    public function setUser(?UserModel $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }
