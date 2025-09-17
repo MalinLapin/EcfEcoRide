@@ -34,13 +34,14 @@
     <header class="header">
         <div class="headerContent">
             <div class="headerSearch">
-                <span class="material-icons">search</span>
+                <a href=""><span class="material-icons">search</span></a>
             </div>
             <div class="headerLogo">
-                <img class="headerLogo" src="/public/assets/images/LogoSF.png" alt="Logo de la plateforme EcoRide">
+                <a href="./index.php"><img class="headerLogo" src="/public/assets/images/LogoSF.png"
+                        alt="Logo de la plateforme EcoRide"></a>
             </div>
             <div class="headerProfil">
-                <span class="material-icons">account_circle</span>
+                <a href=""><span class="material-icons">account_circle</span></a>
             </div>
         </div>
     </header>
@@ -56,11 +57,11 @@
                 <form method="GET" action="#">
                     <div>
                         <label for="departureBar" class="robotoBold">Départ :</label>
-                        <input type="text" name="departureBar" id="departureBar" placeholder="Lieu de départ">
+                        <input type="text" name="departureBar" id="departureBar" placeholder="Ville, CP, rue">
                     </div>
                     <div>
                         <label for="arrivalBar" class="robotoBold">Déstination :</label>
-                        <input type="text" name="arrivalBar" id="arrivalBar" placeholder="Lieu de destination">
+                        <input type="text" name="arrivalBar" id="arrivalBar" placeholder="Ville, CP, rue">
                     </div>
                     <div>
                         <label for="dateSearch" class="robotoBold">Date :</label>
