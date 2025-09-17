@@ -69,7 +69,6 @@ class RidesharingRepo extends BaseRepoSql
         // Si au moins un trajet est trouvé, on crée une instance du modèle RidesharingModel avec les données récupérées
         if ($result) 
         {
-            $rides = [];
             foreach ($result as $row) 
             {
                 
@@ -90,10 +89,14 @@ class RidesharingRepo extends BaseRepoSql
                 
                 // Créer et assembler les objets
                 $ridesharing = new RidesharingModel($ridesharingData);
-                $ridesharing->setDriver(new UserModel($userData));
-                $ridesharing->setCar(new CarModel($carData));
+                $driverInfo = new UserModel($userData);
+                $carInfo = new CarModel($carData);
                 
-                $rides[] = $ridesharing;
+                $rides[] = [
+                    'ridesharing'=>$ridesharing,
+                    'driver'=>$driverInfo,
+                    'car'=>$carInfo
+                ];
             }
             return $rides;
         }
@@ -148,17 +151,16 @@ class RidesharingRepo extends BaseRepoSql
                 }
             }
 
+            
             $ridesharing = new RidesharingModel($ridesharingData);
-    
-            // Créer et attacher le driver
-            $driver = new UserModel($userData);
-            $ridesharing->setDriver($driver);
-            
-            // Créer et attacher la car
-            $car = new CarModel($carData);
-            $ridesharing->setCar($car);
-            
-            return $ridesharing;
+            $driverInfo = new UserModel($userData);
+            $carInfo = new CarModel($carData);
+                
+            $ridesharing[] = [
+                'ridesharing'=>$ridesharing,
+                'driver'=>$driverInfo,
+                'car'=>$carInfo
+            ];
         }
 
         return null; // Retourne null si aucun résultat n'est trouvé
@@ -248,9 +250,7 @@ class RidesharingRepo extends BaseRepoSql
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         if($result)
-        {
-            $participationList = [];
-            
+        {            
             foreach ($result as $row)
             {
                 $participationdata = [];
@@ -265,8 +265,11 @@ class RidesharingRepo extends BaseRepoSql
                     }
                 }
                 $participation = new ParticipateModel($participationdata);
-                $participation -> setRidesharing(new RidesharingModel($ridesharingData));
-                $participationList[] = $participation;
+                $ridesharing = new RidesharingModel($ridesharingData);
+                $participationList=[
+                    'participant'=>$participation,
+                    'ridesharing'=>$ridesharing
+                ];
             }
             return $participationList;
         }
