@@ -1,0 +1,161 @@
+/* Réinitialisation de l'user agent */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+body {
+  height: 100vh;
+}
+
+/* Importation des classes pour les polices */
+
+.robotoRegular, /*Police commune*/
+.robotoBold, 
+.montserratRegular,/*Police titre / Elément principaux*/
+.montserratBold {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+.robotoRegular,
+.montserratRegular {
+  font-weight: 500;
+}
+
+.robotoBold,
+.montserratBold {
+  font-weight: 700;
+}
+
+.titleColor {
+  color: #27ae60;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.mainContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* ---------------CSS du header---------------- */
+
+.header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  background-color: #27ae60;
+  color: white;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4%;
+}
+
+.headerLogo {
+  width: 5rem;
+  margin: 2%;
+}
+
+.headerLogo img {
+  width: 80%;
+  background-color: #90ee90;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------------présentation---------------- */
+.presentationSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  margin: 5%;
+  text-align: center;
+}
+.imagePresentation {
+  max-height: 300px;
+}
+
+/* ---------------section de recherche---------------- */
+.searchSection {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.searchContent {
+  background-color: #90ee90;
+  border-radius: 5%;
+}
+
+.searchContent div {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem;
+}
+
+.searchContent div label {
+  margin-bottom: 2px;
+}
+
+.btnSearch {
+  background-color: #f7dc6f;
+}
+
+/* ---------------A propos---------------- */
+.aboutSection {
+  text-align: center;
+}
+
+.aboutContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card {
+  background-color: #90ee90;
+  border-radius: 5%;
+  width: 90%;
+  margin: 1rem 0;
+  text-align: start;
+}
+
+.card h4 {
+  text-align: center;
+}
+
+.card p,
+.card ul {
+  margin: 15px 0;
+  padding-left: 15px;
+}
+
+.card ul {
+  padding-left: 20px;
+}
+
+/* ---------------footer---------------- */
+.footer {
+  background-color: #27ae60;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 60px;
+}
