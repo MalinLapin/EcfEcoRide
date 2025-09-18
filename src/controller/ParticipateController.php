@@ -41,7 +41,7 @@ class ParticipateController extends BaseController
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('ridesharing/ridesharing-detail');
+            $this->response->redirect('page/ridesharingDetail');
             return;
         }
 
@@ -62,7 +62,7 @@ class ParticipateController extends BaseController
 
         if(!$ridesharing)
         {
-            $this->response->redirect("ridesharing/ridesharing-detail?id=$idRidesharing", [
+            $this->response->redirect("page/ridesharingDetail?id=$idRidesharing", [
                 'title' => 'Détails du covoiturage',
                 'old' => $data,
                 'errors' => 'Le covoiturage sélectionné est invalide.',
@@ -82,7 +82,7 @@ class ParticipateController extends BaseController
         // On vérifie que le nombre de siège reserve ne dépasse pas le nombre de siège encore disponible et qu'il soit bien suppérieur à 0.
         if ($data['nb_seat'] == 0 || $data['nb_seat'] < 0) 
         {
-            $this->response->redirect("ridesharing/ridesharing-detail?id=$idRidesharing", [
+            $this->response->redirect("page/ridesharingDetail?id=$idRidesharing", [
                 'title' => 'Détails du covoiturage',
                 'old' => $data,
                 'errors' => 'Le nombre de place réservée doit être supérieur à 0.',
@@ -91,7 +91,7 @@ class ParticipateController extends BaseController
             return;
         }else if ($data['nb_seat'] > $ridesharing->getAvailableSeats())
         {
-            $this->response->redirect("ridesharing/ridesharing-detail?id=$idRidesharing", [
+            $this->response->redirect("page/ridesharingDetail?id=$idRidesharing", [
                 'title' => 'Détails du covoiturage',
                 'old' => $data,
                 'errors' => 'Le nombre de place réservée dépasse le nombre de place disponible.',
@@ -113,7 +113,7 @@ class ParticipateController extends BaseController
         }catch (\Exception $e){
             $this->logger->log('ERROR','Votre solde de crédit ne permet pas votre participation : ' . $e->getMessage());
             // On ré-affiche le formulaire d'inscription avec un message d'erreur
-            $this->response->redirect("ridesharing/ridesharing-detail?id=$idRidesharing", [
+            $this->response->redirect("page/ridesharingDetail?id=$idRidesharing", [
             'title' => 'Détails du covoiturage',
             'old' => $data,
             'errors' => 'Votre solde de crédit ne permet pas votre participation',
@@ -128,7 +128,7 @@ class ParticipateController extends BaseController
         }catch (\Exception $e){
             $this->logger->log('ERROR','Erreur lors de l\'inscritpion au covoiturage : ' . $e->getMessage());
             // On ré-affiche le formulaire d'inscription avec un message d'erreur
-            $this->response->redirect("ridesharing/ridesharing-detail?id=$idRidesharing", [
+            $this->response->redirect("page/ridesharingDetail?id=$idRidesharing", [
                 'title' => 'Détails du covoiturage',
                 'old' => $data,
                 'errors' => 'Une erreur est survenue lors de votre inscription, veuillez réessayer plus tard.',
@@ -155,7 +155,7 @@ class ParticipateController extends BaseController
             // Même si la mise à jour des places disponibles échoue, on ne bloque pas la participation.
         }
 
-        $this->response->redirect('home/index',[
+        $this->response->redirect('page/home',[
                 'title'=>'Accueil - Ecoride',
                 'validation'=>'La participation à bien été enregistré.'
             ]);
@@ -173,7 +173,7 @@ class ParticipateController extends BaseController
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('profile/my-ridesharing');
+            $this->response->redirect('page/myRidesharing');
             return;
         }
 
@@ -192,7 +192,7 @@ class ParticipateController extends BaseController
 
         // Si l'ID de la participation n'est pas valide, on redirige avec un message d'erreur.
         if (!$idParticipate) {
-            $this->response->redirect('profile/my-ridesharing', [
+            $this->response->redirect('page/myRidesharing', [
                 'title' => 'Mes covoiturages',
                 'errors' => 'Participation invalide.',
                 'csrf_token' => $this->tokenManager->generateCsrfToken()
@@ -205,7 +205,7 @@ class ParticipateController extends BaseController
 
         // On vérifie que la participation existe et appartient à l'utilisateur connecté.
         if (!$participate || $participate->getIdParticipant() !== $user->getIdUser()) {
-            $this->response->redirect('profile/my-ridesharing', [
+            $this->response->redirect('page/myRidesharing', [
                 'title' => 'Mes covoiturages',
                 'errors' => 'Participation invalide ou non autorisée.',
                 'csrf_token' => $this->tokenManager->generateCsrfToken()
@@ -217,7 +217,7 @@ class ParticipateController extends BaseController
             $this->participateRepo->delete($idParticipate);
         } catch (\Exception $e) {
             $this->logger->log('ERROR', 'Erreur lors de l\'annulation de la participation : ' . $e->getMessage());
-            $this->response->redirect('profile/my-ridesharing', [
+            $this->response->redirect('page/myRidesharing', [
                 'title' => 'Mes covoiturages',
                 'errors' => 'Une erreur est survenue lors de l\'annulation de votre participation, veuillez réessayer plus tard.',
                 'csrf_token' => $this->tokenManager->generateCsrfToken()
@@ -248,7 +248,7 @@ class ParticipateController extends BaseController
         }
 
         // Redirection avec message de succès.
-        $this->response->redirect('profile/my-ridesharing', [
+        $this->response->redirect('page/myRidesharing', [
             'title' => 'Mes covoiturages',
             'validation' => 'Votre participation a bien été annulée.'
         ]);

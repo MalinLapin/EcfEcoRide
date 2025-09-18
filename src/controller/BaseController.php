@@ -29,7 +29,7 @@ abstract class BaseController
     protected function render(string $view, array $data = []):void
     {
         // On construit le chemin complet vers le chemin de vue
-        $viewPath = dirname(__DIR__, 2).'/views/'.$view.'.php';
+        $viewPath = dirname(__DIR__, 2).'/page/'.$view.'.php';
         // On vérifie que le fichier vue existe bien.
         if(!file_exists($viewPath))
         {
@@ -49,7 +49,7 @@ abstract class BaseController
         $content = ob_get_clean();
 
         // Finalement, on inclut le layout principal, qui peut maintenant utiliser la variable $content.
-        include dirname(__DIR__, 2).'/views/layout.php';
+        include dirname(__DIR__, 2).'/page/layout.php';
     }
 
     /**
@@ -67,7 +67,7 @@ abstract class BaseController
     {
         if(!isset($_SESSION['id_user']))
         {
-            $this->response->redirect('/login');
+            $this->response->redirect('page/login');
         }
     }
 }

@@ -41,17 +41,17 @@ class RidesharingRepo extends BaseRepoSql
         
         // Je vais utiliser ce tableau pour construire la requête SQL dynamiquement.
         $criteria = [
-            'departure_city' => ['r.departure_city', '=', 'departure_city'],
-            'departure_address' => ['r.departure_address', '=', 'departure_address'],
-            'departure_date' => ['r.departure_date', '>=', 'departure_date'],// On recherchera les trajets dont la date de départ ne sera pas encore passée.
-            'arrival_city' => ['r.arrival_city', '=', 'arrival_city'],
-            'arrival_address' => ['r.arrival_address', '=', 'arrival_address'],
-            'price_per_seat' => ['r.price_per_seat', '<=', 'price_per_seat'], // Pour une recherche de tarif inférieur ou égal à la recherche utilisateur.
-            'available_seats' => ['r.available_seats', '>=', 'available_seats'], // On recherchera uniquement les trajet avec autant ou plus de place que demandé.
+            'departureCity' => ['r.departure_city', '=', 'departure_city'],
+            'departureAddress' => ['r.departure_address', '=', 'departure_address'],
+            'departureDate' => ['r.departure_date', '>=', 'departure_date'],// On recherchera les trajets dont la date de départ ne sera pas encore passée.
+            'arrivalCity' => ['r.arrival_city', '=', 'arrival_city'],
+            'arrivalAddress' => ['r.arrival_address', '=', 'arrival_address'],
+            'pricePerSeat' => ['r.price_per_seat', '<=', 'price_per_seat'], // Pour une recherche de tarif inférieur ou égal à la recherche utilisateur.
+            'availableSeats' => ['r.available_seats', '>=', 'available_seats'], // On recherchera uniquement les trajet avec autant ou plus de place que demandé.
             'status' => ['r.status', '=', 'status'],
-            'pseudo_driver' => ['u.pseudo', '=', 'pseudo_driver'],
-            'grade_driver' => ['u.grade', '=', 'grade_driver'],
-            'energy_type' => ['c.energy_type', '=', 'energy_type'] // Recherche de voiture avec type d'énergie spécifique (ex: électrique).
+            'pseudoDriver' => ['u.pseudo', '=', 'pseudo_driver'],
+            'gradeDriver' => ['u.grade', '=', 'grade_driver'],
+            'energyType' => ['c.energy_type', '=', 'energy_type'] // Recherche de voiture avec type d'énergie spécifique (ex: électrique).
         ];
 
         // On parcourt les critères pour ajouter les conditions à la requête SQL

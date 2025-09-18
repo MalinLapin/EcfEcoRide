@@ -34,7 +34,7 @@ class RidesharingController extends BaseController
      */
     public function showSearchRidesharing(): void
     {
-        $this->render('ridesharing/search-ridesharing', [
+        $this->render('searchRidesharing', [
             'title' => 'Rechercher un covoiturage',
             'csrf_token' => $this->tokenManager->generateCsrfToken()
         ]);
@@ -49,7 +49,7 @@ class RidesharingController extends BaseController
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('ridesharing/search-ridesharing');
+            $this->response->redirect('page/searchRidesharing');
             return;
         }
 
@@ -66,39 +66,39 @@ class RidesharingController extends BaseController
         // Validation des données de recherche
         $errors = [];
 
-        if (empty($data['departure_city'])) {
-            $errors['departure_city'] = "La ville de départ est requise.";
+        if (empty($data['departureCity'])) {
+            $errors['departureCity'] = "La ville de départ est requise.";
         }
 
-        if (empty($data['departure_address'])) {
-            $errors['departure_address'] = "L'addresse de départ est requise.";
+        if (empty($data['departureAddress'])) {
+            $errors['departureAddress'] = "L'addresse de départ est requise.";
         }
 
-        if (empty($data['departure_date']) || !strtotime($data['departure_date'])) {
-            $errors['departure_date'] = "La date de départ est requise et doit être au format valide.";
+        if (empty($data['departureDate']) || !strtotime($data['departureDate'])) {
+            $errors['departureDate'] = "La date de départ est requise et doit être au format valide.";
         } else { // On vérifie que la date de départ est bien dans le futur.
-            $departureDateTime = new \DateTime($data['departure_date']);
+            $departureDateTime = new \DateTime($data['departureDate']);
             $now = new \DateTime();
             if ($departureDateTime < $now) {
-                $errors['departure_date'] = "La date de départ doit être dans le futur.";
+                $errors['departureDate'] = "La date de départ doit être dans le futur.";
             }
         }
 
-        if (empty($data['arrival_city'])) {
-            $errors['arrival_city'] = "La ville d'arriver est requise.";
+        if (empty($data['arrivalCity'])) {
+            $errors['arrivalCity'] = "La ville d'arriver est requise.";
         }
 
-        if (empty($data['arrival_address'])) {
-            $errors['arrival_address'] = "L'addresse d'arriver' est requise.";
+        if (empty($data['arrivalAddress'])) {
+            $errors['arrivalAddress'] = "L'addresse d'arriver' est requise.";
         }
 
-        if (empty($data['nb_seats']) || !is_numeric($data['nb_seats']) || $data['nb_seats'] < 1 || $data['nb_seats'] > 6) {
-            $errors['nb_seats'] = "Le nombre de places rechercher doit être un nombre entre 1 et 6.";
+        if (empty($data['nbSeats']) || !is_numeric($data['nbSeats']) || $data['nbSeats'] < 1 || $data['nbSeats'] > 6) {
+            $errors['nbSeats'] = "Le nombre de places rechercher doit être un nombre entre 1 et 6.";
         }
 
         if (!empty($errors)) 
         {
-            $this->render('ridesharing/search-ridesharing', [
+            $this->render('search-ridesharing', [
                 'title' => 'Inscription',
                 'errors' => $errors,
                 'old' => $data,
@@ -112,14 +112,14 @@ class RidesharingController extends BaseController
         // Recherche des covoiturages en fonction des critères fournis
         if($listRidesharing)
         {
-            $this->render('ridesharing/list-ridesharing', [
+            $this->render('list-ridesharing', [
                 'title' => 'Résultats de la recherche',
                 'ridesharings' => $listRidesharing
             ]);
             return;
         } else
         {
-            $this->render('ridesharing/search-ridesharing', [
+            $this->render('search-ridesharing', [
                 'title' => 'Résultats de la recherche',
                 'error' => 'Aucun covoiturage ne correspond à votre recherche.',
                 'old' => $data,
@@ -154,7 +154,7 @@ class RidesharingController extends BaseController
         $listReview = $this->reviewRepo->findByTarget($ridesharingDetails->getIdRidesharing());
 
         // Affichage des détails du covoiturage 
-        $this->render("ridesharing/ridesharing-detail?id=$idRidesharing", [
+        $this->render("ridesharing-detail?id=$idRidesharing", [
             'title' => 'Détails du covoiturage',
             'ridesharing' => $ridesharingDetails,
             'listReview' => $listReview
@@ -180,7 +180,7 @@ class RidesharingController extends BaseController
         $listParticipate = $this->ridesharingRepo->findRidesharingByParticipant($userId);
         $listRidesharing = $this->ridesharingRepo->findRidesharingByDriver($userId);        
         
-        $this->render('profile/my-ridesharing', [
+        $this->render('my-ridesharing', [
             'title' => 'Mes covoiturages',
             'participates' => $listParticipate,
             'ridesharings' => $listRidesharing
@@ -197,7 +197,7 @@ class RidesharingController extends BaseController
     {
         $this->requireAuth();
         
-        $this->render('ridesharing/create-ridesharing', [
+        $this->render('createRidesharing', [
             'title' => 'Créer un covoiturage',
             'csrf_token' => $this->tokenManager->generateCsrfToken()
         ]);       
@@ -215,7 +215,7 @@ class RidesharingController extends BaseController
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('ridesharing/create-ridesharing');
+            $this->response->redirect('ridesharing/createRidesharing');
             return;
         }
 
@@ -232,34 +232,34 @@ class RidesharingController extends BaseController
         // Validation des données de création de covoiturage
         $errors = [];
 
-        if (empty($data['departure_city'])) {
-            $errors['departure_city'] = "La ville de départ est requise.";
+        if (empty($data['departureCity'])) {
+            $errors['departureCity'] = "La ville de départ est requise.";
         }
 
-        if (empty($data['departure_address'])) {
-            $errors['departure_address'] = "L'adresse de départ est requise.";
+        if (empty($data['departureAddress'])) {
+            $errors['departureAddress'] = "L'adresse de départ est requise.";
         }
 
-        if (empty($data['departure_date']) || !strtotime($data['departure_date'])) {
-            $errors['departure_date'] = "La date de départ est requise et doit être au format valide.";
+        if (empty($data['departureDate']) || !strtotime($data['departureDate'])) {
+            $errors['departureDate'] = "La date de départ est requise et doit être au format valide.";
         } else { // On vérifie que la date de départ est bien dans le futur.
-            $departureDateTime = new \DateTime($data['departure_date']);
+            $departureDateTime = new \DateTime($data['departureDate']);
             $now = new \DateTime();
             if ($departureDateTime < $now) {
-                $errors['departure_date'] = "La date de départ doit être dans le futur.";
+                $errors['departureDate'] = "La date de départ doit être dans le futur.";
             }
         }
 
-        if (empty($data['arrival_city'])) {
-            $errors['arrival_city'] = "La ville d'arrivée est requise.";
+        if (empty($data['arrivalCity'])) {
+            $errors['arrivalCity'] = "La ville d'arrivée est requise.";
         }
 
-        if (empty($data['arrival_address'])) {
-            $errors['arrival_address'] = "L'adresse d'arrivée est requise.";
+        if (empty($data['arrivalAddress'])) {
+            $errors['arrivalAddress'] = "L'adresse d'arrivée est requise.";
         }
 
-        if (empty($data['nb_seats']) || !is_numeric($data['nb_seats']) || $data['nb_seats'] < 1 || $data['nb_seats'] > 6) {
-            $errors['nb_seats'] = "Le nombre de places doit être un nombre entre 1 et 6.";
+        if (empty($data['nbSeats']) || !is_numeric($data['nbSeats']) || $data['nbSeats'] < 1 || $data['nbSeats'] > 6) {
+            $errors['nbSeats'] = "Le nombre de places doit être un nombre entre 1 et 6.";
         }
 
         if (empty($data['id_car'])) {
@@ -268,7 +268,7 @@ class RidesharingController extends BaseController
 
         if (!empty($errors)) 
         {
-            $this->render('ridesharing/create-ridesharing', [
+            $this->render('createRidesharing', [
                 'title' => 'Créer un covoiturage',
                 'errors' => $errors,
                 'old' => $data,
@@ -279,12 +279,12 @@ class RidesharingController extends BaseController
 
         // Préparation des données pour la création du covoiturage
         $ridesharingModel = new RidesharingModel(
-            $data['departure_city'],
-            $data['departure_address'],
-            new \DateTimeImmutable($data['departure_date']),
-            $data['arrival_city'],
-            $data['arrival_address'],
-            $data['nb_seats'],
+            $data['departureCity'],
+            $data['departureAddress'],
+            new \DateTimeImmutable($data['departureDate']),
+            $data['arrivalCity'],
+            $data['arrivalAddress'],
+            $data['nbSeats'],
             $data['id_car'],
             $_SESSION['id_user'],
             'pending'
@@ -315,7 +315,7 @@ class RidesharingController extends BaseController
                 {
                     $this->ridesharingRepo->delete($ridesharingId); // Suppression du covoiturage créé précédemment en cas d'erreur.
                     $errors[] = "Une erreur est survenue lors de l'enregistrement des préférences.";
-                    $this->render('ridesharing/create-ridesharing', [
+                    $this->render('createRidesharing', [
                         'title' => 'Créer un covoiturage',
                         'errors' => $errors,
                         'old' => $data,
@@ -328,7 +328,7 @@ class RidesharingController extends BaseController
         }
 
         // Redirection vers la page de détails du covoiturage nouvellement créé
-        $this->response->redirect("/ridesharing/ridesharing-detail?id=$ridesharingId"); // A créer la page
+        $this->response->redirect("/page/ridesharing-detail?id=$ridesharingId");
     }
 
     /**
@@ -343,7 +343,7 @@ class RidesharingController extends BaseController
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('ridesharing/create-ridesharing');
+            $this->response->redirect('page/createRidesharing');
             return;
         }
 
@@ -368,7 +368,7 @@ class RidesharingController extends BaseController
         }
         
         $this->ridesharingRepo->startRide($data['id_ridesharing']);
-        $this->response->redirect("profile/my-ridesharing");
+        $this->response->redirect("page/myRidesharing");
     }
     
     /**
@@ -383,7 +383,7 @@ class RidesharingController extends BaseController
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('ridesharing/create-ridesharing');
+            $this->response->redirect('page/createRidesharing');
             return;
         }
 
@@ -413,7 +413,7 @@ class RidesharingController extends BaseController
 
         // Envoie du mail de fin de covoiturage.
 
-        $this->response->redirect("profile/my-ridesharing");
+        $this->response->redirect("page/myRidesharing");
     }
 
     /**
@@ -428,7 +428,7 @@ class RidesharingController extends BaseController
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('ridesharing/create-ridesharing');
+            $this->response->redirect('page/createRidesharing');
             return;
         }
 
@@ -460,7 +460,7 @@ class RidesharingController extends BaseController
 
         // Modifcation du solde de crédit des participants.
 
-        $this->response->redirect("ridesharing/my-ridesharing");
+        $this->response->redirect("page/myRidesharing");
     }
 
 }

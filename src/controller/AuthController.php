@@ -45,7 +45,7 @@ class AuthController extends BaseController
      */
     public function showLogin():void
     {
-        $this->render('auth/login', [
+        $this->render('login', [
             'title'=> 'Connexion',
             'csrf_token'=>$this->tokenManager->generateCsrfToken()
         ]);
@@ -60,7 +60,7 @@ class AuthController extends BaseController
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('/auth/login');
+            $this->response->redirect('/page/login');
             return;
         }
 
@@ -102,7 +102,7 @@ class AuthController extends BaseController
 
 
             // Redirection vers la page d'acceuil
-            $this->response->redirect('index',[
+            $this->response->redirect('/page/home',[
                 'title'=>'Accueil - Ecoride',
                 'pseudo'=>$_SESSION['pseudo'],
                 'role'=>$_SESSION['role'],
@@ -112,7 +112,7 @@ class AuthController extends BaseController
             return;
         }else{
             // Si l'authentification échoue, on ré-affiche le formulaire avec un message d'erreur
-            $this->render('auth/login', [
+            $this->render('login', [
                 'title'=>'Connexion',
                 'error'=>'Email ou mot de passe incorrect.',
                 'old'=>['email'=>$data['email']],
@@ -125,7 +125,7 @@ class AuthController extends BaseController
     //Méthode qui affiche la page avec le formulaire d'inscription    
     public function showRegister():void
     {
-        $this->render('auth/register', [
+        $this->render('register', [
             'title'=> 'Inscription',
             'csrf_token'=>$this->tokenManager->generateCsrfToken()
         ]);
@@ -140,7 +140,7 @@ class AuthController extends BaseController
         // On s'assure que la requête est de type POST. Sinon on redirige vers la page d'inscription.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('auth/register');
+            $this->response->redirect('page/register');
             return;
         }
 
@@ -167,13 +167,13 @@ class AuthController extends BaseController
             $errors['password'] = 'Le mot de passe doit contenir au moins 12 caractères avec majuscules, minuscules, chiffres et caractères spéciaux.';
         }
         
-        if (($data['password'] ?? '') !== ($data['confirm_password'] ?? '')) {
-            $errors['confirm_password'] = 'Les mots de passe ne correspondent pas.';
+        if (($data['password'] ?? '') !== ($data['confirmPassword'] ?? '')) {
+            $errors['confirmPassword'] = 'Les mots de passe ne correspondent pas.';
         }
 
         if (!empty($errors)) 
         {
-            $this->render('auth/register', [
+            $this->render('register', [
                 'title' => 'Inscription',
                 'errors' => $errors,
                 'old' => $data,
@@ -187,7 +187,7 @@ class AuthController extends BaseController
         // Vérification si l'email est déjà utilisé
         if ($this->userRepo->getUserByEmail($email)) {
             // Si l'email existe déjà, on affiche une erreur
-            $this->render('auth/register', [
+            $this->render('register', [
                 'title' => 'Inscription',
                 'error' => 'L\'email est déjà utilisé.',
                 'old' => $data,
@@ -221,14 +221,14 @@ class AuthController extends BaseController
                 $_SESSION['pseudo'] = $newUser->getPseudo();
                 
                 // On redirige vers la page des trajets
-                $this->response->redirect('ridesharing/search-ridesharing');
+                $this->response->redirect('searchRidesharing');
                 return;
             }
         }catch (\Exception $e) {
             // En cas d'erreur lors de la création de l'utilisateur, on affiche un message d'erreur
             $this->logger->log('ERROR','Erreur lors de l\'inscription : ' . $e->getMessage());
             // On ré-affiche le formulaire d'inscription avec un message d'erreur
-            $this->render('auth/register', [
+            $this->render('register', [
                 'title' => 'Inscription',
                 'error' => 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer plus tard.',
                 'old' => $data,
@@ -247,7 +247,7 @@ class AuthController extends BaseController
         // On s'assure que la requête est de type POST. Sinon on redirige vers la page d'accueil.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('/');
+            $this->response->redirect('page/home');
             return;
         }
 
@@ -262,7 +262,7 @@ class AuthController extends BaseController
         session_start(); // nouvelle session vide
         session_regenerate_id(true);
         // On redirige vers la page de connexion
-        $this->response->redirect('/login');        
+        $this->response->redirect('page/login');        
     }
 
     // Méthode pour vérifier la limitation du nombre de tentatives de connexion
