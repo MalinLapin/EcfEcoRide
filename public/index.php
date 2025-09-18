@@ -1,4 +1,6 @@
-<?php require_once "../public/template/header.php"; ?>
+
+<?php $pageCss = 'index';
+require_once "../public/template/header.php"; ?>
 
 <main class="mainContent">
     <section class="presentationSection">
