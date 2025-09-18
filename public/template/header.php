@@ -24,10 +24,10 @@
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <link rel="stylesheet" href="/public/pages/css/default.css">
+    <link rel="stylesheet" href="../assets/css/default.css">
     <?php if ($pageCss){ ?>
-        <link rel="stylesheet" href="/public/pages/css/<?=$pageCss?>.css">        
-    <?php ;} ?>
+        <link rel="stylesheet" href="../assets/css/<?=$pageCss?>.css">        
+    <?php ;}?>
 
     <title>EcoRide - Plateforme de covoiturage écologique.</title>
 
@@ -40,11 +40,11 @@
                 <a href=""><span class="material-icons">search</span></a>
             </div>
             <div class="headerLogo">
-                <a href="./index.php"><img class="headerLogo" src="/public/assets/images/LogoSF.png"
+                <a href="../pages/home.php"><img class="headerLogo" src="/public/assets/images/LogoSF.png"
                         alt="Logo de la plateforme EcoRide"></a>
             </div>
             <div class="headerProfil">
-                <a href="./pages/auth/login.php"><span class="material-icons">account_circle</span></a>
+                <a href="../pages/login.php"><span class="material-icons">account_circle</span></a>
             </div>
         </div>
     </header>
