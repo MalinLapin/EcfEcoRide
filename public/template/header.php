@@ -37,14 +37,14 @@
     <header class="header">
         <div class="headerContent">
             <div class="headerSearch">
-                <a href=""><span class="material-icons">search</span></a>
+                <a href="../page/searchRidesharing.php"><span class="material-icons">search</span></a>
             </div>
             <div class="headerLogo">
-                <a href="../pages/home.php"><img class="headerLogo" src="/public/assets/images/LogoSF.png"
+                <a href="../page/home.php"><img class="headerLogo" src="/public/assets/images/LogoSF.png"
                         alt="Logo de la plateforme EcoRide"></a>
             </div>
             <div class="headerProfil">
-                <a href="../pages/login.php"><span class="material-icons">account_circle</span></a>
+                <a href="../page/login.php"><span class="material-icons">account_circle</span></a>
             </div>
         </div>
     </header>
