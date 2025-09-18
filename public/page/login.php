@@ -10,14 +10,14 @@ require_once '../template/header.php'; ?>
         <h3 class="robotoBold">Connexion</h3>
         <form method="POST" action="">
             <div class="form-group">
-                <label for="pseudo"><i class="fas fa-envelope form-icon robotoRegular"></i>Pseudo</label>
+                <label for="pseudo" class="robotoRegular">Pseudo</label>
                 <input type="text" id="pseudo" name="pseudo" placeholder="Votre pseudo" required>
             </div>
             <div class="form-group">
-                <label for="password"><i class="fas fa-lock form-icon robotoRegular"></i>Mot de passe</label>
+                <label for="password" class="robotoRegular">Mot de passe</label>
                 <input type="password" id="password" name="password" placeholder="Mot de passe" required>
             </div>
-            <button type="submit"><i class="fas fa-sign-in-alt robotoRegular"></i>Se connecter</button>
+            <button type="submit" class="robotoRegular">Se connecter</button>
             <div class="message robotoRegular">Pas encore inscrit ? <a href="./register.php">Créer un compte</a></div>
         </form>
     </div>

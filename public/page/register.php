@@ -10,22 +10,22 @@ require_once '../template/header.php'; ?>
         <h3 class="robotoBold">Inscription</h3>
         <form method="POST" action="#">
             <div class="form-group">
-                <label for="pseudo"><i class="fas fa-envelope form-icon robotoRegular"></i>Pseudo :</label>
+                <label for="pseudo" class="robotoRegular"></i>Pseudo :</label>
                 <input type="text" id="pseudo" name="pseudo" placeholder="Votre pseudo" required>
             </div>
             <div class="form-group">
-                <label for="pseudo"><i class="fas fa-envelope form-icon robotoRegular"></i>Email:</label>
+                <label for="pseudo" class="robotoRegular">Email:</label>
                 <input type="text" id="pseudo" name="pseudo" placeholder="Votre mail" required>
             </div>
             <div class="form-group">
-                <label for="pseudo"><i class="fas fa-envelope form-icon robotoRegular"></i>Mot de passe sécuriser :</label>
+                <label for="pseudo" class="robotoRegular">Mot de passe sécuriser :</label>
                 <input type="text" id="pseudo" name="pseudo" placeholder="Votre mot de passe" required>
             </div>
             <div class="form-group">
-                <label for="password"><i class="fas fa-lock form-icon robotoRegular"></i>Confirmer :</label>
+                <label for="password" class="robotoRegular">Confirmer :</label>
                 <input type="password" id="password" name="password" placeholder="Confirmer le mot de passe" required>
             </div>
-            <button type="submit"><i class="fas fa-sign-in-alt robotoRegular"></i>Monter à bord !</button>
+            <button type="submit" class="robotoRegular">Monter à bord !</button>
             <div class="message robotoRegular">Déjà un comtpe ? <a href="./login.php">Connexion</a></div>
         </form>
     </div>   
