@@ -1,0 +1,50 @@
+.listRidesharing {
+  text-align: center;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sectionContent {
+  width: 90%;
+}
+
+.ridesharingCard {
+  background-color: #90ee90;
+  border-radius: 5%;
+  margin: 10px 0;
+}
+
+.infoRidesharing {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoDriver {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.infoDrive {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.ridesharing {
+  display: flex;
+  justify-content: space-around;
+}
+
+.otherInfo {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+button {
+  margin: 10px 0;
+}
