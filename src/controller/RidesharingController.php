@@ -112,14 +112,14 @@ class RidesharingController extends BaseController
         // Recherche des covoiturages en fonction des critères fournis
         if($listRidesharing)
         {
-            $this->render('list-ridesharing', [
+            $this->render('listRidesharing', [
                 'title' => 'Résultats de la recherche',
                 'ridesharings' => $listRidesharing
             ]);
             return;
         } else
         {
-            $this->render('search-ridesharing', [
+            $this->render('searchRidesharing', [
                 'title' => 'Résultats de la recherche',
                 'error' => 'Aucun covoiturage ne correspond à votre recherche.',
                 'old' => $data,
