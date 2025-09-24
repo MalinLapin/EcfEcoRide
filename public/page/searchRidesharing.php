@@ -1,6 +1,7 @@
 <?php
 $pageCss='searchRidesharing';
 require_once '../template/header.php'; ?>
+
 <section class="searchSection">
         <h2 class="montserratBold titleColor">Trouver votre covoiturage</h2>
         <div class="searchContent">
