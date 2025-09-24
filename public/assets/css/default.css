@@ -42,7 +42,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  padding: 10px;
 }
 
 /* ---------------CSS du header---------------- */
