@@ -25,8 +25,6 @@ enum Role: string
 class UserModel extends BaseModel
 {
     private ?int $idUser = null; // Identifiant de l'utilisateur, initialisé à null.
-    private string $lastName; // Nom de famille de l'utilisateur.
-    private string $firstName; // Prénom de l'utilisateur.
     private string $pseudo; // Pseudo de l'utilisateur.
     private string $email; // Adresse e-mail de l'utilisateur.
     private string $password; // Mot de passe de l'utilisateur.
@@ -58,42 +56,6 @@ class UserModel extends BaseModel
     public function setIdUser(?int $idUser): self
     {
         $this->idUser = $idUser;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of lastName
-     */
-    public function getLastName(): string
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * Set the value of lastName
-     */
-    public function setLastName(string $lastName): self
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of firstName
-     */
-    public function getFirstName(): string
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * Set the value of firstName
-     */
-    public function setFirstName(string $firstName): self
-    {
-        $this->firstName = $firstName;
 
         return $this;
     }
