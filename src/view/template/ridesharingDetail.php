@@ -7,12 +7,12 @@ require_once '../template/header.php'; ?>
         <h3 class ='montserratBold'>Trajet</h3>
         <div class='rideAddress'>
             <div class='departure'>
-                <p class='robotoBold'>Lyon, <br><span>Part Dieu</span></p>
+                <p class='robotoBold'>Lyon,<br><span class='robotoRegular'>Part Dieu</span></p>
                 <p>10h45</p>
             </div>
             <img src="../assets/images/arrow_to_right.png" alt="logo flèche">
             <div class='arrival'>
-                <p class='robotoBold'>Saint Etienne <br><span class='robotoRegular'> Rue du test</span></p>
+                <p class='robotoBold'>Saint-Etienne,<br><span class='robotoRegular'> Rue du test</span></p>
                 <p class='robotoRegular'>11h15</p>
             </div>
         </div>

@@ -15,18 +15,14 @@
   flex-direction: column;
 }
 
-.rideInfo p {
-  width: 85px;
-}
-
 .rideAddress {
   display: flex;
   justify-content: space-between;
-  margin: 10px 0;
+  margin: 10px;
 }
 
 .rideAddress div {
-  width: 100px;
+  width: 130px;
 }
 
 .infoCard {
@@ -35,6 +31,10 @@
   flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 10px;
+}
+
+.infoCard div {
+  width: 85px;
 }
 
 .participationInfo div {

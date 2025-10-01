@@ -1,14 +1,17 @@
-<?php 
-$pageCss = 'login';
-require_once '../template/header.php'; ?>
+
 
 <main class="mainContent">
     <section class="presentationSection">
-        <h2 class="montserratBold titleColor">EcoRide</h2>
+        <h1 class="montserratBold titleColor">EcoRide, 
+            <?php if(isset($title)&&$title){
+                echo $title;
+            }else{
+                echo 'votre covoiturage éco-responsable.';
+            } ?></h1>
     </section>
     <div class="card">
         <h3 class="robotoBold">Connexion</h3>
-        <form method="POST" action="">
+        <form method="POST" action="../../src/controller/AuthController.php/login">
             <div class="form-group">
                 <label for="pseudo" class="robotoRegular">Pseudo</label>
                 <input type="text" id="pseudo" name="pseudo" placeholder="Votre pseudo" required>
@@ -18,9 +21,8 @@ require_once '../template/header.php'; ?>
                 <input type="password" id="password" name="password" placeholder="Mot de passe" required>
             </div>
             <button type="submit" class="robotoRegular">Se connecter</button>
-            <div class="message robotoRegular">Pas encore inscrit ? <a href="./register.php">Créer un compte</a></div>
+            <div class="message robotoRegular">Pas encore inscrit ? <a href="/register">Créer un compte</a></div>
         </form>
     </div>
 </main>
 
-<?php require_once '../template/footer.php'; ?>

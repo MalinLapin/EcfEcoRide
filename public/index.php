@@ -1,0 +1,79 @@
+<?php
+
+
+// Affiche les erreurs directement dans notre page.
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+
+// Inclure l'autoloader
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+
+// Import des classes
+use App\config\Config;
+use App\Utils\Response;
+
+// Charger nos variable d'environnement
+Config::load();
+
+// Démarrer une séssion ou reprendre la séssion existante
+session_start();
+
+// Définir des routes avec la bibliothèque FastRoute
+$dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
+    $r->addRoute('GET', '/', [App\controller\HomeController::class, 'index']);
+    $r->addRoute('GET', '/login', [App\controller\AuthController::class, 'showLogin']);
+    $r->addRoute('POST', '/login', [App\controller\AuthController::class, 'login']);
+    $r->addRoute('GET', '/register', [App\controller\AuthController::class, 'showRegister']);
+    $r->addRoute('POST', '/register', [App\controller\AuthController::class, 'register']);
+    $r->addRoute('POST', '/logout', [App\controller\AuthController::class, 'logout']);    
+    $r->addRoute('GET', '/searchRideSharing', [App\controller\RidesharingController::class, 'showSearchRidesharing']);    
+    $r->addRoute('POST', '/searchRideSharing', [App\controller\RidesharingController::class, 'searchRidesharing']);    
+});
+
+// Traitement de la requête
+// 1. Récupérer la méthode HTTP (GET, POST, PUT, PATCH) et l'URI(/login, /car/1)
+$httpMethod = $_SERVER['REQUEST_METHOD'];
+$uri = rawurldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+
+// Nettoyer l'URI pour enlever le préfixe /public
+if (strpos($uri, '/public') === 0) {
+    $uri = substr($uri, 7); // Enlève '/public' (7 caractères)
+}
+
+// Si l'URI devient vide après nettoyage, mettre '/'
+if (empty($uri)) {
+    $uri = '/';
+}
+
+// 2. Dispatcher FastRoute
+$routeInfo = $dispatcher->dispatch($httpMethod, $uri);
+$response = new Response();
+
+// 3. Annalyse du résultat du Dispatching
+switch ($routeInfo[0]) {
+    case FastRoute\Dispatcher::NOT_FOUND:
+        $response->error('404 - Page non trouvée', 404);
+        break;
+    
+    case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
+        $response->error('405 - Méthode non autorisée', 405);
+        break;
+
+    case FastRoute\Dispatcher::FOUND:
+        [$controllerClass, $method] = $routeInfo[1];
+        $vars = $routeInfo[2];
+        try{
+            $controller = new $controllerClass();
+            call_user_func_array([$controller, $method], $vars);
+        }catch(\Exception $e){
+            if(Config::get('APP_DEBUG') === 'true'){
+                $response->error("Erreur 500 : " . $e->getMessage() . " dans " . $e->getFile() . ":" . $e->getLine(), 500);
+            }else{
+                (new \App\Utils\Logger())->log('ERROR', 'Erreur Serveur :' . $e->getMessage());
+                $response->error("Une erreur interne est survenue.", 500);
+            }
+        }
+        break;
+}
+

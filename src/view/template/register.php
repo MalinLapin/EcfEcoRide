@@ -1,6 +1,3 @@
-<?php 
-$pageCss = 'register';
-require_once '../template/header.php'; ?>
 
 <main class="mainContent">
     <section class="presentationSection">
@@ -8,7 +5,7 @@ require_once '../template/header.php'; ?>
     </section>
     <div class="card">
         <h3 class="robotoBold">Inscription</h3>
-        <form method="POST" action="#">
+        <form method="POST" action="../../controller/AuthController.php/register">
             <div class="form-group">
                 <label for="pseudo" class="robotoRegular"></i>Pseudo :</label>
                 <input type="text" id="pseudo" name="pseudo" placeholder="Votre pseudo" required>
@@ -26,9 +23,8 @@ require_once '../template/header.php'; ?>
                 <input type="password" id="password" name="password" placeholder="Confirmer le mot de passe" required>
             </div>
             <button type="submit" class="robotoRegular">Monter à bord !</button>
-            <div class="message robotoRegular">Déjà un comtpe ? <a href="./login.php">Connexion</a></div>
+            <div class="message robotoRegular">Déjà un comtpe ? <a href="../../view/template/login.php">Connexion</a></div>
         </form>
     </div>   
 </main>
 
-<?php require_once '../template/footer.php'; ?>

@@ -7,7 +7,9 @@
 }
 
 body {
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Importation des classes pour les polices */
@@ -35,14 +37,6 @@ body {
 .titleColor {
   color: #27ae60;
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
-}
-
-.mainContent {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px;
 }
 
 /* ---------------CSS du header---------------- */
@@ -76,6 +70,17 @@ body {
 
 .header a {
   color: white;
+}
+
+/* ---------------footer---------------- */
+
+.mainContent {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
 }
 
 /* ---------------footer---------------- */

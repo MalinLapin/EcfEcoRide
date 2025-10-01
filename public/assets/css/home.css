@@ -6,8 +6,8 @@
 }
 
 h1 {
-  margin: 5%;
   text-align: center;
+  margin: 20px 0;
 }
 .imagePresentation {
   max-height: 300px;
@@ -55,12 +55,13 @@ h1 {
   background-color: #90ee90;
   border-radius: 5%;
   width: 90%;
-  margin: 1rem 0;
+  margin: 20px 0 20px;
   text-align: start;
 }
 
 .card h4 {
   text-align: center;
+  margin-top: 10px;
 }
 
 .card p,

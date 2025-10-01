@@ -1,9 +1,4 @@
-
-<?php $pageCss = 'home';
-require_once "../template/header.php"; ?>
-
-<main class="mainContent">
-    <section class="presentationSection">
+<section class="presentationSection">
         <h1 class="montserratBold titleColor">EcoRide, votre covoiturage <br>éco-responsable</h1>
         <img class="imagePresentation" src="../assets/images/PhotoPresentation.png"
             alt="Photo représentant le covoiturage avec EcoRide.">
@@ -84,7 +79,4 @@ require_once "../template/header.php"; ?>
                 </ul>
             </div>
         </div>
-    </section>
-</main>
-
-<?php require_once '../template/footer.php'; ?>
+</section>
