@@ -2,6 +2,7 @@
 
 namespace App\controller;
 
+use App\security\TokenManager;
 use App\security\Validator;
 use App\utils\Response;
 
@@ -14,11 +15,13 @@ abstract class BaseController
 {
     protected Response $response;
     protected Validator $validator;
+    protected TokenManager $tokenManager;
 
     public function __construct()
     {
         $this->response = new Response();
         $this->validator = new Validator();
+        $this->tokenManager = new TokenManager();
     }
 
     /**
@@ -29,7 +32,7 @@ abstract class BaseController
     protected function render(string $view, array $data = []):void
     {
         // On construit le chemin complet vers le chemin de vue
-        $viewPath = dirname(__DIR__, 2).'/page/'.$view.'.php';
+        $viewPath = dirname(__DIR__).'/view/template/'.$view.'.php';
         // On vérifie que le fichier vue existe bien.
         if(!file_exists($viewPath))
         {
@@ -49,7 +52,7 @@ abstract class BaseController
         $content = ob_get_clean();
 
         // Finalement, on inclut le layout principal, qui peut maintenant utiliser la variable $content.
-        include dirname(__DIR__, 2).'/page/layout.php';
+        include dirname(__DIR__).'/view/layout.php';
     }
 
     /**
@@ -67,7 +70,11 @@ abstract class BaseController
     {
         if(!isset($_SESSION['id_user']))
         {
-            $this->response->redirect('page/login');
+            $this->render('login', [
+            'title'=> 'Connexion',
+            'csrf_token'=>$this->tokenManager->generateCsrfToken(),
+            'pageCss'=>'login.css'
+        ]);
         }
     }
 }

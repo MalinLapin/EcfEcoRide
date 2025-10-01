@@ -11,7 +11,7 @@ class Config
      * @param string $path Dossier contenant le .env
      * @param string $envFile Nom du fichier d'environnement à charger
      */
-    public static function load($path = __DIR__ . '/../', $envFile ='.env'):void
+    public static function load($path = __DIR__ . '/../../', $envFile ='.env'):void
     {
         // On vérifie que le fichier .env existe avant de le charger
         if(file_exists($path . $envFile))

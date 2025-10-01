@@ -6,20 +6,19 @@ use App\utils\Logger;
 use App\model\UserModel;
 use App\repository\UserRepo;
 use App\security\TokenManager;
-use App\security\Validator;
 
 class AuthController extends BaseController
 {
+    private Logger $logger;
+    private UserRepo $userRepo;
     /**
      * Constructeur de la classe AuthController
      * Il initialise les modèles nécessaires pour l'authentification.
      */
-    public function __construct(
-        private TokenManager $tokenManager,
-        private Logger $logger,
-        private UserRepo $userRepo,
-        private Validator $validator)
+    public function __construct()
     {
+        $this->logger = new Logger();
+        $this->userRepo = new UserRepo();
         // Appel du constructeur de la classe parente
         parent::__construct();
     }
@@ -47,7 +46,8 @@ class AuthController extends BaseController
     {
         $this->render('login', [
             'title'=> 'Connexion',
-            'csrf_token'=>$this->tokenManager->generateCsrfToken()
+            'csrf_token'=>$this->tokenManager->generateCsrfToken(),
+            'pageCss'=>'login'
         ]);
     }
 
@@ -60,7 +60,10 @@ class AuthController extends BaseController
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('/page/login');
+            $this->render('login',[
+                'pageCss'=>'login',
+                'error' => 'Erreur lors de l\'envoie du formulaire'   
+            ]);
             return;
         }
 
@@ -80,7 +83,7 @@ class AuthController extends BaseController
             return;
         }
 
-        $email = Validator::validateEmail($data['email']);
+        $email = $this->validator->validateEmail($data['email']);
 
         // Validation des données de connexion 
         $user = $this->authenticate($email, $data['password']);
@@ -102,7 +105,7 @@ class AuthController extends BaseController
 
 
             // Redirection vers la page d'acceuil
-            $this->response->redirect('/page/home',[
+            $this->render('home',[
                 'title'=>'Accueil - Ecoride',
                 'pseudo'=>$_SESSION['pseudo'],
                 'role'=>$_SESSION['role'],
@@ -116,7 +119,8 @@ class AuthController extends BaseController
                 'title'=>'Connexion',
                 'error'=>'Email ou mot de passe incorrect.',
                 'old'=>['email'=>$data['email']],
-                'csrf_token'=>$this->tokenManager->generateCsrfToken()
+                'csrf_token'=>$this->tokenManager->generateCsrfToken(),
+                'pageCss'=>'login'
             ]);
             return;
         }
@@ -127,7 +131,8 @@ class AuthController extends BaseController
     {
         $this->render('register', [
             'title'=> 'Inscription',
-            'csrf_token'=>$this->tokenManager->generateCsrfToken()
+            'csrf_token'=>$this->tokenManager->generateCsrfToken(),
+            'pageCss'=>'register'
         ]);
     }
 
@@ -140,7 +145,9 @@ class AuthController extends BaseController
         // On s'assure que la requête est de type POST. Sinon on redirige vers la page d'inscription.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('page/register');
+            $this->render('register',[
+                'pageCss'=>'register'
+            ]);
             return;
         }
 
@@ -162,7 +169,7 @@ class AuthController extends BaseController
             $errors['pseudo'] = 'Le pseudo doit faire entre 3 et 50 caractères.';
         }
 
-        if (empty($data['password']) || !Validator::validatePasswordStrength($data['password'])) 
+        if (empty($data['password']) || !$this->validator->validatePasswordStrength($data['password'])) 
         {
             $errors['password'] = 'Le mot de passe doit contenir au moins 12 caractères avec majuscules, minuscules, chiffres et caractères spéciaux.';
         }
@@ -177,12 +184,13 @@ class AuthController extends BaseController
                 'title' => 'Inscription',
                 'errors' => $errors,
                 'old' => $data,
-                'csrf_token' => $this->tokenManager->generateCsrfToken()
+                'csrf_token' => $this->tokenManager->generateCsrfToken(),
+                'pageCss'=>'register'
             ]);
             return;
         }
 
-        $email = Validator::validateEmail($data['email']);
+        $email = $this->validator->validateEmail($data['email']);
 
         // Vérification si l'email est déjà utilisé
         if ($this->userRepo->getUserByEmail($email)) {
@@ -191,7 +199,8 @@ class AuthController extends BaseController
                 'title' => 'Inscription',
                 'error' => 'L\'email est déjà utilisé.',
                 'old' => $data,
-                'csrf_token' => $this->tokenManager->generateCsrfToken()
+                'csrf_token' => $this->tokenManager->generateCsrfToken(),
+                'pageCss'=>'register'
             ]);
             return;
         }
@@ -221,7 +230,9 @@ class AuthController extends BaseController
                 $_SESSION['pseudo'] = $newUser->getPseudo();
                 
                 // On redirige vers la page des trajets
-                $this->response->redirect('searchRidesharing');
+                $this->render('searchRidesharing', [
+                    'pageCss'=>'searchRidesharing'
+                ]);
                 return;
             }
         }catch (\Exception $e) {
@@ -232,7 +243,8 @@ class AuthController extends BaseController
                 'title' => 'Inscription',
                 'error' => 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer plus tard.',
                 'old' => $data,
-                'csrf_token' => $this->tokenManager->generateCsrfToken()
+                'csrf_token' => $this->tokenManager->generateCsrfToken(),
+                'pageCss'=>'register'
             ]);
             return;
         }
@@ -247,7 +259,7 @@ class AuthController extends BaseController
         // On s'assure que la requête est de type POST. Sinon on redirige vers la page d'accueil.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('page/home');
+            $this->render('home');
             return;
         }
 
@@ -262,7 +274,7 @@ class AuthController extends BaseController
         session_start(); // nouvelle session vide
         session_regenerate_id(true);
         // On redirige vers la page de connexion
-        $this->response->redirect('page/login');        
+        $this->render('login');        
     }
 
     // Méthode pour vérifier la limitation du nombre de tentatives de connexion
