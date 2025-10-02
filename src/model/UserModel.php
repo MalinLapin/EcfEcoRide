@@ -29,7 +29,7 @@ class UserModel extends BaseModel
     private string $email; // Adresse e-mail de l'utilisateur.
     private string $password; // Mot de passe de l'utilisateur.
     private DateTimeImmutable $createdAt; // Date de création du compte utilisateur.
-    private int $creditBalance; //Solde de crédit
+    private int $creditBalance = 20; //Solde de crédit
     private ?string $photo; //String car chemin pour la photo et non la photo elle meme.
     private ?float $grade; //Note générale de l'utilisateur
     private bool $isActive = true; //Etat de l'utilisateur (actif ou suspendu).
@@ -122,6 +122,16 @@ class UserModel extends BaseModel
     }
 
     /**
+     * Setter du Password une fois hasher.
+     */
+    public function setHashedPassword(string $hashedPassword): self
+    {
+        // Méthode explicite pour hash depuis BDD
+        $this->password = $hashedPassword;
+        return $this;
+    }
+
+    /**
      * Get the value of createdAt
      */
     public function getCreatedAt(): DateTimeImmutable
@@ -160,7 +170,7 @@ class UserModel extends BaseModel
     /**
      * Get the value of photo
      */
-    public function getPhoto(): string
+    public function getPhoto(): ?string
     {
         return $this->photo;
     }
@@ -168,7 +178,7 @@ class UserModel extends BaseModel
     /**
      * Set the value of photo
      */
-    public function setPhoto(string $photo): self
+    public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
 
@@ -178,7 +188,7 @@ class UserModel extends BaseModel
     /**
      * Get the value of grade
      */
-    public function getGrade(): float
+    public function getGrade(): ?float
     {
         return $this->grade;
     }
@@ -186,7 +196,7 @@ class UserModel extends BaseModel
     /**
      * Set the value of grade
      */
-    public function setGrade(float $grade): self
+    public function setGrade(?float $grade): self
     {
         $this->grade = $grade;
 
