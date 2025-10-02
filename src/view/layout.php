@@ -37,14 +37,19 @@
     <header class="header">
         <div class="headerContent">
             <div class="headerSearch">
-                <a href="../src/controller/RidesharingController.php/showSearchRidesharing"><span class="material-icons">search</span></a>
+                <a href="/search"><span class="material-icons">search</span></a>
             </div>
             <div class="headerLogo">
                 <a href="/"><img class="headerLogo" src="./assets/images/LogoSF.png"
                         alt="Logo de la plateforme EcoRide"></a>
             </div>
             <div class="headerProfil">
-                <a href="/login"><span class="material-icons">account_circle</span></a>
+                <?php if (isset($_SESSION['pseudo'])):?>
+                    <a href="/profil"><span class="material-icons">account_circle</span><br>
+                    <p class='robotoBold'><?=$_SESSION['pseudo']?></p></a>
+                <?php else :?>
+                    <a href="/login"><span class="material-icons">account_circle</span></a>
+                <?php endif;?>
             </div>
         </div>
     </header>
@@ -58,6 +63,15 @@
         <address class="robotoRegular">Contact</address>
         <p class="robotoRegular"><span>&#169</span> Marc Uny | tous droits réservés</p>
         <a href="../view/template/mentionLegale.php" class="robotoRegular">Mention-légales</a>
+        
+        
+        <!--Element provisoir-->
+        <?php if (isset($_SESSION['pseudo'])):?>
+        <form method="POST" action="/logout">
+            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+            <button type="submit">Se déconnecter</button>
+        </form>
+        <?php endif; ?>
     </footer>
 </body>
 
