@@ -6,6 +6,7 @@ use App\utils\Logger;
 use App\model\UserModel;
 use App\repository\UserRepo;
 use App\security\TokenManager;
+use DateTimeImmutable;
 
 class AuthController extends BaseController
 {
@@ -45,7 +46,6 @@ class AuthController extends BaseController
     public function showLogin():void
     {
         $this->render('login', [
-            'title'=> 'Connexion',
             'csrf_token'=>$this->tokenManager->generateCsrfToken(),
             'pageCss'=>'login'
         ]);
@@ -83,10 +83,12 @@ class AuthController extends BaseController
             return;
         }
 
-        $email = $this->validator->validateEmail($data['email']);
+        if(!$this->validator->validateEmail($data['email'])){
+            $errors['email']='email Invalide';
+        }
 
         // Validation des données de connexion 
-        $user = $this->authenticate($email, $data['password']);
+        $user = $this->authenticate($data['email'], $data['password']);
 
         if($user)
         {
@@ -99,26 +101,18 @@ class AuthController extends BaseController
 
             // Si l'authentification réussit, on stocke les informations en session
             $_SESSION['id_user']=$user->getIdUser();
-            $_SESSION['role']=$user->getRole();
+            $_SESSION['role']=$user->getRole()->value;
             $_SESSION['pseudo']=$user->getPseudo();
             $_SESSION['photo']=$user->getPhoto();
 
 
             // Redirection vers la page d'acceuil
-            $this->render('home',[
-                'title'=>'Accueil - Ecoride',
-                'pseudo'=>$_SESSION['pseudo'],
-                'role'=>$_SESSION['role'],
-                'photo'=>$_SESSION['photo'],
-                'id_user'=>$_SESSION['id_user']
-            ]);
+            $this->redirect('/');
             return;
         }else{
             // Si l'authentification échoue, on ré-affiche le formulaire avec un message d'erreur
             $this->render('login', [
-                'title'=>'Connexion',
                 'error'=>'Email ou mot de passe incorrect.',
-                'old'=>['email'=>$data['email']],
                 'csrf_token'=>$this->tokenManager->generateCsrfToken(),
                 'pageCss'=>'login'
             ]);
@@ -130,7 +124,6 @@ class AuthController extends BaseController
     public function showRegister():void
     {
         $this->render('register', [
-            'title'=> 'Inscription',
             'csrf_token'=>$this->tokenManager->generateCsrfToken(),
             'pageCss'=>'register'
         ]);
@@ -151,7 +144,7 @@ class AuthController extends BaseController
             return;
         }
 
-        $data = $this->getPostData();
+        $data = $this->getPostData();        
 
         // Validation du token CSRF
         if (!$this->tokenManager->validateCsrfToken($data['csrf_token']??''))
@@ -171,34 +164,34 @@ class AuthController extends BaseController
 
         if (empty($data['password']) || !$this->validator->validatePasswordStrength($data['password'])) 
         {
-            $errors['password'] = 'Le mot de passe doit contenir au moins 12 caractères avec majuscules, minuscules, chiffres et caractères spéciaux.';
+            $errors['password'] = 'Min. 12 caractères avec majuscules, minuscules, chiffres et caractères spéciaux.';
         }
         
         if (($data['password'] ?? '') !== ($data['confirmPassword'] ?? '')) {
             $errors['confirmPassword'] = 'Les mots de passe ne correspondent pas.';
         }
 
+        if(!$this->validator->validateEmail($data['email'])){
+            $errors['email']='email Invalide';
+        }
+
         if (!empty($errors)) 
         {
             $this->render('register', [
-                'title' => 'Inscription',
                 'errors' => $errors,
-                'old' => $data,
                 'csrf_token' => $this->tokenManager->generateCsrfToken(),
                 'pageCss'=>'register'
             ]);
             return;
         }
 
-        $email = $this->validator->validateEmail($data['email']);
+        $email=$data['email'];        
 
         // Vérification si l'email est déjà utilisé
         if ($this->userRepo->getUserByEmail($email)) {
             // Si l'email existe déjà, on affiche une erreur
             $this->render('register', [
-                'title' => 'Inscription',
                 'error' => 'L\'email est déjà utilisé.',
-                'old' => $data,
                 'csrf_token' => $this->tokenManager->generateCsrfToken(),
                 'pageCss'=>'register'
             ]);
@@ -218,20 +211,29 @@ class AuthController extends BaseController
              */           
             $newUser->setPseudo($data['pseudo'])
                     ->setEmail($email)
-                    ->setPassword(($data['password']));
+                    ->setPassword(($data['password']))
+                    ->setCreatedAt(new DateTimeImmutable());
+        
+
+            $result = $this->userRepo->create($newUser);
             
-            
-            if($this->userRepo->create($newUser))
-            {
+            if ($result) {
+
                 session_regenerate_id(true);
                 // Si l'utilisateur est créé avec succès, on enregistre les informations en session
                 $_SESSION['id_user'] = $newUser->getIdUser();
-                $_SESSION['role'] = $newUser->getRole();
+                $_SESSION['role'] = $newUser->getRole()->value;
                 $_SESSION['pseudo'] = $newUser->getPseudo();
                 
                 // On redirige vers la page des trajets
-                $this->render('searchRidesharing', [
-                    'pageCss'=>'searchRidesharing'
+                $this->redirect('/');
+                return;// Succès...
+
+            } else {
+                $this->render('register', [
+                    'error' => 'Erreur lors de la création du compte.',
+                    'csrf_token' => $this->tokenManager->generateCsrfToken(),
+                    'pageCss' => 'register'
                 ]);
                 return;
             }
@@ -240,9 +242,7 @@ class AuthController extends BaseController
             $this->logger->log('ERROR','Erreur lors de l\'inscription : ' . $e->getMessage());
             // On ré-affiche le formulaire d'inscription avec un message d'erreur
             $this->render('register', [
-                'title' => 'Inscription',
                 'error' => 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer plus tard.',
-                'old' => $data,
                 'csrf_token' => $this->tokenManager->generateCsrfToken(),
                 'pageCss'=>'register'
             ]);
@@ -274,7 +274,7 @@ class AuthController extends BaseController
         session_start(); // nouvelle session vide
         session_regenerate_id(true);
         // On redirige vers la page de connexion
-        $this->render('login');        
+        $this->redirect('/');        
     }
 
     // Méthode pour vérifier la limitation du nombre de tentatives de connexion
