@@ -63,13 +63,17 @@ body {
 }
 
 .headerLogo img {
-  width: 80%;
   background-color: #90ee90;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .header a {
   color: white;
+}
+
+.headerProfil {
+  display: flex;
+  text-align: center;
 }
 
 /* ---------------footer---------------- */
