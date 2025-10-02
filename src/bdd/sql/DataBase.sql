@@ -13,8 +13,6 @@ CREATE TABLE brand (
 
 CREATE TABLE user (
     id_user INT PRIMARY KEY AUTO_INCREMENT,
-    last_name VARCHAR(50) NULL,
-    first_name VARCHAR(50) NULL,
     pseudo VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
