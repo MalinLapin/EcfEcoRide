@@ -56,6 +56,16 @@ abstract class BaseController
     }
 
     /**
+     * Permet la redirection d'url
+     * @param string $url l'adresse HTTP de destination
+     */
+    protected function redirect(string $url):void
+    {
+        header("Location: $url");
+        exit;
+    }
+
+    /**
      * Récupère et nettoie les données envoyées via une requête POST
      */
     protected function getPostData():array
