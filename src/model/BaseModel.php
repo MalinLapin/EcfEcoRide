@@ -48,12 +48,18 @@ abstract class BaseModel
     {
         foreach ($data as $key => $value)
             {
+            
             // Problème avec les noms de colonnes comme first_name.
             $methodName = str_replace(array('-','_'), ' ', $key); // first name
             $methodName = ucwords($methodName);// First Name
             $methodName = str_replace(' ','', $methodName); // FirstName
             $methodName = 'set'.$methodName; // setFirstName
             
+            //Si la key est password on passe par setHashedPassword pour évité de re-hasher le mot de passe via le Setter de UserModel.
+            if ($key === 'password') {
+                $this->setHashedPassword($value);
+                continue;
+            }
             
             // On vérifie si la méthode existe avant de l'appeler
             if(method_exists($this,$methodName))
