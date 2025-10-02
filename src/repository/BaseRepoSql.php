@@ -29,8 +29,9 @@ abstract class BaseRepoSql
      * @param BaseModel $model Le modèle à insérer dans la base de données.
      * @return bool Retourne true si l'insertion a réussi, false sinon.
      */
-    public function create(BaseModel $model):?int
+    public function create(BaseModel $model):bool
     {
+        
         // On vérifie que le modèle est une instance de BaseModel
         $data = $this->extractData($model);
 
@@ -50,8 +51,7 @@ abstract class BaseRepoSql
             $stmt->bindValue(":{$key}", $this->prepareParamForDatabase($value));
 
         }
-        $stmt->execute();
-        return (int)$this->pdo->lastInsertId();
+        return $stmt->execute();        
     }
 
     /**
@@ -67,9 +67,17 @@ abstract class BaseRepoSql
         $reflection = new \ReflectionClass($model);
 
         // On parcourt les propriétés du modèle et on les ajoute au tableau de données
-        foreach ($reflection->getProperties() as $property) {
-            $property->setAccessible(true);          
-            $data[self::camelToSnake($property->getName())] = $property->getValue($model);
+        foreach ($reflection->getProperties() as $property) 
+        {
+            // On rend la propriété accessible même si elle est privée ou protégée
+            $property->setAccessible(true);
+            // On vérifie si la propriété est initialisée avant de tenter de récupérer sa valeur
+            if ($property->isInitialized($model)) {
+                // 
+                $data[self::camelToSnake($property->getName())] = $property->getValue($model);
+            }else { // Si la propriété n'est pas initialisée, on peut choisir de l'ignorer ou de lui attribuer une valeur par défaut (comme null)
+                $data[self::camelToSnake($property->getName())] = null;
+            }
         }
         return $data;
     }
