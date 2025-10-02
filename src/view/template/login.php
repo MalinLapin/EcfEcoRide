@@ -1,28 +1,23 @@
-
-
-<main class="mainContent">
-    <section class="presentationSection">
-        <h1 class="montserratBold titleColor">EcoRide, 
-            <?php if(isset($title)&&$title){
-                echo $title;
-            }else{
-                echo 'votre covoiturage éco-responsable.';
-            } ?></h1>
-    </section>
+<section class='login'>  
+    <div class="presentationSection">
+        <h1 class="montserratBold titleColor">EcoRide,<br>votre covoiturage <br> éco-responsable.</h1>
+    </div>
     <div class="card">
         <h3 class="robotoBold">Connexion</h3>
-        <form method="POST" action="../../src/controller/AuthController.php/login">
+        <form method="POST" action="/login">
             <div class="form-group">
-                <label for="pseudo" class="robotoRegular">Pseudo</label>
-                <input type="text" id="pseudo" name="pseudo" placeholder="Votre pseudo" required>
+                <label for="email" class="robotoRegular">Email</label>
+                <input type="email" id="email" name="email" placeholder="Votre email" required>
             </div>
             <div class="form-group">
                 <label for="password" class="robotoRegular">Mot de passe</label>
                 <input type="password" id="password" name="password" placeholder="Mot de passe" required>
             </div>
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
             <button type="submit" class="robotoRegular">Se connecter</button>
             <div class="message robotoRegular">Pas encore inscrit ? <a href="/register">Créer un compte</a></div>
         </form>
     </div>
-</main>
+</section> 
+
 
