@@ -16,15 +16,20 @@ use App\service\MailService;
 
 class RidesharingController extends BaseController
 {
-    public function __construct(
-        private TokenManager $tokenManager,
-        private Logger $logger,
-        private RidesharingRepo $ridesharingRepo,
-        private PreferenceRepo $preferenceRepo,
-        private UserRepo $userRepo,        
-        private Validator $validator,
-        private ReviewRepo $reviewRepo) 
+    private Logger $logger;
+    private RidesharingRepo $ridesharingRepo;
+    private PreferenceRepo $preferenceRepo;
+    private UserRepo $userRepo;
+    private ReviewRepo $reviewRepo;
+
+    public function __construct() 
     {
+        $this->logger = new Logger();
+        $this->ridesharingRepo = new RidesharingRepo();
+        $this->preferenceRepo = new PreferenceRepo();
+        $this->userRepo = new UserRepo();
+        $this->reviewRepo = new ReviewRepo();
+        
         parent::__construct();
     }
     
