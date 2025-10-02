@@ -1,10 +1,8 @@
 <?php
 
-
 // Affiche les erreurs directement dans notre page.
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
 
 // Inclure l'autoloader
 require_once dirname(__DIR__) . '/vendor/autoload.php';
@@ -27,8 +25,8 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
     $r->addRoute('GET', '/register', [App\controller\AuthController::class, 'showRegister']);
     $r->addRoute('POST', '/register', [App\controller\AuthController::class, 'register']);
     $r->addRoute('POST', '/logout', [App\controller\AuthController::class, 'logout']);    
-    $r->addRoute('GET', '/searchRideSharing', [App\controller\RidesharingController::class, 'showSearchRidesharing']);    
-    $r->addRoute('POST', '/searchRideSharing', [App\controller\RidesharingController::class, 'searchRidesharing']);    
+    $r->addRoute('GET', '/search', [App\controller\RidesharingController::class, 'showSearchRidesharing']);    
+    $r->addRoute('POST', '/search', [App\controller\RidesharingController::class, 'searchRidesharing']);    
 });
 
 // Traitement de la requête
