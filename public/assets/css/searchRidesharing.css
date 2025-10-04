@@ -1,15 +1,16 @@
-.searchSection {
+.searchRidesharing {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 80%;
 }
 
 .searchContent {
   background-color: #90ee90;
   border-radius: 5%;
   margin: 30px 0;
-  width: 80%;
+  width: 100%;
   text-align: center;
 }
 
@@ -27,11 +28,21 @@
 .searchForm div {
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
-button {
+.errorsList {
+  margin-left: 5px;
+  padding-inline-start: 20px;
+}
+
+.error {
+  margin-top: 10px;
+  color: #c0392b;
+}
+
+.btnSearch {
   background-color: #f7dc6f;
-  margin: 30px 0 30px;
+  margin: 20px 0 30px;
   width: 120px;
 }
