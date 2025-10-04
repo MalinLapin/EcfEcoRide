@@ -1,12 +1,13 @@
-<section class="listRidesharing">
+<section class="listRidesharing robotoRegular">
         <h2 class="montserratBold titleColor">Liste des trajets :</h2>
-        <div class="sectionContent">
-            <?php if($listRidesharing){
-                foreach ($listRidesharing as $ridesharing):
-                    require '../template/ridesharingCard.php';            
-                endforeach;}
-            ?>
-            <h2> Aucun trajet ne correspond à votre recherche</h2>
-            <a href="/search"><button >Nouvelle recherche</button></a>               
+        <div class="listCard">
+            <?php if (!empty($listRidesharing)): ?>
+                <?php foreach ($listRidesharing as $ridesharing): ?>
+                    <?php include __DIR__.'/ridesharingCard.php'; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <h2>Aucun trajet ne correspond à votre recherche</h2>
+            <?php endif; ?> 
+            <a href="/search"><button class='newSearchBtn'>Nouvelle recherche</button></a>               
         </div>
 </section>
