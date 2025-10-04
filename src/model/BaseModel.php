@@ -86,6 +86,7 @@ abstract class BaseModel
                             'role' => Role::from($value),
                             'status' => Status::from($value),
                             'status_review' => StatusReview::from($value),
+                            'energy_type'=> EnergyType::from($value)
                         };
                     }
                 }   
