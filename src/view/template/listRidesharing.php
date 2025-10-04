@@ -3,7 +3,7 @@
         <div class="listCard">
             <?php if (!empty($listRidesharing)): ?>
                 <?php foreach ($listRidesharing as $ridesharing): ?>
-                    <?php include __DIR__.'/ridesharingCard.php'; ?>
+                    <?php require __DIR__.'/ridesharingCard.php'; ?>
                 <?php endforeach; ?>
             <?php else: ?>
                 <h2>Aucun trajet ne correspond à votre recherche</h2>
