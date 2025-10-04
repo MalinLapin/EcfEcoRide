@@ -36,7 +36,10 @@
                 </div>
                 <div class="energyType">
                     <label for="energyType">Trajet électrique uniquement ?</label>
-                    <input type="checkbox" name="energyType" id="energyType">
+                    <select name="energyType" id="energyType">
+                        <option value="electric">oui</option>
+                        <option value="">non</option>
+                    </select>
                 </div>
                 <div class='errorsList'>
                     <ul>
@@ -48,6 +51,7 @@
                 </div>
 
                 <div>
+                    <input type="hidden" name="status" value="pending">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
                     <button type="submit" class="btnSearch">C'est partie!</button>
                 </div>
