@@ -47,7 +47,7 @@ class RidesharingRepo extends BaseRepoSql
             'arrivalCity' => ['r.arrival_city', '=', 'arrival_city'],
             'arrivalAddress' => ['r.arrival_address', '=', 'arrival_address'],
             'pricePerSeat' => ['r.price_per_seat', '<=', 'price_per_seat'], // Pour une recherche de tarif inférieur ou égal à la recherche utilisateur.
-            'availableSeats' => ['r.available_seats', '>=', 'available_seats'], // On recherchera uniquement les trajet avec autant ou plus de place que demandé.
+            'nbSeats' => ['r.available_seats', '>=', 'nbSeats'], // On recherchera uniquement les trajet avec autant ou plus de place que demandé.
             'status' => ['r.status', '=', 'status'],
             'pseudoDriver' => ['u.pseudo', '=', 'pseudo_driver'],
             'gradeDriver' => ['u.grade', '=', 'grade_driver'],
