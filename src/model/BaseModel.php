@@ -117,4 +117,29 @@ abstract class BaseModel
             }            
         }
     }
+
+    public function __debugInfo(): array
+    {
+        $reflect = new \ReflectionClass($this);
+        $props = $reflect->getProperties(\ReflectionProperty::IS_PRIVATE | \ReflectionProperty::IS_PROTECTED);
+        
+        $data = [];
+        foreach ($props as $prop) {
+            // Ignore les métadonnées
+            if (in_array($prop->getName(), ['dateFields','enumFields','intFields','floatFields','boolFields'])) {
+                continue;
+            }
+            
+            $prop->setAccessible(true);
+            
+            // Vérifie si la propriété est initialisée (PHP 7.4+)
+            if (!$prop->isInitialized($this)) {
+                $data[$prop->getName()] = '<non défini>';
+                continue;
+            }
+            
+            $data[$prop->getName()] = $prop->getValue($this);
+        }
+        return $data;
+    }
 }
