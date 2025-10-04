@@ -236,7 +236,7 @@ VALUES (
         20,
         'pending',
         NOW(),
-        3,
+        2,
         1
     ),
     (
@@ -246,26 +246,26 @@ VALUES (
         'Lyon',
         '456 Avenue de Lyon',
         NULL,
-        0,
-        20,
-        'pending',
+        1,
+        12,
+        'ongoing',
         NOW(),
         3,
-        1
+        2
     ),
     (
-        '2026-10-01 08:00:00',
+        '2026-10-01 09:00:00',
         'Paris',
         '123 Rue de Paris',
         'Lyon',
         '3 Avenue des test',
         NULL,
         3,
-        20,
+        8,
         'pending',
         NOW(),
-        3,
-        1
+        2,
+        3
     ),
     (
         '2025-08-05 09:00:00',
