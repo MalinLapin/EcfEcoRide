@@ -40,8 +40,8 @@ class RidesharingController extends BaseController
     public function showSearchRidesharing(): void
     {
         $this->render('searchRidesharing', [
-            'title' => 'Rechercher un covoiturage',
-            'csrf_token' => $this->tokenManager->generateCsrfToken()
+            'csrf_token' => $this->tokenManager->generateCsrfToken(),
+            'pageCss' => 'searchRidesharing'
         ]);
     }
 
@@ -54,7 +54,7 @@ class RidesharingController extends BaseController
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('page/searchRidesharing');
+            $this->response->redirect('/search');
             return;
         }
 
@@ -75,15 +75,12 @@ class RidesharingController extends BaseController
             $errors['departureCity'] = "La ville de départ est requise.";
         }
 
-        if (empty($data['departureAddress'])) {
-            $errors['departureAddress'] = "L'addresse de départ est requise.";
-        }
-
         if (empty($data['departureDate']) || !strtotime($data['departureDate'])) {
             $errors['departureDate'] = "La date de départ est requise et doit être au format valide.";
         } else { // On vérifie que la date de départ est bien dans le futur.
             $departureDateTime = new \DateTime($data['departureDate']);
             $now = new \DateTime();
+            $now =$now->format('Y-m-d H:i');
             if ($departureDateTime < $now) {
                 $errors['departureDate'] = "La date de départ doit être dans le futur.";
             }
@@ -93,42 +90,37 @@ class RidesharingController extends BaseController
             $errors['arrivalCity'] = "La ville d'arriver est requise.";
         }
 
-        if (empty($data['arrivalAddress'])) {
-            $errors['arrivalAddress'] = "L'addresse d'arriver' est requise.";
-        }
-
         if (empty($data['nbSeats']) || !is_numeric($data['nbSeats']) || $data['nbSeats'] < 1 || $data['nbSeats'] > 6) {
             $errors['nbSeats'] = "Le nombre de places rechercher doit être un nombre entre 1 et 6.";
         }
 
         if (!empty($errors)) 
         {
-            $this->render('search-ridesharing', [
-                'title' => 'Inscription',
+            $this->render('searchRidesharing', [
                 'errors' => $errors,
-                'old' => $data,
-                'csrf_token' => $this->tokenManager->generateCsrfToken()
+                'csrf_token' => $this->tokenManager->generateCsrfToken(),
+                'pageCss' => 'searchRidesharing'
             ]);
             return;
         }
 
         $listRidesharing = $this->ridesharingRepo->getRidesharingByParams($data);
-
         // Recherche des covoiturages en fonction des critères fournis
-        if($listRidesharing)
+        if($listRidesharing === null)
         {
-            $this->render('listRidesharing', [
-                'title' => 'Résultats de la recherche',
-                'ridesharings' => $listRidesharing
+            $errors['ridesharing'] = "aucun covoiturage trouvés";
+            
+            $this->render('searchRidesharing', [
+                'errors' => $errors,
+                'csrf_token' => $this->tokenManager->generateCsrfToken(),
+                'pageCss' => 'searchRidesharing'
             ]);
             return;
-        } else
-        {
-            $this->render('searchRidesharing', [
-                'title' => 'Résultats de la recherche',
-                'error' => 'Aucun covoiturage ne correspond à votre recherche.',
-                'old' => $data,
-                'csrf_token' => $this->tokenManager->generateCsrfToken()
+            
+        } else {
+            $this->render('listRidesharing', [
+                'ridesharing' => $listRidesharing,
+                'pageCss' => 'listRidesharing'
             ]);
             return;
         }
@@ -160,9 +152,9 @@ class RidesharingController extends BaseController
 
         // Affichage des détails du covoiturage 
         $this->render("ridesharing-detail?id=$idRidesharing", [
-            'title' => 'Détails du covoiturage',
             'ridesharing' => $ridesharingDetails,
-            'listReview' => $listReview
+            'listReview' => $listReview,
+            'pageCss' => 'ridesharingDetail'
         ]);
     }
 
