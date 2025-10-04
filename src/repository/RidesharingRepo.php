@@ -65,13 +65,11 @@ class RidesharingRepo extends BaseRepoSql
         $stmt = $this->pdo->prepare($query);
         $stmt->execute($Sqlparams);
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
         // Si au moins un trajet est trouvé, on crée une instance du modèle RidesharingModel avec les données récupérées
         if ($result) 
         {
             foreach ($result as $row) 
-            {
-                
+            {                
                 $userData = [];
                 $carData = [];
                 $ridesharingData = [];
@@ -88,14 +86,16 @@ class RidesharingRepo extends BaseRepoSql
                 }
                 
                 // Créer et assembler les objets
-                $ridesharing = new RidesharingModel($ridesharingData);
-                $driverInfo = new UserModel($userData);
-                $carInfo = new CarModel($carData);
+                $ridesharingInfo = RidesharingModel::createAndHydrate($ridesharingData);
+
+                $driverInfo = UserModel::createAndHydrate($userData);                    
                 
+                $carEnergyType = $carData['energyType'];          
+
                 $rides[] = [
-                    'ridesharing'=>$ridesharing,
-                    'driver'=>$driverInfo,
-                    'car'=>$carInfo
+                    'ridesharingInfo'=>$ridesharingInfo,
+                    'driverInfo'=>$driverInfo,
+                    'carEnergyType'=>$carEnergyType
                 ];
             }
             return $rides;
