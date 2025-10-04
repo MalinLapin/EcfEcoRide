@@ -14,7 +14,7 @@
                 <input type="password" id="password" name="password" placeholder="Mot de passe" required>
             </div>
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
-            <button type="submit" class="robotoRegular">Se connecter</button>
+            <button type="submit" class="robotoRegular loginBtn">Se connecter</button>
             <div class="message robotoRegular">Pas encore inscrit ? <a href="/register">Créer un compte</a></div>
         </form>
     </div>
