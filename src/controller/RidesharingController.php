@@ -119,7 +119,7 @@ class RidesharingController extends BaseController
             
         } else {
             $this->render('listRidesharing', [
-                'ridesharing' => $listRidesharing,
+                'listRidesharing' => $listRidesharing,
                 'pageCss' => 'listRidesharing'
             ]);
             return;
