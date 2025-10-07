@@ -9,7 +9,7 @@ enum EnergyType: string
 {
         case electric = 'electric';
         case hybrid = 'hybrid';
-        case gasoline = 'gasoline';
+        case gasoline = 'escence';
         case diesel = 'diesel';
         case gpl = 'gpl';
 }
