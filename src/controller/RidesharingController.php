@@ -132,13 +132,6 @@ class RidesharingController extends BaseController
      */
     public function showRidesharingDetail(int $idRidesharing): void
     {
-        // On vérifie que l'ID est un entier valide
-        $idRidesharing = filter_var($_GET['idRidesharing'], FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]]);
-        if (!$idRidesharing) {
-            $this->response->error('ID de covoiturage invalide.', 400);
-            return;
-        }
-        
         $ridesharingDetails = $this->ridesharingRepo->findByIdWithDetails($idRidesharing);
         
         // On vérifie que le covoiturage existe
@@ -151,7 +144,7 @@ class RidesharingController extends BaseController
         $listReview = $this->reviewRepo->findByTarget($ridesharingDetails->getIdRidesharing());
 
         // Affichage des détails du covoiturage 
-        $this->render("ridesharing-detail?id=$idRidesharing", [
+        $this->render("detail/$idRidesharing", [
             'ridesharing' => $ridesharingDetails,
             'listReview' => $listReview,
             'pageCss' => 'ridesharingDetail'
