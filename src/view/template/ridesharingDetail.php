@@ -1,8 +1,4 @@
-<?php $pageCss = 'ridesharingDetail';
-
-require_once '../template/header.php'; ?>
-
-<main class='mainContent robotoRegular'>
+<section class='ridesharingDetail mainContent robotoRegular'>
     <section class ='rideInfo'>
         <h3 class ='montserratBold'>Trajet</h3>
         <div class='rideAddress'>
@@ -110,7 +106,7 @@ require_once '../template/header.php'; ?>
         </div>
         
     </section>
-</main>
+</section>
 
 
 <?php require_once '../template/footer.php'; ?> 
