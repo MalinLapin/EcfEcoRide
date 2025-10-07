@@ -33,7 +33,7 @@ class RidesharingRepo extends BaseRepoSql
                         u.pseudo AS user_pseudo, 
                         u.grade AS user_grade, 
                         u.photo AS user_photo, 
-                        c.energy_type AS car_energyType
+                        c.energy_type AS car_energy_type
             FROM {$this->tableName} r
             JOIN user u ON r.id_driver = u.id_user
             JOIN car c ON r.id_car = c.id_car
@@ -90,7 +90,7 @@ class RidesharingRepo extends BaseRepoSql
 
                 $driverInfo = UserModel::createAndHydrate($userData);                    
                 
-                $carEnergyType = $carData['energyType'];          
+                $carEnergyType = $carData['energy_type'];          
 
                 $rides[] = [
                     'ridesharingInfo'=>$ridesharingInfo,
@@ -113,21 +113,22 @@ class RidesharingRepo extends BaseRepoSql
      */
     public function findByIdWithDetails(int $idRidesharing): ?RidesharingModel
     {
-        $sql = "SELECT r.*, 
+        $query = "SELECT r.*, 
                 u.id_user AS user_idUser, 
                 u.pseudo AS user_pseudo, 
                 u.grade AS user_grade, 
-                u.photo AS user_photo,
-                c.id_car AS car_idCar, 
-                c.energy_type AS car_energyType, 
+                u.photo AS user_photo, 
+                c.energy_type AS car_energy_type, 
                 c.model AS car_model, 
-                c.color AS car_color
+                c.color AS car_color,
+                b.label AS brand_label
             FROM {$this->tableName} r
-            JOIN user u ON r.id_user = u.id_user
+            JOIN user u ON r.id_driver = u.id_user
             JOIN car c ON r.id_car = c.id_car
+            JOIN brand b ON c.id_brand = b.id_brand
             WHERE r.id_ridesharing = :id_ridesharing";
 
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(":id_ridesharing", $idRidesharing, \PDO::PARAM_INT);
         $stmt->execute();
 
@@ -139,6 +140,7 @@ class RidesharingRepo extends BaseRepoSql
             $userData = [];
             $carData = [];
             $ridesharingData = [];
+            $brandData=[];
 
             foreach ($result as $key => $value) 
             {
@@ -146,20 +148,24 @@ class RidesharingRepo extends BaseRepoSql
                     $userData[substr($key, 5)] = $value; // Enlève "user_"
                 }elseif (str_starts_with($key, 'car_')) {
                 $carData[substr($key, 4)] = $value; // Enlève "car_"
+                }elseif (str_starts_with($key, 'brand_')) {
+                $brandData[substr($key, 6)] = $value; // Enlève "car_"
                 }else {
                 $ridesharingData[$key] = $value;
                 }
             }
-
             
-            $ridesharing = new RidesharingModel($ridesharingData);
-            $driverInfo = new UserModel($userData);
-            $carInfo = new CarModel($carData);
+            $ridesharingInfo = RidesharingModel::createAndHydrate($ridesharingData);
+            $driverInfo = UserModel::createAndHydrate($userData);
+            $brandCar = $brandData['label'];
+            var_dump($brandCar);
+            $carInfo = CarModel::createAndHydrate($carData);
                 
             $ridesharing[] = [
-                'ridesharing'=>$ridesharing,
+                'ridesharing'=>$ridesharingInfo,
                 'driver'=>$driverInfo,
-                'car'=>$carInfo
+                'car'=>$carInfo,
+                'brand'=>$brandCar
             ];
         }
 
