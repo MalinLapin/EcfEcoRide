@@ -111,7 +111,7 @@ class RidesharingRepo extends BaseRepoSql
      * 
      * Cette méthode utilise une jointure pour récupérer les informations de l'utilisateur (conducteur) et de la voiture associée au trajet.
      */
-    public function findByIdWithDetails(int $idRidesharing): ?RidesharingModel
+    public function findByIdWithDetails(int $idRidesharing): ?array
     {
         $query = "SELECT r.*, 
                 u.id_user AS user_idUser, 
@@ -147,11 +147,11 @@ class RidesharingRepo extends BaseRepoSql
                 if (str_starts_with($key, 'user_')) {
                     $userData[substr($key, 5)] = $value; // Enlève "user_"
                 }elseif (str_starts_with($key, 'car_')) {
-                $carData[substr($key, 4)] = $value; // Enlève "car_"
+                    $carData[substr($key, 4)] = $value; // Enlève "car_"
                 }elseif (str_starts_with($key, 'brand_')) {
-                $brandData[substr($key, 6)] = $value; // Enlève "car_"
+                    $brandData[substr($key, 6)] = $value; // Enlève "car_"
                 }else {
-                $ridesharingData[$key] = $value;
+                    $ridesharingData[$key] = $value;
                 }
             }
             
@@ -160,7 +160,7 @@ class RidesharingRepo extends BaseRepoSql
             $brandCar = $brandData['label'];
             $carInfo = CarModel::createAndHydrate($carData);
                 
-            $ridesharing[] = [
+            return $ridesharing[] = [
                 'ridesharing'=>$ridesharingInfo,
                 'driver'=>$driverInfo,
                 'car'=>$carInfo,
