@@ -30,5 +30,5 @@
             </div>
         </div>
     </div>
-    <button class='robotoBold detailBtn'>Détails</button>
+    <a href="/detail/<?= $ride->getIdRidesharing()?>"><button class='robotoBold detailBtn'>Détails</button></a>    
 </article>
