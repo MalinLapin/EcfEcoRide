@@ -158,7 +158,6 @@ class RidesharingRepo extends BaseRepoSql
             $ridesharingInfo = RidesharingModel::createAndHydrate($ridesharingData);
             $driverInfo = UserModel::createAndHydrate($userData);
             $brandCar = $brandData['label'];
-            var_dump($brandCar);
             $carInfo = CarModel::createAndHydrate($carData);
                 
             $ridesharing[] = [
