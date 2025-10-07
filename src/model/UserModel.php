@@ -29,7 +29,7 @@ class UserModel extends BaseModel
     private string $email; // Adresse e-mail de l'utilisateur.
     private string $password; // Mot de passe de l'utilisateur.
     private DateTimeImmutable $createdAt; // Date de création du compte utilisateur.
-    private int $creditBalance = 20; //Solde de crédit
+    private int $creditBalance; //Solde de crédit
     private ?string $photo; //String car chemin pour la photo et non la photo elle meme.
     private ?float $grade; //Note générale de l'utilisateur
     private bool $isActive = true; //Etat de l'utilisateur (actif ou suspendu).
