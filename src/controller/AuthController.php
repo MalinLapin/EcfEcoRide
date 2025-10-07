@@ -212,7 +212,8 @@ class AuthController extends BaseController
             $newUser->setPseudo($data['pseudo'])
                     ->setEmail($email)
                     ->setPassword(($data['password']))
-                    ->setCreatedAt(new DateTimeImmutable());
+                    ->setCreatedAt(new DateTimeImmutable())
+                    ->setCreditBalance(20);
         
 
             $result = $this->userRepo->create($newUser);
