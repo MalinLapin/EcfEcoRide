@@ -35,9 +35,9 @@ abstract class BaseRepoMongo
             try {
             $client = new Client($_ENV['MONGO_URL']);
             $client->listDatabases(); // Force la connexion
-            var_dump("✅ Connexion MongoDB réussie !");
+            var_dump("Connexion MongoDB réussie !");
         } catch (Exception $e) {
-            var_dump("❌ Erreur de connexion :", $e->getMessage());
+            var_dump("Erreur de connexion :", $e->getMessage());
 }
         }
         // Vérifie que le nom de la collection est défini
