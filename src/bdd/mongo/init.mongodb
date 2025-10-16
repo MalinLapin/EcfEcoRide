@@ -1,5 +1,5 @@
 // Création de la Bdd NoSql.
-use('EcoRideMongo');
+const dbEco = db.getSiblingDB('EcoRideMongo');
 
 // Création de la collection pour l'entité Review
 db.createCollection("review", {
@@ -7,10 +7,11 @@ db.createCollection("review", {
         $jsonSchema: {
             bsonType: "object",
             required: ["id_target", "id_redactor", "status_review", "created_at"],
+
             properties: {
                 id_target: { bsonType: "int" },
                 id_redactor: { bsonType: "int" },
-                status_review: { bsonType: "string", enum: ["pending", "approved", "rejected"], default: "pending" },
+                status_review: { enum: ["pending", "approved", "rejected"] },
                 rating: { bsonType: "int", minimum: 1, maximum: 5 },
                 comment: { bsonType: "string", maxLength: 1000 },
                 created_at: { bsonType: "date" },
@@ -32,9 +33,8 @@ db.createCollection("preference", {
             bsonType: "object",
             required: ["id_ridesharing", "label"],
             properties: {
-                id_car: { bsonType: "int" },
+                id_ridesharing: { bsonType: "int" },
                 label: { bsonType: "string" },
-                is_accepted: { bsonType: "bool" }
             },
             additionalProperties: true
         }
@@ -42,3 +42,107 @@ db.createCollection("preference", {
     validationLevel: "strict",
     validationAction: "error"
 });
+
+dbEco.review.insertOne({
+    id_target: NumberInt(101),
+    id_redactor: NumberInt(12),
+    status_review: "pending",
+    rating: NumberInt(5),
+    comment: "Très ponctuel, conduite sûre.",
+    created_at: new Date()
+});
+
+dbEco.preference.insertOne({
+    id_ridesharing: NumberInt(5551),
+    label: "silence"
+});
+
+dbEco.review.insertMany([
+    {
+        id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
+        id_redactor: 3,      // L'auteur de l'avis (doit exister en SQL)
+        status_review: "approved",
+        rating: 5,
+        comment: "Excellent conducteur, très ponctuel !",
+        created_at: new Date("2024-01-15"),
+        reviewed_by: 5,      // L'employé qui a validé (milkauny)
+        reviewed_at: new Date("2024-01-16"),
+        reason: null
+    },
+    {
+        id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
+        id_redactor: 4,      // L'auteur de l'avis (doit exister en SQL)
+        status_review: "rejected",
+        rating: 1,
+        comment: "test, grossier",
+        created_at: new Date("2024-01-15"),
+        reviewed_by: 5,      // L'employé qui a validé (milkauny)
+        reviewed_at: new Date("2024-01-17"),
+        reason: "contenu inappropriés"
+    },
+    {
+        id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
+        id_redactor: 3,      // L'auteur de l'avis (doit exister en SQL)
+        status_review: "pending",
+        rating: 4,
+        comment: "Excellent conducteur, très ponctuel !",
+        created_at: new Date("2024-01-15")
+    },
+    {
+        id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
+        id_redactor: 3,      // L'auteur de l'avis (doit exister en SQL)
+        status_review: "approved",
+        rating: 5,
+        comment: "Excellent conducteur, très ponctuel !",
+        created_at: new Date("2024-01-15"),
+        reviewed_by: 5,      // L'employé qui a validé (milkauny)
+        reviewed_at: new Date("2024-01-16"),
+        reason: null
+    },
+    {
+        id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
+        id_redactor: 3,      // L'auteur de l'avis (doit exister en SQL)
+        status_review: "approved",
+        rating: 5,
+        comment: "Excellent conducteur, très ponctuel !",
+        created_at: new Date("2024-01-15"),
+        reviewed_by: 5,      // L'employé qui a validé (milkauny)
+        reviewed_at: new Date("2024-01-16"),
+        reason: null
+    },
+    {
+        id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
+        id_redactor: 3,      // L'auteur de l'avis (doit exister en SQL)
+        status_review: "approved",
+        rating: 5,
+        comment: "Excellent conducteur, très ponctuel !",
+        created_at: new Date("2024-01-15"),
+        reviewed_by: 5,      // L'employé qui a validé (milkauny)
+        reviewed_at: new Date("2024-01-16"),
+        reason: null
+    },
+]);
+
+dbEco.preference.insertMany([
+    {
+        id_ridesharing: 1,   // Trajet Paris-Lyon de marctest
+        label: "Non fumeur"
+    },
+
+    {
+        id_ridesharing: 1,   // Trajet Paris-Lyon de marctest
+        label: "Pas de musique"
+    },
+    {
+        id_ridesharing: 3,   // Trajet Paris-Lyon de marctest
+        label: "Animaux accepter"
+    },
+    {
+        id_ridesharing: 2,   // Trajet Paris-Lyon de marctest
+        label: "fumeur ok mais demande de pause"
+    },
+    {
+        id_ridesharing: 6,   // Trajet Paris-Lyon de marctest
+        label: "Non fumeur"
+    },
+]);
