@@ -268,7 +268,7 @@ VALUES (
         3
     ),
     (
-        '2025-08-05 09:00:00',
+        '2025-10-16 09:00:00',
         'Marseille',
         '789 Boulevard de Marseille',
         'Nice',
@@ -282,7 +282,7 @@ VALUES (
         2
     ),
     (
-        '2025-10-03 07:30:00',
+        '2025-11-03 07:30:00',
         'Bordeaux',
         '654 Avenue de Bordeaux',
         'Toulouse',
@@ -324,7 +324,7 @@ VALUES (
         5
     ),
     (
-        '2025-10-06 08:30:00',
+        '2025-11-06 08:30:00',
         'Lille',
         '258 Boulevard de Lille',
         'Roubaix',
@@ -346,9 +346,9 @@ INSERT INTO
         created_at,
         completed_at
     )
-VALUES (2, 1, 1, NOW(), NULL),
+VALUES (3, 1, 1, NOW(), NULL),
     (4, 1, 1, NOW(), NULL),
-    (5, 4, 1, NOW(), NULL),
+    (2, 4, 1, NOW(), NULL),
     (
         3,
         6,
@@ -356,3 +356,7 @@ VALUES (2, 1, 1, NOW(), NULL),
         NOW(),
         '2023-10-02 11:00:00'
     );
+
+SELECT p.*, r.id_driver
+FROM participate p
+    JOIN ridesharing r ON p.id_ridesharing = r.id_ridesharing;
