@@ -2,6 +2,8 @@
 // src/repository/MongoBaseRepo.php
 namespace App\repository;
 
+use Exception;
+use MongoDB\Client;
 use MongoDB\Collection;
 use App\config\Database;
 use App\model\BaseModel;
@@ -28,6 +30,15 @@ abstract class BaseRepoMongo
         // sinon on utilise la collection passée en paramètre.
         if ($collection === null && $db === null) {
             $db = Database::getInstanceMongo();
+
+            // Test de connexion a ma bdd mongo.
+            try {
+            $client = new Client($_ENV['MONGO_URL']);
+            $client->listDatabases(); // Force la connexion
+            var_dump("✅ Connexion MongoDB réussie !");
+        } catch (Exception $e) {
+            var_dump("❌ Erreur de connexion :", $e->getMessage());
+}
         }
         // Vérifie que le nom de la collection est défini
         // et que la collection est soit passée en paramètre, soit créée à partir de la base de données.
