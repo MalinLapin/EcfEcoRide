@@ -132,6 +132,7 @@ class RidesharingController extends BaseController
      */
     public function showRidesharingDetail(int $idRidesharing): void
     {
+        
         $ridesharingDetails = $this->ridesharingRepo->findByIdWithDetails($idRidesharing);
         
         // On vérifie que le covoiturage existe
@@ -140,11 +141,14 @@ class RidesharingController extends BaseController
             return;
         }
 
+        // On récupère l'id du driver dans l'objet ridesharing présent dans le tableau ridesharingDetails.
+        $idDriver = $ridesharingDetails['ridesharing']->getIdDriver();
+        
         // Récuperer les avis du conducteur.
-        $listReview = $this->reviewRepo->findByTarget($ridesharingDetails->getIdRidesharing());
+        $listReview = $this->reviewRepo->findByTarget($idDriver);
 
         // Affichage des détails du covoiturage 
-        $this->render("detail/$idRidesharing", [
+        $this->render("ridesharingDetail", [
             'ridesharing' => $ridesharingDetails,
             'listReview' => $listReview,
             'pageCss' => 'ridesharingDetail'
