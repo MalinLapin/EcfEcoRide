@@ -27,7 +27,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
     $r->addRoute('POST', '/logout', [App\controller\AuthController::class, 'logout']);    
     $r->addRoute('GET', '/search', [App\controller\RidesharingController::class, 'showSearchRidesharing']);    
     $r->addRoute('POST', '/search', [App\controller\RidesharingController::class, 'searchRidesharing']);    
-    $r->addRoute('GET', '/detail/{idRidesharing:\d+}', [App\controller\RidesharingController::class, 'showRidesharingDetail']);    
+    $r->addRoute('POST', '/ridesharingDetail', [App\controller\RidesharingController::class, 'showRidesharingDetail']);   
 });
 
 // Traitement de la requête
