@@ -111,9 +111,10 @@
         <div class='review'>
             <div class='redactorReview robotoBold'>
                 <p><?=$pseudoRedactor?></p>
+                <p><?=$reviewContent->getRating() ?? null ?></p>
             </div>
             <div class='commentReview'>
-                <p><?=$reviewContent->getComment()?></p>
+                <p><?=$reviewContent->getComment() ?? null ?></p>
             </div>
         </div>
         <?php endforeach; ?>        
