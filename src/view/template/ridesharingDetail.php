@@ -36,7 +36,7 @@
             </div>
             <div class='availableSeats'>
                 <img src="../assets/images/passengerIcon.png" alt="icone availableSeat">
-                <p><?=$ride->getAvailableSeats()?></p>
+                <p><?=$ride->getAvailableSeats()?> dispo.</p>
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@
         <form action="#" method='GET' class='seatForm'>
             <div class='participationCard'>
                 <div class='ridesharingPrice'>
-                    <p><span class='robotoBold'><?=$ride->getPricePerSeat()?></span>Crédits</p>
+                    <p><span class='robotoBold'><?=$ride->getPricePerSeat()?> </span>Crédits /places</p>
                 </div>
                 <label for="nbSeat">Veuillez choisir le nombre de siège désiré :</label>
                 <input type="number" name="nbSeats" id="nbSeats" value="1" max='6' placeholder="Nombre de place">
@@ -111,7 +111,7 @@
         <div class='review'>
             <div class='redactorReview robotoBold'>
                 <p><?=$pseudoRedactor?></p>
-                <p><?=$reviewContent->getRating() ?? null ?></p>
+                <p><?=$reviewContent->getRating() ?? null ?> /5 </p>
             </div>
             <div class='commentReview'>
                 <p><?=$reviewContent->getComment() ?? null ?></p>
