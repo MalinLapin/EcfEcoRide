@@ -8,6 +8,7 @@
   margin-top: 25px;
   width: 100%;
   text-align: center;
+  padding: 10px;
 }
 
 .rideInfo {
@@ -31,6 +32,10 @@
   flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 10px;
+}
+
+.availableSeats {
+  width: 60px;
 }
 
 .infoCard div {
@@ -101,4 +106,9 @@
   border: solid 1px black;
   padding: 5px;
   margin-bottom: 30px;
+}
+
+.redactorReview {
+  display: flex;
+  justify-content: space-between;
 }
