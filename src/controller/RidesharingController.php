@@ -152,13 +152,30 @@ class RidesharingController extends BaseController
         // On récupère l'id du driver dans l'objet ridesharing présent dans le tableau ridesharingDetails.
         $idDriver = $ridesharingDetails['ridesharing']->getIdDriver();
         
-        // Récuperer les avis du conducteur.
-        $listReview = $this->reviewRepo->findByTarget($idDriver);
+        // Récuperer les avis du conducteur, uniquement les avis approuver par les employers.
+        $listReview = $this->reviewRepo->findByTarget($idDriver, true);
+
+        $listReviewForView = [];
+        
+        foreach($listReview as $review){
+
+            $idRedactor = $review->getIdRedactor();
+            $redactor = $this->userRepo->findById($idRedactor);
+
+            $listReviewForView[]=[
+                'review'=> $review,
+                'pseudoRedactor'=> $redactor -> getPseudo()
+            ];
+        }
+
+        // Récuperer les préférences du conducteur pour le trajet.
+        $listPreference = $this->preferenceRepo->findByRidesharing($data['idRidesharing']);
 
         // Affichage des détails du covoiturage 
         $this->render("ridesharingDetail", [
             'ridesharingDetails' => $ridesharingDetails,
-            'listReview' => $listReview,
+            'listReview' => $listReviewForView,
+            'listPreference'=>$listPreference,
             'pageCss' => 'ridesharingDetail'
         ]);
     }
