@@ -5,8 +5,8 @@
     $brand = $ridesharingDetails['brand'];
 
 ?>
-<section class='ridesharingDetail mainContent robotoRegular'>
-    <section class ='rideInfo'>
+<section class='ridesharingDetail robotoRegular'>
+    <div class ='rideInfo'>
         <h3 class ='montserratBold'>Trajet</h3>
         <div class='rideAddress'>
             <div class='departure'>
@@ -39,9 +39,9 @@
                 <p><?=$ride->getAvailableSeats()?></p>
             </div>
         </div>
-    </section>
+    </div>
     
-    <section class='participationInfo'>
+    <div class='participationInfo'>
         <form action="#" method='GET' class='seatForm'>
             <div class='participationCard'>
                 <div class='ridesharingPrice'>
@@ -52,10 +52,10 @@
             </div>
             <button type='submit' class="btnSearch robotoBold">Réserver vos places.</button>
         </form>
-    </section>
+    </div>
     
     
-    <section class='driver'>
+    <div class='driver'>
         <div class='titleDriver'>
             <img src="../assets/images/steeringWheel.png" alt="logo volant">
             <h3 class='montserratBold'>Information du conducteur</h3>
@@ -67,9 +67,9 @@
                 <p><?=$driver->getGrade()?> /5</p>
             </div>
         </div>           
-    </section>
+    </div>
     
-    <section class='car'>
+    <div class='car'>
         <div class='titleCar'>
             <img src="../assets/images/car_logo.png" alt="icon voiture">
             <h3 class='montserratBold'>Information du véhicule</h3>
@@ -80,44 +80,43 @@
             <div><p>Energie: <span><?=$car->getEnergyType()->value ?></span></p></div>
             <div><p>Couleur: <span><?=$car->getColor()?></span></p></div>           
         </div>
-        <?php
-            /* Reste la partie préférence */
-        ?>
-        <div class='preferenceDriver'>
+        
+        <?php if (!empty($listPreference)):?>
+        
+        <div class='preferenceDriver'>            
             <h4>Préférence du conducteur</h4>           
             <ul>
-                <li>Fumeur accepter</li>
-                <li>Animaux non accepter</li>
-                <li>1 bagage par passager max.</li>                    
+                <?php foreach($listPreference as $preference):?>
+                <li><?=$preference->getLabel()?></li>
+                <?php endforeach; ?>                    
             </ul>
         </div>
-        
-    </section>
-    
-    <?php
-    /* Reste la partie avis */
-    ?>
-    <section class='reviewList'>
+
+        <?php endif; ?>        
+    </div>
+
+
+    <?php if (!empty($listReview)):?>
+    <div class='reviewList'>
         <div class='reviewTitle'>
             <img src="../assets/images/reviews_icon.png" alt="icon avis">
             <h3 class='montserratBold'>Avis des passagers</h3>
         </div>
+
+        <?php foreach($listReview as $review):?>
+            <?php 
+            $reviewContent= $review['review'];
+            $pseudoRedactor = $review['pseudoRedactor'];
+            ?>
         <div class='review'>
             <div class='redactorReview robotoBold'>
-                <p>Passenger01</p>
+                <p><?=$pseudoRedactor?></p>
             </div>
-            <div class='contentReview'>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque ipsa praesentium aliquam earum temporibus reprehenderit quibusdam nesciunt officiis qui sint aliquid quia iure voluptates maiores nisi neque, rem sit ut!</p>
-            </div>
-        </div>
-        <div class='review'>
-            <div class='redactorReview robotoBold'>
-                <p>Passanger02</p>
-            </div>
-            <div class='contentReview'>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque ipsa praesentium aliquam earum </p>
+            <div class='commentReview'>
+                <p><?=$reviewContent->getComment()?></p>
             </div>
         </div>
-        
-    </section>
+        <?php endforeach; ?>        
+    </div>
+    <?php endif; ?> 
 </section>
