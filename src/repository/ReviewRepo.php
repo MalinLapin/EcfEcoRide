@@ -10,10 +10,17 @@ class ReviewRepo extends BaseRepoMongo
     protected ?string $className = ReviewModel::class;
 
 
-    // Recherche un avis par son destinataire
-    public function findByTarget(int $idTarget): array
+    // Recherche un avis par personne concerner
+    public function findByTarget(int $idTarget, bool $onlyCertified = false): array
     {
-        $cursor = $this->collection->find(['id_target' => $idTarget]);
+        $filters = ['id_target' => $idTarget];
+    
+        if ($onlyCertified) {
+            $filters['status_review'] = 'approved';
+        }
+        
+        $cursor = $this->collection->find($filters);
+
         $out = [];
         foreach ($cursor as $doc) {
             $out[] = $this->toModel($doc);
