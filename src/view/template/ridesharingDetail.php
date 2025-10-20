@@ -1,21 +1,30 @@
+<?php
+    $ride = $ridesharingDetails['ridesharing'];
+    $driver = $ridesharingDetails['driver'];
+    $car = $ridesharingDetails['car'];
+    $brand = $ridesharingDetails['brand'];
+
+?>
 <section class='ridesharingDetail mainContent robotoRegular'>
     <section class ='rideInfo'>
         <h3 class ='montserratBold'>Trajet</h3>
         <div class='rideAddress'>
             <div class='departure'>
-                <p class='robotoBold'>Lyon,<br><span class='robotoRegular'>Part Dieu</span></p>
-                <p>10h45</p>
+                <p class='robotoBold'><?=$ride->getDepartureCity()?>,<br><span class='robotoRegular'><?=$ride->getDepartureAddress()?></span></p>
+                <p><?=$ride->getDepartureDate()->format('H:i')?></p>
             </div>
             <img src="../assets/images/arrow_to_right.png" alt="logo flèche">
             <div class='arrival'>
-                <p class='robotoBold'>Saint-Etienne,<br><span class='robotoRegular'> Rue du test</span></p>
-                <p class='robotoRegular'>11h15</p>
+                <p class='robotoBold'><?=$ride->getArrivalCity()?><br><span class='robotoRegular'><?=$ride->getArrivalAddress()?></span></p>
+                <?php if($ride->getArrivalDate()):?>
+                <p class='robotoRegular'><?=$ride->getArrivalDate()->format('H:i')?></p>
+                <?php endif; ?>
             </div>
         </div>
         <div class='infoCard'>
             <div class='date'>
                 <img src="../assets/images/calendar.png" alt="icone calendar">
-                <p>Jeu 05 Mai</p>
+                <p><?=$ride->getDepartureDate()->format('Y-m-d')?></p>
             </div>
             <div class='clock'>
                 <img src="../assets/images/clock.png" alt="icone clock">
@@ -27,7 +36,7 @@
             </div>
             <div class='availableSeats'>
                 <img src="../assets/images/passengerIcon.png" alt="icone availableSeat">
-                <p>2 Places dispo.</p>
+                <p><?=$ride->getAvailableSeats()?></p>
             </div>
         </div>
     </section>
@@ -36,7 +45,7 @@
         <form action="#" method='GET' class='seatForm'>
             <div class='participationCard'>
                 <div class='ridesharingPrice'>
-                    <p><span class='robotoBold'>10</span>Crédits</p>
+                    <p><span class='robotoBold'><?=$ride->getPricePerSeat()?></span>Crédits</p>
                 </div>
                 <label for="nbSeat">Veuillez choisir le nombre de siège désiré :</label>
                 <input type="number" name="nbSeats" id="nbSeats" value="1" max='6' placeholder="Nombre de place">
@@ -54,8 +63,8 @@
         <div class='infoDriver'>
             <img src="#" alt="Photo de profil">
             <div>
-                <p class='robotoBold'>Pseudo Driver</p>
-                <p>4.5/5</p>
+                <p class='robotoBold'><?=$driver->getPseudo()?></p>
+                <p><?=$driver->getGrade()?> /5</p>
             </div>
         </div>           
     </section>
@@ -66,11 +75,14 @@
             <h3 class='montserratBold'>Information du véhicule</h3>
         </div>
         <div class='carInfo '>
-            <div><p>Marque: <span>Renault</span></p></div>
-            <div><p>Modele: <span>Zoé</span></p></div>
-            <div><p>Energie: <span>Electrique</span></p></div>
-            <div><p>Couleur: <span>Bleu</span></p></div>           
+            <div><p>Marque: <span><?= $brand?></span></p></div>
+            <div><p>Modele: <span><?=$car->getModel()?></span></p></div>
+            <div><p>Energie: <span><?=$car->getEnergyType()->value ?></span></p></div>
+            <div><p>Couleur: <span><?=$car->getColor()?></span></p></div>           
         </div>
+        <?php
+            /* Reste la partie préférence */
+        ?>
         <div class='preferenceDriver'>
             <h4>Préférence du conducteur</h4>           
             <ul>
@@ -82,7 +94,9 @@
         
     </section>
     
-    
+    <?php
+    /* Reste la partie avis */
+    ?>
     <section class='reviewList'>
         <div class='reviewTitle'>
             <img src="../assets/images/reviews_icon.png" alt="icon avis">
@@ -107,6 +121,3 @@
         
     </section>
 </section>
-
-
-<?php require_once '../template/footer.php'; ?> 
