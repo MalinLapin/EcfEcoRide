@@ -30,21 +30,14 @@ abstract class BaseRepoMongo
         // sinon on utilise la collection passée en paramètre.
         if ($collection === null && $db === null) {
             $db = Database::getInstanceMongo();
-
-            // Test de connexion a ma bdd mongo.
-            try {
-            $client = new Client($_ENV['MONGO_URL']);
-            $client->listDatabases(); // Force la connexion
-            var_dump("Connexion MongoDB réussie !");
-        } catch (Exception $e) {
-            var_dump("Erreur de connexion :", $e->getMessage());
-}
         }
+
         // Vérifie que le nom de la collection est défini
         // et que la collection est soit passée en paramètre, soit créée à partir de la base de données.
         if (!isset($this->collectionName) || $this->collectionName === '') {
             throw new \LogicException('collectionName non défini dans ' . static::class);
         }
+        
         // Si la collection est déjà passée en paramètre, on l'utilise directement.
         // Sinon, on la crée à partir de la base de données.
         if (!isset($this->collectionName) || $this->collectionName === '') {
