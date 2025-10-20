@@ -143,7 +143,6 @@ class RidesharingController extends BaseController
         $data = $this->getPostData();
         
         $ridesharingDetails = $this->ridesharingRepo->findByIdWithDetails($data['idRidesharing']);
-        
         // On vérifie que le covoiturage existe
         if (!$ridesharingDetails) {
             $this->response->error('Covoiturage non trouvé.', 404);
@@ -158,7 +157,7 @@ class RidesharingController extends BaseController
 
         // Affichage des détails du covoiturage 
         $this->render("ridesharingDetail", [
-            'ridesharing' => $ridesharingDetails,
+            'ridesharingDetails' => $ridesharingDetails,
             'listReview' => $listReview,
             'pageCss' => 'ridesharingDetail'
         ]);
