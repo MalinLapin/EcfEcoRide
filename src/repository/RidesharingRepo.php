@@ -2,7 +2,10 @@
 
 namespace App\repository;
 
-use App\Model\RidesharingModel;
+use App\model\RidesharingModel;
+use App\model\UserModel;
+use App\model\CarModel;
+use App\model\ParticipateModel;
 use Exception;
 
 class RidesharingRepo extends BaseRepoSql
@@ -11,25 +14,26 @@ class RidesharingRepo extends BaseRepoSql
     protected string $className = RidesharingModel::class;
 
     /**
-     * Récupère les trajets de covoiturage en fonction des paramètres fournis.
+     * Recherche des trajets de covoiturage en fonction de divers paramètres.
      * 
-     * @param array $data Tableau associatif contenant les critères de recherche.
-     * @return array Un tableau d'instances de RidesharingModel correspondant aux critères de recherche, ou un tableau vide si aucun trajet n'est trouvé.
-     * 
-     * Cette méthode construit dynamiquement une requête SQL en fonction des paramètres fournis.
+     * @param array $data Un tableau associatif contenant les paramètres de recherche.
+     * @return RidesharingModel[]|null Un tableau d'instances de RidesharingModel correspondant aux critères de recherche, ou null si aucun trajet n'est trouvé.
      */
-    public function getRidesharingByParams(array $data): array
+    public function getRidesharingByParams(array $data): ?array
     {
         $Sqlparams = [];
-        // On définit la date et l'heure actuelle pour les opérations de comparaison
-        $currentDateTime = (new \DateTime())->format('Y-m-d H:i:s');
 
         /**
-         * On utilise une jointure pour récupérer les informations de l'utilisateur et la voiture associé au trajet 
+         * On utilise une jointure pour récupérer les informations de l'utilisateur et du trajet 
          * On sélectionne l'ensemble des données du trajet ainsi que l'id, le pseudo, le grade et la photo de l'utilisateur.
-         * Mais aussi les données utiles de la voiture telles que le carburant, le modèle et la couleur.
+         * Mais aussi les données utiles de la voiture telles que le carburant.
          */
-        $query = "SELECT r.*, u.id_user AS user_id, u.pseudo, u.grade, u.photo, c.model, c.energy_type, c.color
+        $query = "SELECT r.*, 
+                        u.id_user AS user_idUser, 
+                        u.pseudo AS user_pseudo, 
+                        u.grade AS user_grade, 
+                        u.photo AS user_photo, 
+                        c.energy_type AS car_energy_type
             FROM {$this->tableName} r
             JOIN user u ON r.id_driver = u.id_user
             JOIN car c ON r.id_car = c.id_car
@@ -37,17 +41,17 @@ class RidesharingRepo extends BaseRepoSql
         
         // Je vais utiliser ce tableau pour construire la requête SQL dynamiquement.
         $criteria = [
-            'departure_city' => ['r.departure_city', '=', 'departure_city'],
-            'departure_address' => ['r.departure_address', '=', 'departure_address'],
-            'departure_date' => ['r.departure_date', '>=', 'departure_date'],// On recherchera les trajets dont la date de départ ne sera pas encore passée.
-            'arrival_city' => ['r.arrival_city', '=', 'arrival_city'],
-            'arrival_address' => ['r.arrival_address', '=', 'arrival_address'],
-            'price_per_seat' => ['r.price_per_seat', '<=', 'price_per_seat'], // Pour une recherche de tarif inférieur ou égal à la recherche utilisateur.
-            'available_seats' => ['r.available_seats', '>=', 'available_seats'], // On recherchera uniquement les trajet avec autant ou plus de place que demandé.
+            'departureCity' => ['r.departure_city', '=', 'departure_city'],
+            'departureAddress' => ['r.departure_address', '=', 'departure_address'],
+            'departureDate' => ['r.departure_date', '>=', 'departure_date'],// On recherchera les trajets dont la date de départ ne sera pas encore passée.
+            'arrivalCity' => ['r.arrival_city', '=', 'arrival_city'],
+            'arrivalAddress' => ['r.arrival_address', '=', 'arrival_address'],
+            'pricePerSeat' => ['r.price_per_seat', '<=', 'price_per_seat'], // Pour une recherche de tarif inférieur ou égal à la recherche utilisateur.
+            'nbSeats' => ['r.available_seats', '>=', 'nbSeats'], // On recherchera uniquement les trajet avec autant ou plus de place que demandé.
             'status' => ['r.status', '=', 'status'],
-            'pseudo_driver' => ['u.pseudo', '=', 'pseudo_driver'],
-            'grade_driver' => ['u.grade', '=', 'grade_driver'],
-            'energy_type' => ['c.energy_type', '=', 'energy_type'], // Recherche de voiture avec type d'énergie spécifique (ex: électrique).
+            'pseudoDriver' => ['u.pseudo', '=', 'pseudo_driver'],
+            'gradeDriver' => ['u.grade', '=', 'grade_driver'],
+            'energyType' => ['c.energy_type', '=', 'energy_type'] // Recherche de voiture avec type d'énergie spécifique (ex: électrique).
         ];
 
         // On parcourt les critères pour ajouter les conditions à la requête SQL
@@ -61,17 +65,220 @@ class RidesharingRepo extends BaseRepoSql
         $stmt = $this->pdo->prepare($query);
         $stmt->execute($Sqlparams);
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
         // Si au moins un trajet est trouvé, on crée une instance du modèle RidesharingModel avec les données récupérées
-        if ($result) {
-            $rides = [];
-            foreach ($result as $row) {
-                $rides[] = RidesharingModel::createAndHydrate($row);
-            }
+        if ($result) 
+        {
+            foreach ($result as $row) 
+            {                
+                $userData = [];
+                $carData = [];
+                $ridesharingData = [];
+                
+                foreach ($row as $key => $value)
+                {
+                    if (str_starts_with($key, 'user_')) {
+                        $userData[substr($key, 5)] = $value;
+                    } elseif (str_starts_with($key, 'car_')) {
+                        $carData[substr($key, 4)] = $value;
+                    } else {
+                        $ridesharingData[$key] = $value;
+                    }
+                }
+                
+                // Créer et assembler les objets
+                $ridesharingInfo = RidesharingModel::createAndHydrate($ridesharingData);
 
+                $driverInfo = UserModel::createAndHydrate($userData);                    
+                
+                $carEnergyType = $carData['energy_type'];          
+
+                $rides[] = [
+                    'ridesharingInfo'=>$ridesharingInfo,
+                    'driverInfo'=>$driverInfo,
+                    'carEnergyType'=>$carEnergyType
+                ];
+            }
             return $rides;
         }
-        return [];
+        return null;
+    }
+
+    /**
+     * Trouve un trajet de covoiturage par son ID avec les détails du conducteur et de la voiture.
+     * 
+     * @param int $id L'identifiant du trajet de covoiturage.
+     * @return RidesharingModel|null Une instance de RidesharingModel avec les détails, ou null si aucun trajet n'est trouvé.
+     * 
+     * Cette méthode utilise une jointure pour récupérer les informations de l'utilisateur (conducteur) et de la voiture associée au trajet.
+     */
+    public function findByIdWithDetails(int $idRidesharing): ?array
+    {
+        $query = "SELECT r.*, 
+                u.id_user AS user_idUser, 
+                u.pseudo AS user_pseudo, 
+                u.grade AS user_grade, 
+                u.photo AS user_photo, 
+                c.energy_type AS car_energy_type, 
+                c.model AS car_model, 
+                c.color AS car_color,
+                b.label AS brand_label
+            FROM {$this->tableName} r
+            JOIN user u ON r.id_driver = u.id_user
+            JOIN car c ON r.id_car = c.id_car
+            JOIN brand b ON c.id_brand = b.id_brand
+            WHERE r.id_ridesharing = :id_ridesharing";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(":id_ridesharing", $idRidesharing, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+
+        if ($result) 
+        {
+            $userData = [];
+            $carData = [];
+            $ridesharingData = [];
+            $brandData=[];
+
+            foreach ($result as $key => $value) 
+            {
+                if (str_starts_with($key, 'user_')) {
+                    $userData[substr($key, 5)] = $value; // Enlève "user_"
+                }elseif (str_starts_with($key, 'car_')) {
+                    $carData[substr($key, 4)] = $value; // Enlève "car_"
+                }elseif (str_starts_with($key, 'brand_')) {
+                    $brandData[substr($key, 6)] = $value; // Enlève "car_"
+                }else {
+                    $ridesharingData[$key] = $value;
+                }
+            }
+            
+            $ridesharingInfo = RidesharingModel::createAndHydrate($ridesharingData);
+            $driverInfo = UserModel::createAndHydrate($userData);
+            $brandCar = $brandData['label'];
+            $carInfo = CarModel::createAndHydrate($carData);
+                
+            return $ridesharing[] = [
+                'ridesharing'=>$ridesharingInfo,
+                'driver'=>$driverInfo,
+                'car'=>$carInfo,
+                'brand'=>$brandCar
+            ];
+        }
+
+        return null; // Retourne null si aucun résultat n'est trouvé
+    }
+
+    /**
+     * Trouve les covoiturages d'un conducteur (avec participants uniquement)
+     * 
+     * @param int $idDriver
+     * @return RidesharingModel[]|null
+     * On utilise JOIN et non LEFT JOIN pour ne pas afficher les trajets sans participant.
+     */
+    public function findRidesharingByDriver(int $idDriver): ?array
+    {
+        $query = "SELECT r.status,
+        r.id_ridesharing,
+        r.departure_date,
+        r.departure_city,
+        r.arrival_date,
+        r.arrival_city,
+        r.arrival_address,
+        r.price_per_seat,
+        COUNT(p.id_ridesharing) as nbParticipant
+        FROM {$this->tableName} r
+        JOIN participate p ON r.id_ridesharing = p.id_ridesharing
+        WHERE r.id_driver = :id_driver
+        GROUP BY r.id_ridesharing
+        ORDER BY 
+        CASE 
+            WHEN status = 'ongoing' THEN 1
+            WHEN status = 'pending' THEN 2 
+            ELSE 3 
+        END,
+        departure_date ASC";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt -> bindValue(':id_driver', $idDriver);
+        $stmt -> execute();
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        if($result)
+        {
+            $ridesharingList = [];
+            foreach ($result as $row)
+            {
+                $ridesharing = new RidesharingModel($row);
+                $ridesharingList[] = $ridesharing;
+            }
+            return $ridesharingList;
+        }
+        return null;
+    }
+
+    /**
+     * Trouve les covoiturages auxquels un participant est inscrit.
+     * 
+     * @param int $idParticipant L'identifiant du participant.
+     * @return ParticipateModel[]|null Un tableau d'instances de ParticipateModel avec les détails des trajets, ou null si aucun trajet n'est trouvé.
+     */
+    public function findRidesharingByParticipant(int $idParticipant): ?array
+    {
+        $query = "SELECT r.status,
+        r.id_ridesharing,
+        r.departure_date,
+        r.departure_city,
+        r.arrival_date,
+        r.arrival_city,
+        r.arrival_address,
+        r.price_per_seat,
+        p.nb_seats AS participant_nbSeats
+        FROM {$this->tableName} r
+        JOIN participate p ON r.id_ridesharing = p.id_ridesharing
+        WHERE p.id_participant = :id_participant
+        ORDER BY 
+        CASE 
+            WHEN status = 'ongoing' THEN 1
+            WHEN status = 'pending' THEN 2 
+            ELSE 3 
+        END,
+        departure_date ASC";
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt -> bindValue(':id_participant', $idParticipant);
+        $stmt -> execute();
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        if($result)
+        {            
+            foreach ($result as $row)
+            {
+                $participationdata = [];
+
+                $ridesharingData = [];
+                foreach ($row as $key => $value)
+                {
+                    if (str_starts_with($key, 'participant_')) {
+                        $participationdata[substr($key, 12)] = $value;
+                    } else {
+                        $ridesharingData[$key] = $value;
+                    }
+                }
+                $participation = new ParticipateModel($participationdata);
+                $ridesharing = new RidesharingModel($ridesharingData);
+                $participationList=[
+                    'participant'=>$participation,
+                    'ridesharing'=>$ridesharing
+                ];
+            }
+            return $participationList;
+        }
+        return null;
     }
 
     /**
@@ -114,7 +321,7 @@ class RidesharingRepo extends BaseRepoSql
      * @param int $rideId L'identifiant du trajet.
      * @return bool Vrai si la mise à jour a réussi, faux sinon.
      */
-    public function setRideOngoing(int $rideId): bool
+    public function startRide(int $rideId): bool
     {
         $sql = "UPDATE {$this->tableName}
                 SET status = 'ongoing'
@@ -122,52 +329,5 @@ class RidesharingRepo extends BaseRepoSql
                 AND status = 'pending'";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute(['id_ridesharing' => $rideId]);
-    }
-
-    /**
-     * Décrémente le nombre de places disponibles pour un trajet.
-     *
-     * @param int $rideId L'identifiant du trajet.
-     * @param int $nbSeats Nombre de places à retirer (par défaut 1).
-     * @return bool Vrai si la mise à jour a réussi, faux sinon.
-     */
-    public function decrementSeats(int $rideId, int $nbSeats = 1): bool
-    {
-        $sql = "UPDATE {$this->tableName}
-                SET available_seats = available_seats - :nbSeats
-                WHERE id_ridesharing = :id_ridesharing 
-                AND available_seats >= :nbSeats"; // On ne peut pas descendre en dessous de zéro place disponible.
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            'nbSeats' => $nbSeats,
-            'id_ridesharing' => $rideId
-        ]);
-
-        // Si le nombre de place souhaité est supérieur aux places dispo alors il n'y aura aucune modification de ligne.
-        if($stmt->rowCount()===0)
-        {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Incrémente le nombre de places disponibles pour un trajet. Suite à l'annulation d'une participation.
-     *
-     * @param int $rideId L'identifiant du trajet.
-     * @param int $nbSeats Nombre de places à ajouter (par défaut 1).
-     * @return bool Vrai si la mise à jour a réussi, faux sinon.
-     */
-    public function incrementSeats(int $rideId, int $nbSeats = 1): bool
-    {
-        $sql = "UPDATE {$this->tableName}
-                SET available_seats = available_seats + :nbSeats
-                WHERE id_ridesharing = :id_ridesharing";
-
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([
-            'nbSeats' => $nbSeats,
-            'id_ridesharing' => $rideId
-        ]);
     }
 }

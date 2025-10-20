@@ -1,7 +1,7 @@
 <?php
 
 namespace App\repository;
-use App\Model\PreferenceModel;
+use App\model\PreferenceModel;
 
 class PreferenceRepo extends BaseRepoMongo
 {

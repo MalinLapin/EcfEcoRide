@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\model;
 
 use DateTimeImmutable;
 
@@ -15,7 +15,7 @@ abstract class BaseModel
     private array $dateFields = ['created_at', 'updated_at', 'departure_date', 'arrival_date', 'first_registration'];
 
     //Champs de type enum pour hydratation
-    private array $enumFields = ['role', 'status', 'status_review'];
+    private array $enumFields = ['role', 'status', 'status_review', 'energy_type'];
 
     //Champs de type int pour hydratation
     private array $intFields =['id_brand', 'id_car', 'id_user', 'id_preference', 'id_review', 'id_redactor', 'id_target', 'id_ridesharing', 'available_seats', 'price_per_seat', 'id_driver', 'credit_balance'];
@@ -48,12 +48,18 @@ abstract class BaseModel
     {
         foreach ($data as $key => $value)
             {
+            
             // Problème avec les noms de colonnes comme first_name.
             $methodName = str_replace(array('-','_'), ' ', $key); // first name
             $methodName = ucwords($methodName);// First Name
             $methodName = str_replace(' ','', $methodName); // FirstName
             $methodName = 'set'.$methodName; // setFirstName
             
+            //Si la key est password on passe par setHashedPassword pour évité de re-hasher le mot de passe via le Setter de UserModel.
+            if ($key === 'password') {
+                $this->setHashedPassword($value);
+                continue;
+            }
             
             // On vérifie si la méthode existe avant de l'appeler
             if(method_exists($this,$methodName))
@@ -80,6 +86,7 @@ abstract class BaseModel
                             'role' => Role::from($value),
                             'status' => Status::from($value),
                             'status_review' => StatusReview::from($value),
+                            'energy_type'=> EnergyType::from($value)
                         };
                     }
                 }   
@@ -100,7 +107,8 @@ abstract class BaseModel
                 if (in_array($key, $this->boolFields)) 
                 {
                     // Gère les formats "1"/"0", true/false, int, string
-                    $value = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                    $tmp = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                    $value = $tmp === null ? (bool)$value : $tmp;
                 }
                 
                 // On renvoie la méthode set correspondante avec sa valeur.                
@@ -108,5 +116,30 @@ abstract class BaseModel
                 
             }            
         }
+    }
+
+    public function __debugInfo(): array
+    {
+        $reflect = new \ReflectionClass($this);
+        $props = $reflect->getProperties(\ReflectionProperty::IS_PRIVATE | \ReflectionProperty::IS_PROTECTED);
+        
+        $data = [];
+        foreach ($props as $prop) {
+            // Ignore les métadonnées
+            if (in_array($prop->getName(), ['dateFields','enumFields','intFields','floatFields','boolFields'])) {
+                continue;
+            }
+            
+            $prop->setAccessible(true);
+            
+            // Vérifie si la propriété est initialisée (PHP 7.4+)
+            if (!$prop->isInitialized($this)) {
+                $data[$prop->getName()] = '<non défini>';
+                continue;
+            }
+            
+            $data[$prop->getName()] = $prop->getValue($this);
+        }
+        return $data;
     }
 }

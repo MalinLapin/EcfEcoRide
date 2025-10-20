@@ -1,9 +1,11 @@
 <?php
 
-use App\Model\RidesharingModel;
-use App\Model\Status;
-use App\repository\RidesharingRepo;
+use App\model\Status;
+use App\model\CarModel;
+use App\model\UserModel;
+use App\model\RidesharingModel;
 use PHPunit\Framework\TestCase;
+use App\repository\RidesharingRepo;
 
 class RidesharingRepoTest extends TestCase
 {
@@ -59,8 +61,8 @@ class RidesharingRepoTest extends TestCase
         $newRide->setAvailableSeats(2);
         $newRide->setPricePerSeat(3);
         $newRide->setCreatedAt(new DateTimeImmutable());
-        $newRide->setIdDriver(1);
-        $newRide->setIdCar(4);
+        $newRide->setDriver(new UserModel( ['id_user'=>45, 'pseudo'=>'George'] ));
+        $newRide->setCar(new CarModel( ['id_car'=>12, 'brand'=>'Renault', 'model'=>'Clio'] ));
 
         $repo->create($newRide);
 
@@ -127,8 +129,8 @@ class RidesharingRepoTest extends TestCase
         $newRide->setAvailableSeats(2);
         $newRide->setPricePerSeat(4);
         $newRide->setCreatedAt(new DateTimeImmutable());
-        $newRide->setIdDriver(4);
-        $newRide->setIdCar(2);
+        $newRide->setDriver(new UserModel( ['id_user'=>45, 'pseudo'=>'George'] ));
+        $newRide->setCar(new CarModel( ['id_car'=>12, 'brand'=>'Renault', 'model'=>'Clio'] ));
 
         $success = $repo->update($newRide);
         $this->assertFalse($success);
@@ -181,8 +183,8 @@ class RidesharingRepoTest extends TestCase
         $newRide->setAvailableSeats(2);
         $newRide->setPricePerSeat(3);
         $newRide->setCreatedAt(new DateTimeImmutable());
-        $newRide->setIdDriver(1);
-        $newRide->setIdCar(4);
+        $newRide->setDriver(new UserModel( ['id_user'=>45, 'pseudo'=>'George'] ));
+        $newRide->setCar(new CarModel( ['id_car'=>12, 'brand'=>'Renault', 'model'=>'Clio'] ));
 
         $idNewRide = $repo->create($newRide);     
 
@@ -228,78 +230,16 @@ class RidesharingRepoTest extends TestCase
      * On applique la méthode setOngoing()
      * On récupere à nouveau notre trajet mis a jour depuis la Bdd puis on test son changement de status.
      */
-    public function testSetRideOngoing():void
+    public function testStartRide():void
     {
         $repo = new RidesharingRepo(self::$pdo);
         $ride = $repo->findById(3); // On recherche un trajet par son Id
 
-        $repo->setRideOngoing($ride->getIdRidesharing());
+        $repo->StartRide($ride->getIdRidesharing());
 
         $updatedRide = $repo->findById($ride->getIdRidesharing());
         
         $this->assertSame(Status::ongoing, $updatedRide->getStatus());
-    }
-
-
-    /**
-     * Méthode de test pour la réservation de place dans un covoiturage qui n'a pas le bon nombre de place disponible.
-     * 
-     * @return void
-     * On recherche le trajet par son id
-     * On applique la méthode decrementSeats()
-     * On test le nombre de place disponible après la reservation.
-     */
-    public function testDecrementSeats():void
-    {
-        $repo = new RidesharingRepo(self::$pdo);
-        $ride = $repo->findById(3); // On recherche un trajet par son Id. Ici le trajet 3 à 3 places de disponible.
-
-        $repo->decrementSeats($ride->getIdRidesharing(), 2); // On indique l'id du covoiturage ainsi que le nombre de place souhaiter.
-        
-        $updatedRide = $repo->findById($ride->getIdRidesharing());
-        
-
-        $this->assertSame(1, $updatedRide->getAvailableSeats()); // La nouvelle valeur de place dispo doit etre 1.
-
-    }
-
-    /**
-     * Méthode de test pour une reservation de plus de place que disponible.
-     * 
-     * @return void
-     * On recherche le trajet par son id
-     * On applique la méthode decrementSeats()
-     * On test que notre méthode nous renvoie bien une erreur.
-     */
-    public function testDecrementSeatsFalse():void
-    {
-        $repo = new RidesharingRepo(self::$pdo);
-        $ride = $repo->findById(2); // On recherche un trajet par son Id. Ici le trajet 2 n'as plus de place disponible.
-
-        $success = $repo->decrementSeats($ride->getIdRidesharing(), 2); // On indique l'id du covoiturage ainsi que le nombre de place souhaiter.
-
-        $this->assertFalse($success); // On doit doit donc avoir false en retour
-    }
-
-    /**
-     * Méthode de test pour l'annulation d'une reservation par un utilisateur.
-     * 
-     * @return void
-     * On recherche le trajet par son id
-     * On applique la méthode incrementSeats()
-     * On récupere à nouveau notre trajet mis a jour depuis la Bdd puis on test son changement de places disponible.
-     */
-    public function testIncrementSeats():void
-    {
-        $repo = new RidesharingRepo(self::$pdo);
-        $ride = $repo->findById(2); // On recherche un trajet par son Id. Ici le trajet 2 n'as plus de place disponible.
-
-        $repo->incrementSeats($ride->getIdRidesharing(), 2); // On indique l'id du covoiturage ainsi que le nombre de place annuler.
-
-        $updatedRide = $repo->findById($ride->getIdRidesharing());
-
-        $this->assertSame(2, $updatedRide->getAvailableSeats()); // On doit doit donc ce retrouver avec 2 place de disponible.
-
-    }
+    }   
     
 }

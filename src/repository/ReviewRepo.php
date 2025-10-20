@@ -2,7 +2,7 @@
 
 namespace App\repository;
 
-use App\Model\ReviewModel;
+use App\model\ReviewModel;
 
 class ReviewRepo extends BaseRepoMongo
 {

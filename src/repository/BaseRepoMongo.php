@@ -2,9 +2,11 @@
 // src/repository/MongoBaseRepo.php
 namespace App\repository;
 
+use Exception;
+use MongoDB\Client;
 use MongoDB\Collection;
 use App\config\Database;
-use App\Model\BaseModel;
+use App\model\BaseModel;
 use MongoDB\BSON\ObjectId;
 use MongoDB\BSON\UTCDateTime;
 use MongoDB\Model\BSONDocument;
@@ -29,11 +31,13 @@ abstract class BaseRepoMongo
         if ($collection === null && $db === null) {
             $db = Database::getInstanceMongo();
         }
+
         // Vérifie que le nom de la collection est défini
         // et que la collection est soit passée en paramètre, soit créée à partir de la base de données.
         if (!isset($this->collectionName) || $this->collectionName === '') {
             throw new \LogicException('collectionName non défini dans ' . static::class);
         }
+        
         // Si la collection est déjà passée en paramètre, on l'utilise directement.
         // Sinon, on la crée à partir de la base de données.
         if (!isset($this->collectionName) || $this->collectionName === '') {

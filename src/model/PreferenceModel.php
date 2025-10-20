@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\model;
 
 /**
  * Fichier contenant notre classe Preference qui étend la classe BaseModel.
@@ -11,7 +11,7 @@ class PreferenceModel extends BaseModel
     private ?string $idPreference = null; // Identifiant des preferences. En string car l'id en MongoDb est un ObjectId
     private string $label; // Label de la préférence.
     private bool $isAccepted; // Indique si la préférence est acceptée ou non.    
-    private int $idCar; // Identifiant de la voiture associée à cette préférence.
+    private int $idRidesharing; // Identifiant du trajet associé.
 
 
     public function __construct(array $data = [])
@@ -74,19 +74,19 @@ class PreferenceModel extends BaseModel
     }
 
     /**
-     * Get the value of idCar
+     * Get the value of idRidesharing
      */
-    public function getIdCar(): int
+    public function getIdRidesharing(): int
     {
-        return $this->idCar;
+        return $this->idRidesharing;
     }
 
     /**
-     * Set the value of idCar
+     * Set the value of idRidesharing
      */
-    public function setIdCar(int $idCar): self
+    public function setIdRidesharing(int $idRidesharing): self
     {
-        $this->idCar = $idCar;
+        $this->idRidesharing = $idRidesharing;
 
         return $this;
     }

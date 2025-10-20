@@ -1,0 +1,100 @@
+/* Réinitialisation de l'user agent */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Importation des classes pour les polices */
+
+.robotoRegular, /*Police commune*/
+.robotoBold, 
+.montserratRegular,/*Police titre / Elément principaux*/
+.montserratBold {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+.robotoRegular,
+.montserratRegular {
+  font-weight: 500;
+}
+
+.robotoBold,
+.montserratBold {
+  font-weight: 700;
+}
+
+.titleColor {
+  color: #27ae60;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ---------------CSS du header---------------- */
+
+.header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  background-color: #27ae60;
+  color: white;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10%;
+}
+
+.headerLogo {
+  width: 5rem;
+  margin: 2%;
+}
+
+.headerLogo img {
+  background-color: #90ee90;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.header a {
+  color: white;
+}
+
+.headerProfil {
+  display: flex;
+  text-align: center;
+}
+
+/* ---------------footer---------------- */
+
+.mainContent {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+/* ---------------footer---------------- */
+
+.footer {
+  background-color: #27ae60;
+  z-index: 100;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 80px;
+}

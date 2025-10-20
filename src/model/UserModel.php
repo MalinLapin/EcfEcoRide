@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Model;
+namespace App\model;
 
 
 use DateTimeImmutable;
-use App\services\UserValidator;
+use App\security\Validator;
 
 /**
  * Enumération pour représenter les différents rôles d'un utilisateur.
@@ -25,8 +25,6 @@ enum Role: string
 class UserModel extends BaseModel
 {
     private ?int $idUser = null; // Identifiant de l'utilisateur, initialisé à null.
-    private string $lastName; // Nom de famille de l'utilisateur.
-    private string $firstName; // Prénom de l'utilisateur.
     private string $pseudo; // Pseudo de l'utilisateur.
     private string $email; // Adresse e-mail de l'utilisateur.
     private string $password; // Mot de passe de l'utilisateur.
@@ -63,42 +61,6 @@ class UserModel extends BaseModel
     }
 
     /**
-     * Get the value of lastName
-     */
-    public function getLastName(): string
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * Set the value of lastName
-     */
-    public function setLastName(string $lastName): self
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of firstName
-     */
-    public function getFirstName(): string
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * Set the value of firstName
-     */
-    public function setFirstName(string $firstName): self
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    /**
      * Get the value of pseudo
      */
     public function getPseudo(): string
@@ -130,7 +92,7 @@ class UserModel extends BaseModel
      */
     public function setEmail(string $email): self
     {
-        if (UserValidator::validateEmail($email)){
+        if (Validator::validateEmail($email)){
             $this->email = $email;            
         }
         return $this;
@@ -151,11 +113,21 @@ class UserModel extends BaseModel
      */
     public function setPassword(string $password): self
     {
-        if (UserValidator::validatePasswordStrength($password))
+        if (Validator::validatePasswordStrength($password))
         {
             $this->password = password_hash($password,PASSWORD_DEFAULT);
         }
 
+        return $this;
+    }
+
+    /**
+     * Setter du Password une fois hasher.
+     */
+    public function setHashedPassword(string $hashedPassword): self
+    {
+        // Méthode explicite pour hash depuis BDD
+        $this->password = $hashedPassword;
         return $this;
     }
 
@@ -198,7 +170,7 @@ class UserModel extends BaseModel
     /**
      * Get the value of photo
      */
-    public function getPhoto(): string
+    public function getPhoto(): ?string
     {
         return $this->photo;
     }
@@ -206,7 +178,7 @@ class UserModel extends BaseModel
     /**
      * Set the value of photo
      */
-    public function setPhoto(string $photo): self
+    public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
 
@@ -216,7 +188,7 @@ class UserModel extends BaseModel
     /**
      * Get the value of grade
      */
-    public function getGrade(): float
+    public function getGrade(): ?float
     {
         return $this->grade;
     }
@@ -224,7 +196,7 @@ class UserModel extends BaseModel
     /**
      * Set the value of grade
      */
-    public function setGrade(float $grade): self
+    public function setGrade(?float $grade): self
     {
         $this->grade = $grade;
 

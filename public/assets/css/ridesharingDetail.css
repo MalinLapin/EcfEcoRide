@@ -1,0 +1,104 @@
+.rideInfo,
+.participationInfo,
+.driver,
+.car,
+.reviewList {
+  background-color: #90ee90;
+  border-radius: 10%;
+  margin-top: 25px;
+  width: 100%;
+  text-align: center;
+}
+
+.rideInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.rideAddress {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+}
+
+.rideAddress div {
+  width: 130px;
+}
+
+.infoCard {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.infoCard div {
+  width: 85px;
+}
+
+.participationInfo div {
+  margin: 20px 0;
+}
+
+.ridesharingPrice {
+  font-size: 20px;
+}
+
+.ridesharingPrice span {
+  font-size: 40px;
+  margin-right: 10px;
+}
+
+.participationInfo input {
+  margin-top: 10px;
+}
+
+.participationInfo button {
+  margin-bottom: 10px;
+  background-color: #f7dc6f;
+  height: 25px;
+  width: 120px;
+}
+
+.titleDriver,
+.titleCar,
+.reviewTitle {
+  display: flex;
+  margin: 5px 0 10px 5px;
+}
+
+.infoDriver {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 30px;
+  margin: 10px 0;
+}
+
+.carInfo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.carInfo div {
+  text-align: start;
+  width: 120px;
+  margin: 20px 0;
+}
+
+.preferenceDriver h4 {
+  text-decoration: underline;
+}
+.preferenceDriver ul {
+  margin: 10px 0;
+  text-align: start;
+  padding-left: 40px;
+}
+
+.review {
+  text-align: start;
+  border: solid 1px black;
+  padding: 5px;
+  margin-bottom: 30px;
+}

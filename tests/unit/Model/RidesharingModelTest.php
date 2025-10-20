@@ -1,6 +1,8 @@
 <?php
 
-use App\Model\RideSharingModel;
+use App\model\CarModel;
+use App\model\RideSharingModel;
+use App\model\UserModel;
 use PHPUnit\Framework\TestCase;
 
 
@@ -19,8 +21,8 @@ class RidesharingModelTest extends TestCase
             'price_per_seat' => '40',
             'status' => 'pending',
             'created_at' => '2023-06-01 12:00:00',
-            'id_driver' => 9,
-            'id_car' => 427
+            'driver' => new UserModel( ['id_user' => 9, 'pseudo' => 'Chauffeur1'] ),
+            'id_car' => new CarModel(['id_car' => 427, 'brand' => 'Peugeot', 'model' => '208'])
         ];
 
         $ridesharing = RideSharingModel::createAndHydrate($data);
@@ -35,7 +37,7 @@ class RidesharingModelTest extends TestCase
         $this->assertEquals(40, $ridesharing->getPricePerSeat());
         $this->assertEquals('pending', $ridesharing->getStatus()->value);
         $this->assertInstanceOf(DateTimeImmutable::class, $ridesharing->getCreatedAt());
-        $this->assertEquals(9, $ridesharing->getIdDriver());
-        $this->assertEquals(427, $ridesharing->getIdCar());
+        $this->assertEquals(9, $ridesharing->getDriver()->getIdUser());
+        $this->assertEquals(427, $ridesharing->getCar() ->getIdCar());
     }
 }

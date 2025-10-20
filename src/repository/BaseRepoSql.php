@@ -3,7 +3,7 @@
 namespace App\repository;
 
 use App\config\Database;
-use App\Model\BaseModel;
+use App\model\BaseModel;
 use BackedEnum;
 
 /**
@@ -29,13 +29,14 @@ abstract class BaseRepoSql
      * @param BaseModel $model Le modèle à insérer dans la base de données.
      * @return bool Retourne true si l'insertion a réussi, false sinon.
      */
-    public function create(BaseModel $model):?int
+    public function create(BaseModel $model):bool
     {
+        
         // On vérifie que le modèle est une instance de BaseModel
         $data = $this->extractData($model);
 
         // On s'assure que le champ ID n'est pas inclus dans les données à insérer car il est auto incrémenter.
-        $idField = $this->getIdField();        
+        $idField = $this->getPrimaryKeyField();        
         unset($data[$idField]);
 
         // On construit la requête d'insertion
@@ -50,8 +51,7 @@ abstract class BaseRepoSql
             $stmt->bindValue(":{$key}", $this->prepareParamForDatabase($value));
 
         }
-        $stmt->execute();
-        return $this->pdo->lastInsertId();
+        return $stmt->execute();        
     }
 
     /**
@@ -67,9 +67,17 @@ abstract class BaseRepoSql
         $reflection = new \ReflectionClass($model);
 
         // On parcourt les propriétés du modèle et on les ajoute au tableau de données
-        foreach ($reflection->getProperties() as $property) {
-            $property->setAccessible(true);          
-            $data[self::camelToSnake($property->getName())] = $property->getValue($model);
+        foreach ($reflection->getProperties() as $property) 
+        {
+            // On rend la propriété accessible même si elle est privée ou protégée
+            $property->setAccessible(true);
+            // On vérifie si la propriété est initialisée avant de tenter de récupérer sa valeur
+            if ($property->isInitialized($model)) {
+                // 
+                $data[self::camelToSnake($property->getName())] = $property->getValue($model);
+            }else { // Si la propriété n'est pas initialisée, on peut choisir de l'ignorer ou de lui attribuer une valeur par défaut (comme null)
+                $data[self::camelToSnake($property->getName())] = null;
+            }
         }
         return $data;
     }
@@ -88,7 +96,7 @@ abstract class BaseRepoSql
      * Récupère le nom du champ ID pour la table associée.
      * @return string Le nom du champ ID.
      */
-    protected function getIdField(): string
+    protected function getPrimaryKeyField(): string
     {
         // La colonne ID est nommée 'id_' suivie du nom de la table.
         return 'id_' . $this->tableName;
@@ -105,7 +113,7 @@ abstract class BaseRepoSql
         $data = $this->extractData($model);
         
         // On s'assure que le champ ID est présent dans les données
-        $idField = $this->getIdField();
+        $idField = $this->getPrimaryKeyField();
         if (!isset($data[$idField])) {
             throw new \Exception("Le champ ID est nécéssaire à la modification.");
         }
@@ -141,7 +149,7 @@ abstract class BaseRepoSql
     public function delete(int $id): bool
     {
         // On prépare la requête de suppression
-        $idField = $this->getIdField();
+        $idField = $this->getPrimaryKeyField();
         $sql = "DELETE FROM {$this->tableName} WHERE {$idField} = :{$idField}";
         $stmt = $this->pdo->prepare($sql);
         
@@ -160,7 +168,7 @@ abstract class BaseRepoSql
     public function findById(int $id): ?BaseModel
     {
         // On prépare la requête de sélection
-        $idField = $this->getIdField();
+        $idField = $this->getPrimaryKeyField();
         $sql = "SELECT * FROM {$this->tableName} WHERE {$idField} = :{$idField}";
         $stmt = $this->pdo->prepare($sql);
         

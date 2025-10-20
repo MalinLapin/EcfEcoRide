@@ -1,0 +1,10 @@
+Bonjour {{participant_pseudo}},
+
+Votre covoiturage est terminé !
+Trajet : {{departurecity}},{{departureAddress}} → {{arrivalCity}},{{arrivalAddress}}
+Date : {{departureDate}}
+
+Merci de vous rendre dans votre espace personnel pour donner un avis sur votre expérience.
+
+Cordialement,
+L'équipe EcoRide
