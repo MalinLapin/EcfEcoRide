@@ -57,6 +57,10 @@
   flex-wrap: wrap;
 }
 
+.detailForm {
+  display: inline-block;
+}
+
 .detailBtn,
 .newSearchBtn {
   background-color: #f7dc6f;
