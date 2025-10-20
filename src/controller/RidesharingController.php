@@ -130,10 +130,19 @@ class RidesharingController extends BaseController
      * Afficher les détails d'un covoiturage spécifique
      * @param int $idRidesharing
      */
-    public function showRidesharingDetail(int $idRidesharing): void
+    public function showRidesharingDetail(): void
     {
+        // On s'assure que la requête est de type POST.
+        if ($_SERVER['REQUEST_METHOD'] != 'POST')
+        {
+            $this->response->redirect('/search');
+            return;
+        }
+
+        // Récupération et nettoyage des données du formulaire
+        $data = $this->getPostData();
         
-        $ridesharingDetails = $this->ridesharingRepo->findByIdWithDetails($idRidesharing);
+        $ridesharingDetails = $this->ridesharingRepo->findByIdWithDetails($data['idRidesharing']);
         
         // On vérifie que le covoiturage existe
         if (!$ridesharingDetails) {
