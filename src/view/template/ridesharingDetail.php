@@ -42,7 +42,7 @@
     </div>
     
     <div class='participationInfo'>
-        <form action="#" method='GET' class='seatForm'>
+        <form action="/participate" method='POST' class='seatForm'>
             <div class='participationCard'>
                 <div class='ridesharingPrice'>
                     <p><span class='robotoBold'><?=$ride->getPricePerSeat()?> </span>Crédits /places</p>
