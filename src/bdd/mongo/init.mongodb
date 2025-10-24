@@ -1,3 +1,7 @@
+db.review.drop();
+db.preference.drop();
+
+
 // Création de la Bdd NoSql.
 const dbEco = db.getSiblingDB('EcoRideMongo');
 
@@ -63,7 +67,7 @@ dbEco.review.insertMany([
         id_redactor: 3,      // L'auteur de l'avis (doit exister en SQL)
         status_review: "approved",
         rating: 5,
-        comment: "Excellent conducteur, très ponctuel !",
+        comment: "Avis 1",
         created_at: new Date("2024-01-15"),
         reviewed_by: 5,      // L'employé qui a validé (milkauny)
         reviewed_at: new Date("2024-01-16"),
@@ -82,18 +86,18 @@ dbEco.review.insertMany([
     },
     {
         id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
-        id_redactor: 3,      // L'auteur de l'avis (doit exister en SQL)
+        id_redactor: 4,      // L'auteur de l'avis (doit exister en SQL)
         status_review: "pending",
         rating: 4,
-        comment: "Excellent conducteur, très ponctuel !",
+        comment: "Avis 3",
         created_at: new Date("2024-01-15")
     },
     {
         id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
-        id_redactor: 3,      // L'auteur de l'avis (doit exister en SQL)
+        id_redactor: 4,      // L'auteur de l'avis (doit exister en SQL)
         status_review: "approved",
-        rating: 5,
-        comment: "Excellent conducteur, très ponctuel !",
+        rating: 2,
+        comment: "Avis 4",
         created_at: new Date("2024-01-15"),
         reviewed_by: 5,      // L'employé qui a validé (milkauny)
         reviewed_at: new Date("2024-01-16"),
@@ -101,21 +105,21 @@ dbEco.review.insertMany([
     },
     {
         id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
-        id_redactor: 3,      // L'auteur de l'avis (doit exister en SQL)
+        id_redactor: 1,      // L'auteur de l'avis (doit exister en SQL)
         status_review: "approved",
-        rating: 5,
-        comment: "Excellent conducteur, très ponctuel !",
+        rating: 4,
+        comment: "Avis 5",
         created_at: new Date("2024-01-15"),
         reviewed_by: 5,      // L'employé qui a validé (milkauny)
         reviewed_at: new Date("2024-01-16"),
         reason: null
     },
     {
-        id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
-        id_redactor: 3,      // L'auteur de l'avis (doit exister en SQL)
+        id_target: 3,        // L'utilisateur évalué (doit exister en SQL)
+        id_redactor: 2,      // L'auteur de l'avis (doit exister en SQL)
         status_review: "approved",
-        rating: 5,
-        comment: "Excellent conducteur, très ponctuel !",
+        rating: 2,
+        comment: "Avis 6",
         created_at: new Date("2024-01-15"),
         reviewed_by: 5,      // L'employé qui a validé (milkauny)
         reviewed_at: new Date("2024-01-16"),
