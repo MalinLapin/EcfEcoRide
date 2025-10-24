@@ -26,14 +26,14 @@ class UserRepo extends BaseRepoSql
             return UserModel::createAndHydrate($data);
         } else {
             return null;
-        }        
+        }
     }
     
     /**
      * Récupère un utilisateur par son adresse e-mail.
      * @param string $email L'adresse e-mail de l'utilisateur à récupérer.
      * @return UserModel|null L'instance de UserModel correspondant à l'utilisateur, ou null si l'utilisateur n'existe pas.
-     * 
+     *
      * Cette méthode prépare une requête SQL pour récupérer un utilisateur en fonction de son adresse e-mail.
      */
     public function getUserByEmail(string $email): ?UserModel
@@ -49,7 +49,6 @@ class UserRepo extends BaseRepoSql
             return null; // Retourne null si l'utilisateur n'existe pas
         }
     }
-    
 
 }
 
