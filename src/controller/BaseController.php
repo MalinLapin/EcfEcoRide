@@ -78,13 +78,14 @@ abstract class BaseController
      */
     protected function requireAuth():void
     {
-        if(!isset($_SESSION['id_user']))
+        if(!isset($_SESSION['idUser']))
         {
             $this->render('login', [
-            'title'=> 'Connexion',
             'csrf_token'=>$this->tokenManager->generateCsrfToken(),
-            'pageCss'=>'login.css'
-        ]);
+            'message'=>'Il faut etre connecter pour participer à un covoiturage',
+            'pageCss'=>'login']);
+
+            exit;
         }
     }
 }
