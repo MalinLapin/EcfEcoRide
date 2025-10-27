@@ -79,7 +79,10 @@ class AuthController extends BaseController
         // Limitation du nombre de tentatives de connexion pour prévenir les attaques par force brute
         if (!$this->checkRateLimit()) 
         {
-            $this->response->error('Trop de tentatives, réessayez dans 15 minutes.', 429);
+            $this->render('login', [
+            'csrf_token'=>$this->tokenManager->generateCsrfToken(),
+            'message'=>'Trop de tentatives échoué veuillez attendre 1 min. avant de réessayer.',
+            'pageCss'=>'login']);
             return;
         }
 
@@ -100,7 +103,7 @@ class AuthController extends BaseController
             session_regenerate_id(true);
 
             // Si l'authentification réussit, on stocke les informations en session
-            $_SESSION['id_user']=$user->getIdUser();
+            $_SESSION['idUser']=$user->getIdUser();
             $_SESSION['role']=$user->getRole()->value;
             $_SESSION['pseudo']=$user->getPseudo();
             $_SESSION['photo']=$user->getPhoto();
@@ -222,7 +225,7 @@ class AuthController extends BaseController
 
                 session_regenerate_id(true);
                 // Si l'utilisateur est créé avec succès, on enregistre les informations en session
-                $_SESSION['id_user'] = $newUser->getIdUser();
+                $_SESSION['idUser'] = $newUser->getIdUser();
                 $_SESSION['role'] = $newUser->getRole()->value;
                 $_SESSION['pseudo'] = $newUser->getPseudo();
                 
@@ -286,7 +289,7 @@ class AuthController extends BaseController
         $lastAttempt = $_SESSION[$key . '_time'] ?? 0;
         
         // Reset après 15 minutes
-        if (time() - $lastAttempt > 900) {
+        if (time() - $lastAttempt > 60) {
             $_SESSION[$key] = 0;
             $attempts = 0;
         }
