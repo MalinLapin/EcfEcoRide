@@ -59,10 +59,38 @@ abstract class BaseController
      * Permet la redirection d'url
      * @param string $url l'adresse HTTP de destination
      */
-    protected function redirect(string $url):void
+    protected function redirect(string $url, array $flashData = []):void
     {
+        if (!empty($flashData))
+        {
+            $message= $flashData['message'] ?? 'Une erreur est survenue';
+            $type = $flashData['type'] ?? 'error';
+
+            $this->setFlashMessage($message, $type); 
+        }
+        
         header("Location: $url");
         exit;
+    }
+
+    protected function setFlashMessage(string $message, string $type = 'error'):void
+    {
+        $_SESSION['flashMessage'] = [
+            'message'=> $message,
+            'type'=> $type
+        ];
+    }
+
+    protected function getFlashMessage():?array
+    {
+        if(empty($_SESSION['flashMessage']))
+        {
+            return null;
+        }
+        $flashMessage = $_SESSION['flashMessage'];
+        unset($_SESSION['flashMessage']);
+
+        return $flashMessage;
     }
 
     /**
