@@ -13,6 +13,11 @@
                 <label for="password" class="robotoRegular">Mot de passe</label>
                 <input type="password" id="password" name="password" placeholder="Mot de passe" required>
             </div>
+            <?php if (!empty($message)):?>
+            <div class =errorMessage>
+                <p class="robotoBold"><?=$message?></p>
+            </div>
+            <?php endif; ?>
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
             <button type="submit" class="robotoRegular loginBtn">Se connecter</button>
             <div class="message robotoRegular">Pas encore inscrit ? <a href="/register">Créer un compte</a></div>
