@@ -3,9 +3,15 @@
     $driver = $ridesharingDetails['driver'];
     $car = $ridesharingDetails['car'];
     $brand = $ridesharingDetails['brand'];
+    $flash = $this->getFlashMessage();
 
 ?>
 <section class='ridesharingDetail robotoRegular'>
+    <?php if(!empty($flash)):?>
+        <div class='errorInfo'>
+            <p><?=$flash['message']?></p>
+        </div>
+        <?php endif; ?>
     <div class ='rideInfo'>
         <h3 class ='montserratBold'>Trajet</h3>
         <div class='rideAddress'>
