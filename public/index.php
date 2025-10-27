@@ -27,7 +27,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
     $r->addRoute('POST', '/logout', [App\controller\AuthController::class, 'logout']);    
     $r->addRoute('GET', '/search', [App\controller\RidesharingController::class, 'showSearchRidesharing']);    
     $r->addRoute('POST', '/search', [App\controller\RidesharingController::class, 'searchRidesharing']);    
-    $r->addRoute('POST', '/ridesharingDetail', [App\controller\RidesharingController::class, 'showRidesharingDetail']); 
+    $r->addRoute('GET', '/ridesharingDetail/{id:\d+}', [App\controller\RidesharingController::class, 'showRidesharingDetail']); 
     $r->addRoute('POST', '/participate', [App\controller\ParticipateController::class, 'participateToRidesharing']); 
 });
 
@@ -65,7 +65,7 @@ switch ($routeInfo[0]) {
         $vars = $routeInfo[2];
         try{
             $controller = new $controllerClass();
-            call_user_func_array([$controller, $method], $vars);
+            $controller->$method($vars);
         }catch(\Exception $e){
             if(Config::get('APP_DEBUG') === 'true'){
                 $response->error("Erreur 500 : " . $e->getMessage() . " dans " . $e->getFile() . ":" . $e->getLine(), 500);

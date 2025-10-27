@@ -130,19 +130,17 @@ class RidesharingController extends BaseController
      * Afficher les détails d'un covoiturage spécifique
      * @param int $idRidesharing
      */
-    public function showRidesharingDetail(): void
+    public function showRidesharingDetail(array $params = []): void
     {
-        // On s'assure que la requête est de type POST.
-        if ($_SERVER['REQUEST_METHOD'] != 'POST')
-        {
-            $this->response->redirect('/search');
+        error_log("Params reçus : " . print_r($params, true));
+        $idRidesharing = (int) ($params['id'] ?? 0);
+    
+        if ($idRidesharing === 0) {
+            $this->response->error('ID manquant', 400);
             return;
         }
-
-        // Récupération et nettoyage des données du formulaire
-        $data = $this->getPostData();
         
-        $ridesharingDetails = $this->ridesharingRepo->findByIdWithDetails($data['idRidesharing']);
+        $ridesharingDetails = $this->ridesharingRepo->findByIdWithDetails($idRidesharing);
         // On vérifie que le covoiturage existe
         if (!$ridesharingDetails) {
             $this->response->error('Covoiturage non trouvé.', 404);
@@ -169,13 +167,14 @@ class RidesharingController extends BaseController
         }
 
         // Récuperer les préférences du conducteur pour le trajet.
-        $listPreference = $this->preferenceRepo->findByRidesharing($data['idRidesharing']);
+        $listPreference = $this->preferenceRepo->findByRidesharing($idRidesharing);
 
         // Affichage des détails du covoiturage 
         $this->render("ridesharingDetail", [
             'ridesharingDetails' => $ridesharingDetails,
             'listReview' => $listReviewForView,
             'listPreference'=>$listPreference,
+            'csrf_token'=>$this->tokenManager->generateCsrfToken(),
             'pageCss' => 'ridesharingDetail'
         ]);
     }

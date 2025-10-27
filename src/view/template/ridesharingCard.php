@@ -29,9 +29,8 @@
                 <p><span> <?= $ride->getAvailableSeats()?> </span>places</p>
             </div>
         </div>
-    </div>    
-    <form method="POST" action="/ridesharingDetail" class="detailForm">
-        <input type="hidden" name="idRidesharing" value="<?= $ride->getIdRidesharing() ?>">
+    </div>
+    <a href="/ridesharingDetail/<?= $ride->getIdRidesharing() ?>" class="robotoBold detailBtn">
         <button type="submit" class="robotoBold detailBtn">Détails</button>
-    </form>    
+    </a>    
 </article>
