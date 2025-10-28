@@ -4,7 +4,7 @@
             <form method="POST" action="/search" class='searchForm'>
                 <div class='departureCity'>
                     <label for="departureCity">Ville de départ :</label>
-                    <input type="text" name="departureCity" id="departureCity" placeholder="Ville" required>
+                    <input type="text" name="departureCity" id="departureCity" placeholder="Ville" value="<?=$departureCity ?? '' ?>" required>
                 </div>
                 <div class="departureAddress">
                     <label for="departureAddress">Adresse de départ :</label>
@@ -12,7 +12,7 @@
                 </div>
                 <div class='arrivalCity'>
                     <label for="arrivalCity">Ville d'arriver :</label>
-                    <input type="text" name="arrivalCity" id="arrivalCity" placeholder="Ville" required>
+                    <input type="text" name="arrivalCity" id="arrivalCity" placeholder="Ville" value="<?= $arrivalCity ?? '' ?>" required>
                 </div>
                 <div class="arrivalAddress">
                     <label for="arrivalAddress">Adresse d'arriver :</label>
@@ -20,11 +20,11 @@
                 </div>
                 <div class="departureDate">
                     <label for="departureDate">Date/heure :</label>
-                    <input type="datetime-local" name="departureDate" id="departureDate" required>
+                    <input type="datetime-local" name="departureDate" id="departureDate" value="<?=$dateSearch ?? '' ?>" required>
                 </div>
                 <div class="nbSeats">
                     <label for="nbSeats">Place :</label>
-                    <input type="number" name="nbSeats" id="nbSeats" value="1" max='6'>
+                    <input type="number" name="nbSeats" id="nbSeats" max='6' value="<?=$nbSeats ?? 1 ?>">
                 </div>
                 <div class="pricePerSeat">
                     <label for="pricePerSeat">Prix de la place</label>
@@ -43,7 +43,7 @@
                 </div>
                 <div class='errorsList'>
                     <ul>
-                        <?php if(isset($errors) && $errors){
+                        <?php if(!empty($errors)){
                         foreach ($errors as $error):?>
                             <li class='error robotoBold'><?=$error?></li>                                    
                         <?php endforeach;}?>
