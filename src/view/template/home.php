@@ -3,17 +3,22 @@
         <img class="imagePresentation" src="../assets/images/PhotoPresentation.png"
             alt="Photo représentant le covoiturage avec EcoRide.">
     </section>
+    <?php if(!empty($flash)):?>
+        <div class='flashInfo'>
+            <p class='robotoBold'><?=$flash['message']?></p>
+        </div>
+        <?php endif; ?>
     <section class="searchSection">
         <h2 class="montserratBold titleColor">Prenez place :</h2>
         <div class="searchContent">
             <form method="POST" action="#">
                 <div>
                     <label for="departureBar" class="robotoBold">Départ :</label>
-                    <input type="text" name="departureBar" id="departureBar" placeholder="Ville, CP, rue">
+                    <input type="text" name="departureBar" id="departureBar" placeholder="Ville">
                 </div>
                 <div>
                     <label for="arrivalBar" class="robotoBold">Déstination :</label>
-                    <input type="text" name="arrivalBar" id="arrivalBar" placeholder="Ville, CP, rue">
+                    <input type="text" name="arrivalBar" id="arrivalBar" placeholder="Ville">
                 </div>
                 <div>
                     <label for="dateSearch" class="robotoBold">Date :</label>

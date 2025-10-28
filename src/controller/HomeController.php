@@ -12,9 +12,11 @@ class HomeController extends BaseController
 
     public function index():void
     {
+        $flashMessage = $this->getFlashMessage();
+
         $this->render('home', [
-            'title'=>'Accueil - Ecoride',
-            'pageCss'=>'home'
+            'pageCss'=>'home',
+            'flash'=>$flashMessage
         ]);
     }
 }
