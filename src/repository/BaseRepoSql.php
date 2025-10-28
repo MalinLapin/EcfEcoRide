@@ -4,6 +4,7 @@ namespace App\repository;
 
 use App\config\Database;
 use App\model\BaseModel;
+use App\Attribute\NotMapped;
 use BackedEnum;
 
 /**
@@ -69,6 +70,16 @@ abstract class BaseRepoSql
         // On parcourt les propriétés du modèle et on les ajoute au tableau de données
         foreach ($reflection->getProperties() as $property) 
         {
+            // On vérifie si la propriété a l'attribut #[NotMapped]
+            $attributes = $property->getAttributes(NotMapped::class);
+
+            if (!empty($attributes))
+            {
+                // Cette propriété est marquée #[NotMapped], on la saute
+                continue;
+            }
+
+
             // On rend la propriété accessible même si elle est privée ou protégée
             $property->setAccessible(true);
             // On vérifie si la propriété est initialisée avant de tenter de récupérer sa valeur
@@ -133,10 +144,22 @@ abstract class BaseRepoSql
 
         // On lie les valeurs aux paramètres de la requête
         foreach ($data as $key => $value) {
-            $stmt->bindValue(":{$key}", self::prepareParamForDatabase($value));
+            $preparedValue = self::prepareParamForDatabase($value);
+            $stmt->bindValue(":{$key}", $preparedValue);
         }
-
-        $stmt->execute();
+        
+        try {
+            var_dump("=== JUSTE AVANT EXECUTE ===");
+            $result = $stmt->execute();
+            var_dump("=== JUSTE APRÈS EXECUTE ===");
+            var_dump("Résultat execute() : " . ($result ? 'true' : 'false'));
+            var_dump("RowCount : " . $stmt->rowCount());
+        } catch (\PDOException $e) {
+            var_dump("=== ERREUR PDO ===");
+            var_dump("Message : " . $e->getMessage());
+            var_dump("Code : " . $e->getCode());
+            die();
+        }
         // On test si le nombre de ligne à bien été modifier
         return $stmt->rowCount() > 0;
     }
