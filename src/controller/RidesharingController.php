@@ -39,9 +39,22 @@ class RidesharingController extends BaseController
      */
     public function showSearchRidesharing(): void
     {
+        $departureCity = isset($_GET['departureBar']) && $_GET['departureBar'] !== '' ? htmlspecialchars($_GET['departureBar']) : null;
+
+        $arrivalCity = isset($_GET['arrivalBar']) && $_GET['arrivalBar'] !== '' ? htmlspecialchars($_GET['arrivalBar']) : null;
+        
+        $dateSearch = isset($_GET['dateSearch']) && $_GET['dateSearch'] !== '' ? htmlspecialchars($_GET['dateSearch']) : null;
+
+
+        $nbSeats = isset($_GET['seatsBar']) ? (int)$_GET['seatsBar'] : null;
+
         $this->render('searchRidesharing', [
             'csrf_token' => $this->tokenManager->generateCsrfToken(),
-            'pageCss' => 'searchRidesharing'
+            'pageCss' => 'searchRidesharing',
+            'departureCity'=>$departureCity,
+            'arrivalCity'=>$arrivalCity,
+            'dateSearch'=>$dateSearch,
+            'nbSeats'=>$nbSeats
         ]);
     }
 
