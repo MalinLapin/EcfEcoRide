@@ -169,11 +169,13 @@ class RidesharingController extends BaseController
         // Récuperer les préférences du conducteur pour le trajet.
         $listPreference = $this->preferenceRepo->findByRidesharing($idRidesharing);
 
+        $flashMessage = $this->getFlashMessage();
         // Affichage des détails du covoiturage 
         $this->render("ridesharingDetail", [
             'ridesharingDetails' => $ridesharingDetails,
             'listReview' => $listReviewForView,
             'listPreference'=>$listPreference,
+            'flash'=>$flashMessage,
             'csrf_token'=>$this->tokenManager->generateCsrfToken(),
             'pageCss' => 'ridesharingDetail'
         ]);
