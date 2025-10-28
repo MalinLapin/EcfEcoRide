@@ -58,9 +58,11 @@
 
     </main>
     <footer class="footer">
-        <address class="robotoRegular">Contact</address>
+        <address class="robotoRegular">
+            <a href="mailto: ecoride.contact@exemple.com">ecoride.contact@exemple.com</a>
+        </address>
         <p class="robotoRegular"><span>&#169</span> Marc Uny | tous droits réservés</p>
-        <a href="../view/template/mentionLegale.php" class="robotoRegular">Mention-légales</a> 
+        <a href="/mentionLegal" class="robotoRegular">Mention-légales</a> 
         
         <!--Element provisoir-->
         <?php if (isset($_SESSION['pseudo'])):?>
