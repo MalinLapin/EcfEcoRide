@@ -19,4 +19,11 @@ class HomeController extends BaseController
             'flash'=>$flashMessage
         ]);
     }
+
+    public function mentionLegal():void
+    {
+        $this->render('mentionLegal',[
+            'pageCss'=>'mentionLegal'
+        ]);
+    }
 }
