@@ -132,7 +132,6 @@ class RidesharingController extends BaseController
      */
     public function showRidesharingDetail(array $params = []): void
     {
-        error_log("Params reçus : " . print_r($params, true));
         $idRidesharing = (int) ($params['id'] ?? 0);
     
         if ($idRidesharing === 0) {
