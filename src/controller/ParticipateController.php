@@ -35,8 +35,7 @@ class ParticipateController extends BaseController
      * Redirige l'utilisateur en fonction du succès ou de l'échec de l'opération.
      */
     public function participateToRidesharing() :void
-    {
-        var_dump("=== TEST 1 : Entrée dans la méthode ===");
+    {       
 
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
@@ -44,13 +43,9 @@ class ParticipateController extends BaseController
             $this->response->redirect('/');
             return;
         }
-        var_dump("=== TEST 2 : Méthode POST ok ===");
 
         // Récupération et nettoyage des données du formulaire
         $data = $this->getPostData();
-        var_dump("=== TEST 3 : Récupération des données du formulaire ===");
-
-        var_dump($data['csrf_token']);
 
         // Validation du token CSRF
         if (!$this->tokenManager->validateCsrfToken($data['csrf_token']??''))
@@ -58,34 +53,25 @@ class ParticipateController extends BaseController
             $this->response->error('Token de sécurité invalide.', 403);
             return;
         }
-        var_dump("=== TEST 4 : le token est bon ===");
 
         // On vérifie que l'utilisateur est bien connecter.
         $this->requireAuth();
-        var_dump("=== TEST 5 : test authentification ok ===");
 
         // On récupère toutes les infos de notre utilisateur
-        $user = $this->userRepo->findById($_SESSION['idUser']);
-        var_dump("=== TEST 6 : Récupération des info User ===");        
+        $user = $this->userRepo->findById($_SESSION['idUser']);      
         
         $idRidesharing = $data['idRidesharing'];
-        var_dump("=== TEST 7 : Récupération de l'id du trajet ===");
         // On récupérer le covoiturage.
         $ridesharing = $this->ridesharingRepo->findById($idRidesharing);
-        var_dump("=== TEST 8 : Récupération du trajet ===");
-
+        
         if(!$ridesharing)
         {
             $this->response->redirect("ridesharingDetail", [
-                'errors' => 'Le covoiturage sélectionné est invalide.',
-                'csrf_token' => $this->tokenManager->generateCsrfToken(),
-                'pageCss' => 'ridesharingDetail'
+                'errors' => 'Le covoiturage sélectionné est invalide.'
             ]);
             return;
         }
 
-        
-        var_dump("=== TEST 9 : vérification des place reservé ===");
         // On vérifie que le nombre de siège reserve ne dépasse pas le nombre de siège encore disponible et qu'il soit bien suppérieur à 0.
         if ($data['nbSeats'] == 0 || $data['nbSeats'] < 0) 
         {
@@ -105,7 +91,6 @@ class ParticipateController extends BaseController
             return;
         }
 
-        var_dump("=== TEST 10 : vérification éffectuer ===");
         // On créer la demande de participation en fonction des donées transmisent.
         $newparticipate = new ParticipateModel();
 
@@ -113,18 +98,14 @@ class ParticipateController extends BaseController
                         ->setIdRidesharing($ridesharing->getIdRidesharing())
                         ->setNbSeats($data['nbSeats'])
                         ->setCreatedAt(new DateTimeImmutable());
-
-        var_dump("=== TEST 11 : Création objet participation ===");
         
         // On vérifie que le solde de crédit de l'utilisateur permette la participation
         try{
-            var_dump("=== TEST 12 : vérification du crédit de l'user ===");
             if ($user->getCreditBalance() < $ridesharing->getPricePerSeat() * $data['nbSeats']) 
             {
                 throw new \Exception("Crédit insuffisant");
             }
-            var_dump("=== TEST 12 : Création objet participation ===");
-
+            
         }catch (\Exception $e){
             $this->logger->log('ERROR','Votre solde de crédit ne permet pas votre participation : ' . $e->getMessage());
             // On ré-affiche le formulaire d'inscription avec un message d'erreur
@@ -135,50 +116,57 @@ class ParticipateController extends BaseController
         ]);
             return;
         }
-        var_dump("=== TEST 13 : Solde de crédit ok ===");
+        
         try{
-            var_dump("=== TEST 14 : Création de la participation en Bdd ===");
             $this->participateRepo->create($newparticipate);
 
         }catch (\Exception $e){
+            if($e->getCode()==23000){
+                $this->logger->log('ERROR','Inscription déjà effectuée : ' . $e->getMessage());
+                // On ré-affiche le formulaire d'inscription avec un message d'erreur
+                $this->redirect("ridesharingDetail/{$idRidesharing}", [
+                    'message' => 'Vous etes déjà inscrit pour ce covoiturage veuillez vérifier sur votre profil.',
+                    'type'=>'error',
+                    'csrf_token' => $this->tokenManager->generateCsrfToken(),
+                    'pageCss' => 'ridesharingDetail'
+                ]);
+            return; 
+            }
+            
             $this->logger->log('ERROR','Erreur lors de l\'inscritpion au covoiturage : ' . $e->getMessage());
             // On ré-affiche le formulaire d'inscription avec un message d'erreur
-            $this->render("ridesharingDetail/". $idRidesharing, [
-                'errors' => 'Une erreur est survenue lors de votre inscription, veuillez réessayer plus tard.',
+            $this->redirect("ridesharingDetail/{$idRidesharing}", [
+                'message' => 'Une erreur est survenue lors de votre inscription, veuillez réessayer plus tard.',
+                'type'=>'error',
                 'csrf_token' => $this->tokenManager->generateCsrfToken(),
                 'pageCss' => 'ridesharingDetail'
             ]);
             return;
         }
-        var_dump("=== TEST 15 : Création objet participation OK ===");
+
         // Si tout ce passe bien on met à jour le solde de crédit de l'utilisateur
-        var_dump("=== TEST 16 : Mise à jour du porte-feuille client ===");
-        var_dump("Avant update". $user->getCreditBalance());
         $user->setCreditBalance($user->getCreditBalance() - ($ridesharing->getPricePerSeat() * $data['nbSeats']));
         try{
             
             $this->userRepo->update($user);
-            var_dump("Après update". $user->getCreditBalance());
         }catch (\Exception $e){
             $this->logger->log('ERROR','Erreur lors de la mise à jour du solde de crédit : ' . $e->getMessage());
             // Même si la mise à jour du crédit échoue, on ne bloque pas la participation.
         }
 
-        var_dump("=== TEST 17 : Mise à jour du nombre de siège disponible ===");
-        var_dump("avant update". $ridesharing->getAvailableSeats());
         // Maintenant on met a jour le nombre de place disponible du covoiturage
         $ridesharing->setAvailableSeats($ridesharing->getAvailableSeats() - $data['nbSeats']);
-        var_dump("avant update l'objet ridesharing = ". $ridesharing);
+        
         try{
             $this->ridesharingRepo->update($ridesharing);
-            var_dump("après update". $ridesharing->getAvailableSeats());
+            
         }catch (\Exception $e){
             $this->logger->log('ERROR','Erreur lors de la mise à jour des places disponibles : ' . $e->getMessage());
             // Même si la mise à jour des places disponibles échoue, on ne bloque pas la participation.
         }
-        var_dump("=== TEST 18 : Tout est ok avant redirection ===");
-        $this->render('/',[
-                'validation'=>'La participation à bien été enregistré.'
+        
+        $this->redirect('/',[
+                'message'=>'La participation à bien été enregistré.'
             ]);
     }
 
