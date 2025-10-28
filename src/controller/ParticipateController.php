@@ -67,7 +67,8 @@ class ParticipateController extends BaseController
         if(!$ridesharing)
         {
             $this->response->redirect("ridesharingDetail", [
-                'errors' => 'Le covoiturage sélectionné est invalide.'
+                'message' => 'Une erreur est survenue veuillez éssayer plus tard',
+                'type'=>'error'
             ]);
             return;
         }
@@ -75,18 +76,16 @@ class ParticipateController extends BaseController
         // On vérifie que le nombre de siège reserve ne dépasse pas le nombre de siège encore disponible et qu'il soit bien suppérieur à 0.
         if ($data['nbSeats'] == 0 || $data['nbSeats'] < 0) 
         {
-            $this->render("ridesharingDetail/". $idRidesharing, [
-                'errors' => 'Le nombre de place réservée doit être supérieur à 0.',
-                'csrf_token' => $this->tokenManager->generateCsrfToken(),
-                'pageCss' => 'ridesharingDetail'
+            $this->redirect("ridesharingDetail/{$idRidesharing}", [
+                'message' => 'Le nombre de place réservée doit être supérieur à 0.',
+                'type'=>'warning'
             ]);
             return;
         }else if ($data['nbSeats'] > $ridesharing->getAvailableSeats())
         {
-            $this->render("ridesharingDetail/". $idRidesharing, [
-                'errors' => 'Le nombre de place réservée dépasse le nombre de place disponible.',
-                'csrf_token' => $this->tokenManager->generateCsrfToken(),
-                'pageCss' => 'ridesharingDetail'
+            $this->redirect("ridesharingDetail/{$idRidesharing}", [
+                'message' => 'Le nombre de place réservée dépasse le nombre de place disponible.',
+                'type'=> 'warning'
             ]);
             return;
         }
@@ -109,10 +108,9 @@ class ParticipateController extends BaseController
         }catch (\Exception $e){
             $this->logger->log('ERROR','Votre solde de crédit ne permet pas votre participation : ' . $e->getMessage());
             // On ré-affiche le formulaire d'inscription avec un message d'erreur
-            $this->render("ridesharingDetail/". $idRidesharing, [
-            'errors' => 'Votre solde de crédit ne permet pas votre participation',
-            'csrf_token' => $this->tokenManager->generateCsrfToken(),
-            'pageCss' => 'ridesharingDetail'
+            $this->redirect("ridesharingDetail/{$idRidesharing}", [
+            'message' => 'Votre solde de crédit ne permet pas votre participation',
+            'type' => 'warning'
         ]);
             return;
         }
@@ -127,8 +125,6 @@ class ParticipateController extends BaseController
                 $this->redirect("ridesharingDetail/{$idRidesharing}", [
                     'message' => 'Vous etes déjà inscrit pour ce covoiturage veuillez vérifier sur votre profil.',
                     'type'=>'error',
-                    'csrf_token' => $this->tokenManager->generateCsrfToken(),
-                    'pageCss' => 'ridesharingDetail'
                 ]);
             return; 
             }
@@ -138,8 +134,6 @@ class ParticipateController extends BaseController
             $this->redirect("ridesharingDetail/{$idRidesharing}", [
                 'message' => 'Une erreur est survenue lors de votre inscription, veuillez réessayer plus tard.',
                 'type'=>'error',
-                'csrf_token' => $this->tokenManager->generateCsrfToken(),
-                'pageCss' => 'ridesharingDetail'
             ]);
             return;
         }
@@ -164,9 +158,10 @@ class ParticipateController extends BaseController
             $this->logger->log('ERROR','Erreur lors de la mise à jour des places disponibles : ' . $e->getMessage());
             // Même si la mise à jour des places disponibles échoue, on ne bloque pas la participation.
         }
-        
+
         $this->redirect('/',[
-                'message'=>'La participation à bien été enregistré.'
+                'message'=>'La participation à bien été enregistré.',
+                'type'=>'success'
             ]);
     }
 
