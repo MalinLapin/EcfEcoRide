@@ -3,6 +3,7 @@
 namespace App\model;
 
 use DateTimeImmutable;
+use App\Attribute\NotMapped;
 
 /**
  * Enumération pour représenter les différents statuts d'un covoiturage.
@@ -33,6 +34,8 @@ class RidesharingModel extends BaseModel
     private int $pricePerSeat; //Prix par place
     private Status $status = Status::pending; //Est défini par notre énum pour éviter des erreur de typo ou de type.
     private DateTimeImmutable $createdAt; //Date de création du covoiturage
+
+    #[NotMapped]
     private ?int $nbParticipant; // N'est pas stocker en base de données.
     
 
