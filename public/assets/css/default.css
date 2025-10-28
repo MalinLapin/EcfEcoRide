@@ -15,10 +15,16 @@ body {
 /* Importation des classes pour les polices */
 
 .robotoRegular, /*Police commune*/
-.robotoBold, 
+.robotoBold {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
 .montserratRegular,/*Police titre / Elément principaux*/
 .montserratBold {
-  font-family: "Roboto", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
   font-variation-settings: "wdth" 100;
