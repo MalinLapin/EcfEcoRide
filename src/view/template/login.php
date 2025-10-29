@@ -1,6 +1,6 @@
 <section class='login'>  
     <div class="presentationSection">
-        <h1 class="montserratBold titleColor">EcoRide,<br>votre covoiturage <br> éco-responsable.</h1>
+        <h2 class="montserratBold titleColor">EcoRide,<br>votre covoiturage <br> éco-responsable.</h2>
     </div>
     <div class="card">
         <h3 class="robotoBold">Connexion</h3>
