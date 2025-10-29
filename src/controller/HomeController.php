@@ -26,4 +26,34 @@ class HomeController extends BaseController
             'pageCss'=>'mentionLegal'
         ]);
     }
+
+    public function profil():void
+    {
+        $flashMessage = $this->getFlashMessage();
+
+        $this->render('profil',[
+            'pageCss'=> 'profil',
+            'flash'=>$flashMessage
+        ]);
+    }
+
+    public function contact():void
+    {
+        $flashMessage = $this->getFlashMessage();
+
+        $this->render('contact',[
+            'pageCss'=> 'contact',
+            'flash'=>$flashMessage
+        ]);
+    }
+
+    public function myRidesharing():void
+    {
+        $flashMessage = $this->getFlashMessage();
+
+        $this->render('myRidesharing',[
+            'pageCss'=> 'myRidesharing',
+            'flash'=>$flashMessage
+        ]);
+    }
 }
