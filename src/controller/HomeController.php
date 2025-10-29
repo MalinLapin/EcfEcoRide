@@ -27,12 +27,12 @@ class HomeController extends BaseController
         ]);
     }
 
-    public function profil():void
+    public function profile():void
     {
         $flashMessage = $this->getFlashMessage();
 
-        $this->render('profil',[
-            'pageCss'=> 'profil',
+        $this->render('profile',[
+            'pageCss'=> 'profile',
             'flash'=>$flashMessage
         ]);
     }
