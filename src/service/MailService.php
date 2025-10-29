@@ -11,10 +11,10 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 class MailService
 {
 
-    private function createMailer() : PHPMailer
+    private static function createMailer() : PHPMailer
     {
         // Instanciation de PHPMailer
-        $mail = new PHPMailer(true);
+        $mailer = new PHPMailer(true);
 
         // On va chercher les variables d'environnement pour la configuration SMTP dans le fichier .env
         Config::load(__DIR__ . '/../../');        
@@ -39,21 +39,21 @@ class MailService
         
 
         // Configuration SMTP
-        $mail->isSMTP();
-        $mail->Host = $smtpHost;
-        $mail->SMTPAuth = true;
-        $mail->Username = $smtpUser;
-        $mail->Password = $smtpPass;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = $smtpPort;
-        $mail->CharSet = 'UTF-8';
-        $mail->setFrom($fromEmail, $fromName);
+        $mailer->isSMTP();
+        $mailer->Host = $smtpHost;
+        $mailer->SMTPAuth = true;
+        $mailer->Username = $smtpUser;
+        $mailer->Password = $smtpPass;
+        $mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mailer->Port = $smtpPort;
+        $mailer->CharSet = 'UTF-8';
+        $mailer->setFrom($fromEmail, $fromName);
 
 
         // Si la connexion au serveur SMTP est ok, on retourne l'objet mail
-        if($mail->smtpConnect())
+        if($mailer->smtpConnect())
         {
-            return $mail;
+            return $mailer;
         }
         // Sinon on lance une exception
         else
@@ -94,7 +94,7 @@ class MailService
             $mail->Body = str_replace($placeholder, $value, $templateEmail);
             $mail->send();
         } catch (Exception $e) {
-            error_log("Erreur lors de l'envoi de l'email : " . $mail->ErrorInfo);
+            error_log("Erreur lors de l'envoi de l'email : " . $e->getMessage());
         }
     }
 
@@ -126,7 +126,24 @@ class MailService
             $mail->Body = str_replace($placeholder, $value, $templateEmail);
             $mail->send();
         } catch (Exception $e) {
-            error_log("Erreur lors de l'envoi de l'email : " . $mail->ErrorInfo);
+            error_log("Erreur lors de l'envoi de l'email : " . $e->getMessage());
         }
+    }
+
+    public static function sendContactEmail(string $sendEmail, string $subject, string $content):void
+    {
+        $mail= self::createMailer();
+
+        try{
+            $mail->addAddress('marc.uny39@gmail.com');
+            $mail->Subject = $subject;
+            $mail->Body = $content;
+            $mail->addReplyTo($sendEmail);
+
+            $mail->send();
+        }catch (Exception $e) {
+            error_log("Erreur lors de l'envoi de l'email : " . $e->getMessage());
+        }
+
     }
 }
