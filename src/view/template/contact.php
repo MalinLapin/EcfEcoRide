@@ -27,7 +27,7 @@
                 </ul>    
             </div>
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
-            <button type="submit" class='registerBtn'>Envoyer</button>
+            <button type="submit" class='contactBtn'>Envoyer</button>
         </form>
 
         <?php if(!empty($flash)):?>
