@@ -37,16 +37,6 @@ class HomeController extends BaseController
         ]);
     }
 
-    public function contact():void
-    {
-        $flashMessage = $this->getFlashMessage();
-
-        $this->render('contact',[
-            'pageCss'=> 'contact',
-            'flash'=>$flashMessage
-        ]);
-    }
-
     public function myRidesharing():void
     {
         $flashMessage = $this->getFlashMessage();
