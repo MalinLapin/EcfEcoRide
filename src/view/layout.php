@@ -68,24 +68,16 @@
         </header>
                 
         <main class='mainContent'>
-            <?php if(!empty($content)){ echo $content;}?>
-                        
-            </main>
-            <footer class="footer">
-                <address class="robotoRegular">
-                    <a href="mailto: ecoride.contact@exemple.com">ecoride.contact@exemple.com</a>
-                </address>
-                <p class="robotoRegular"><span>&#169</span> Marc Uny | tous droits réservés</p>
-                <a href="/mentionLegal" class="robotoRegular">Mention-légales</a> 
-                        
-                <!--Element provisoir pour la déconnexion rapide-->
-                <?php if (isset($_SESSION['pseudo'])):?>
-                <form method="POST" action="/logout">
-                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
-                    <button type="submit">Se déconnecter</button>
-                </form>
-                <?php endif; ?>
-            </footer>
+            <?php if(!empty($content)){ echo $content;}?>                        
+        </main>
+
+        <footer class="footer">
+            <address class="robotoRegular">
+                <a href="mailto: ecoride.contact@exemple.com">ecoride.contact@exemple.com</a>
+            </address>
+            <p class="robotoRegular"><span>&#169</span> Marc Uny | tous droits réservés</p>
+            <a href="/mentionLegal" class="robotoRegular">Mention-légales</a>
+        </footer>
         <script src="/assets/js/navbar.js"></script>
     </body>
             
