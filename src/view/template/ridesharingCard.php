@@ -9,7 +9,7 @@
         <div class='infoDriver'>
             <div class='energyType'>
                 <?php if($carEnergyType == "electric"):?>
-                <img src="../assets/images/electric_bolt_24dp.png" alt="icone carburant" class="electricRide">
+                <span class="material-symbols-outlined">electric_bolt</span>
                 <?php endif; ?>
             </div>
             <div class='driver robotoBold'>

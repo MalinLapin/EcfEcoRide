@@ -20,7 +20,8 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        
         
         <link rel="stylesheet" href="/assets/css/default.css">
         <?php if (isset($pageCss)&& $pageCss): ?>
@@ -35,7 +36,7 @@
         <header class="header">
             <div class="headerContent">
                 <div class="headerSearch">
-                    <a href="/search"><span class="material-icons">search</span></a>
+                    <a href="/search"><span class="material-symbols-outlined">search</span></a>
                 </div>
                 <div class="headerLogo">
                     <a href="/"><img class="headerLogo" src="/assets/images/LogoSF.png"
@@ -44,24 +45,24 @@
                 <div class="headerProfil">
                     <?php if (isset($_SESSION['pseudo'])): ?>
                 <button class="profilToggle" id="profilToggle" aria-label="Menu profil" aria-expanded="false">
-                    <span class="material-icons">account_circle</span>
+                    <span class="material-symbols-outlined">account_circle</span>
                     <p class='robotoBold'><?=$_SESSION['pseudo']?></p>
                 </button>
                 <nav class="navMenu" id="navMenu">
                     <ul>
-                        <li><a href="/profil"><span class="material-icons">person</span> Mon profil</a></li>
-                        <li><a href="/mes-trajets"><span class="material-icons">directions_car</span> Mes trajets</a></li>
-                        <li><a href="/contact"><span class="material-icons">mail</span>Contact</a></li>
+                        <li><a href="/profil"><span class="material-symbols-outlined">person</span> Mon profil</a></li>
+                        <li><a href="/mes-trajets"><span class="material-symbols-outlined">directions_car</span> Mes trajets</a></li>
+                        <li><a href="/contact"><span class="material-symbols-outlined">mail</span>Contact</a></li>
                         <li>
                             <form method="POST" action="/logout">
                                 <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
-                                <button type="submit"><span class="material-icons">logout</span> Déconnexion</button>
+                                <button type="submit"><span class="material-symbols-outlined">logout</span> Déconnexion</button>
                             </form>
                         </li>
                     </ul>
                 </nav>
             <?php else: ?>
-                <a href="/login"><span class="material-icons">account_circle</span></a>
+                <a href="/login"><span class="material-symbols-outlined">account_circle</span></a>
             <?php endif; ?>
                 </div>
             </div>

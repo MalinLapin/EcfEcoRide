@@ -17,7 +17,7 @@
                 <p class='robotoBold'><?=$ride->getDepartureCity()?>,<br><span class='robotoRegular'><?=$ride->getDepartureAddress()?></span></p>
                 <p><?=$ride->getDepartureDate()->format('H:i')?></p>
             </div>
-            <img src="../assets/images/arrow_to_right.png" alt="logo flèche">
+            <span class="material-symbols-outlined">arrow_right_alt</span>
             <div class='arrival'>
                 <p class='robotoBold'><?=$ride->getArrivalCity()?><br><span class='robotoRegular'><?=$ride->getArrivalAddress()?></span></p>
                 <?php if($ride->getArrivalDate()):?>
@@ -27,19 +27,19 @@
         </div>
         <div class='infoCard'>
             <div class='date'>
-                <img src="../assets/images/calendar.png" alt="icone calendar">
+                <span class="material-symbols-outlined">calendar_month</span>
                 <p><?=$ride->getDepartureDate()->format('Y-m-d')?></p>
             </div>
             <div class='clock'>
-                <img src="../assets/images/clock.png" alt="icone clock">
+                <span class="material-symbols-outlined">nest_clock_farsight_analog</span>
                 <p>0 h 30</p>
             </div>
             <div class='road'>
-                <img src="../assets/images/road.png" alt="icone road">
+                <span class="material-symbols-outlined">road</span>
                 <p>70 km</p>
             </div>
             <div class='availableSeats'>
-                <img src="../assets/images/passengerIcon.png" alt="icone availableSeat">
+                <span class="material-symbols-outlined">group</span>
                 <p><?=$ride->getAvailableSeats()?> dispo.</p>
             </div>
         </div>
@@ -56,14 +56,14 @@
             </div>
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
             <input type="hidden" name="idRidesharing" value="<?=$ride->getIdRidesharing() ?>">
-            <button type='submit' class="btnSearch robotoBold">Réserver vos places.</button>
+            <button type='submit' class="btnSearch robotoBold">Réserver</button>
         </form>
     </div>
     
     
     <div class='driver'>
         <div class='titleDriver'>
-            <img src="../assets/images/steeringWheel.png" alt="logo volant">
+            <span class="material-symbols-outlined">search_hands_free</span>
             <h3 class='montserratBold'>Information du conducteur</h3>
         </div>
         <div class='infoDriver'>
@@ -77,7 +77,7 @@
     
     <div class='car'>
         <div class='titleCar'>
-            <img src="../assets/images/car_logo.png" alt="icon voiture">
+            <span class="material-symbols-outlined">directions_car</span>
             <h3 class='montserratBold'>Information du véhicule</h3>
         </div>
         <div class='carInfo '>
@@ -105,7 +105,7 @@
     <?php if (!empty($listReview)):?>
     <div class='reviewList'>
         <div class='reviewTitle'>
-            <img src="../assets/images/reviews_icon.png" alt="icon avis">
+            <span class="material-symbols-outlined">reviews</span>
             <h3 class='montserratBold'>Avis des passagers</h3>
         </div>
 
