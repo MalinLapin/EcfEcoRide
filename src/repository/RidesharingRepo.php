@@ -234,14 +234,15 @@ class RidesharingRepo extends BaseRepoSql
      */
     public function findRidesharingByParticipant(int $idParticipant): ?array
     {
+        var_dump("debug 1: entré dans la methode du repo.");
         $query = "SELECT p.nb_seats AS participate_nb_seats,
                     r.status,
                     r.departure_date,
                     r.departure_city,
                     r.arrival_city,
-                    r.price_per_seat,
+                    r.price_per_seat
                     FROM participate p
-                    LEFT JOIN {$this->tableName} r
+                    JOIN {$this->tableName} r
                     ON r.id_ridesharing = p.id_ridesharing
                     AND p.confirmed = true         -- Pour ne pas compter des participations qui ne seraient pas encore validée.
                     WHERE p.id_participant = :id_participant
@@ -253,7 +254,7 @@ class RidesharingRepo extends BaseRepoSql
                     r.departure_date,
                     r.departure_city,
                     r.arrival_city,
-                    r.price_per_seat,
+                    r.price_per_seat
                     ORDER BY
                     CASE
                         WHEN r.status = 'ongoing' THEN 1
@@ -264,8 +265,9 @@ class RidesharingRepo extends BaseRepoSql
 
         $stmt = $this->pdo->prepare($query);
         $stmt -> bindValue(':id_participant', $idParticipant);
+        
         $stmt -> execute();
-
+        
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         if($result)
@@ -282,11 +284,11 @@ class RidesharingRepo extends BaseRepoSql
                     }
                 }
                 $participation = ParticipateModel::createAndHydrate($paricipateData);
-                $ridesharing = RidesharingModel::createAndHydrate($ridesharingData);
+                $ridesharingParticipated = RidesharingModel::createAndHydrate($ridesharingData);
                 
                 return $participationList[] = [
                     'participant'=>$participation,
-                    'ridesharing'=>$ridesharing
+                    'participateRidesharing'=>$ridesharingParticipated
                 ];
         }
         return null;
