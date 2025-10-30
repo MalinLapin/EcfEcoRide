@@ -2,8 +2,6 @@
 
 namespace App\controller;
 
-use app\repository\RidesharingRepo;
-
 /**
  * Gère la logique de la page d'acceuil
  */
@@ -24,16 +22,6 @@ class HomeController extends BaseController
     {
         $this->render('mentionLegal',[
             'pageCss'=>'mentionLegal'
-        ]);
-    }
-
-    public function profile():void
-    {
-        $flashMessage = $this->getFlashMessage();
-
-        $this->render('profile',[
-            'pageCss'=> 'profile',
-            'flash'=>$flashMessage
         ]);
     }
 

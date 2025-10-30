@@ -21,7 +21,7 @@ session_start();
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
     $r->addRoute('GET', '/', [App\controller\HomeController::class, 'index']);
     $r->addRoute('GET', '/mentionLegal', [App\controller\HomeController::class, 'mentionLegal']);
-    $r->addRoute('GET', '/profile', [App\controller\HomeController::class, 'profile']);
+    $r->addRoute('GET', '/profile', [App\controller\ProfileController::class, 'profile']);
     $r->addRoute('GET', '/contact', [App\controller\ContactController::class, 'showContact']);
     $r->addRoute('POST', '/contact', [App\controller\ContactController::class, 'handleSubmitEmail']);
     $r->addRoute('GET', '/myRidesharing', [App\controller\HomeController::class, 'myRidesharing']);
