@@ -13,7 +13,6 @@ class CarRepo extends BaseRepoSql
 
     public function findListCarByUserId(int $idUser): ?array
     {
-        var_dump($idUser);
         $query = "SELECT c.*,
                         b.label AS brand_label
                     FROM {$this->tableName} c
@@ -23,13 +22,10 @@ class CarRepo extends BaseRepoSql
 
         $stmt = $this->pdo->prepare($query);
         $stmt -> bindValue(':id_user', $idUser);
-
-        var_dump($stmt);
         $stmt -> execute();
 
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        
-        var_dump($result);
+
         if($result)
         {    
             foreach ($result as $row) 
@@ -48,10 +44,8 @@ class CarRepo extends BaseRepoSql
                 
                 // Créer et assembler les objets
                 $brandInfo = BrandModel::createAndHydrate($brandData);
-                var_dump($brandInfo);
 
-                $carInfo = CarModel::createAndHydrate($carData);  
-                var_dump($carInfo);        
+                $carInfo = CarModel::createAndHydrate($carData);       
 
                 $carList[] = [
                     'carInfo'=>$carInfo,
