@@ -24,7 +24,6 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
     $r->addRoute('GET', '/profile', [App\controller\ProfileController::class, 'profile']);
     $r->addRoute('GET', '/contact', [App\controller\ContactController::class, 'showContact']);
     $r->addRoute('POST', '/contact', [App\controller\ContactController::class, 'handleSubmitEmail']);
-    $r->addRoute('GET', '/myRidesharing', [App\controller\HomeController::class, 'myRidesharing']);
     $r->addRoute('GET', '/login', [App\controller\AuthController::class, 'showLogin']);
     $r->addRoute('POST', '/login', [App\controller\AuthController::class, 'login']);
     $r->addRoute('GET', '/register', [App\controller\AuthController::class, 'showRegister']);
@@ -32,7 +31,8 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
     $r->addRoute('POST', '/logout', [App\controller\AuthController::class, 'logout']);    
     $r->addRoute('GET', '/search', [App\controller\RidesharingController::class, 'showSearchRidesharing']);    
     $r->addRoute('POST', '/search', [App\controller\RidesharingController::class, 'searchRidesharing']);    
-    $r->addRoute('GET', '/ridesharingDetail/{id:\d+}', [App\controller\RidesharingController::class, 'showRidesharingDetail']); 
+    $r->addRoute('GET', '/ridesharingDetail/{id:\d+}', [App\controller\RidesharingController::class, 'showRidesharingDetail']);
+    $r->addRoute('GET', '/myRidesharing', [App\controller\RidesharingController::class, 'myRidesharing']);
     $r->addRoute('POST', '/participate', [App\controller\ParticipateController::class, 'participateToRidesharing']); 
 });
 
