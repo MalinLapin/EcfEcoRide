@@ -24,14 +24,4 @@ class HomeController extends BaseController
             'pageCss'=>'mentionLegal'
         ]);
     }
-
-    public function myRidesharing():void
-    {
-        $flashMessage = $this->getFlashMessage();
-
-        $this->render('myRidesharing',[
-            'pageCss'=> 'myRidesharing',
-            'flash'=>$flashMessage
-        ]);
-    }
 }
