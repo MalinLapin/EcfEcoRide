@@ -50,7 +50,7 @@
                 </button>
                 <nav class="navMenu" id="navMenu">
                     <ul>
-                        <li><a href="/profil"><span class="material-symbols-outlined">person</span> Mon profil</a></li>
+                        <li><a href="/profile"><span class="material-symbols-outlined">person</span> Mon profil</a></li>
                         <li><a href="/mes-trajets"><span class="material-symbols-outlined">directions_car</span> Mes trajets</a></li>
                         <li><a href="/contact"><span class="material-symbols-outlined">mail</span>Contact</a></li>
                         <li>
