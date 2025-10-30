@@ -187,7 +187,7 @@ class RidesharingRepo extends BaseRepoSql
                     r.arrival_city,
                     r.price_per_seat,
                     COALESCE(COUNT(DISTINCT p.id_participant), 0) AS nb_participants
-                    FROM ridesharing r
+                    FROM {$this->tableName} r
                     LEFT JOIN participate p
                     ON p.id_ridesharing = r.id_ridesharing
                     AND p.confirmed = true         -- Pour ne pas compter des participations qui ne seraient pas encore validée.
@@ -234,25 +234,33 @@ class RidesharingRepo extends BaseRepoSql
      */
     public function findRidesharingByParticipant(int $idParticipant): ?array
     {
-        $query = "SELECT r.status,
-        r.id_ridesharing,
-        r.departure_date,
-        r.departure_city,
-        r.arrival_date,
-        r.arrival_city,
-        r.arrival_address,
-        r.price_per_seat,
-        p.nb_seats AS participant_nbSeats
-        FROM {$this->tableName} r
-        JOIN participate p ON r.id_ridesharing = p.id_ridesharing
-        WHERE p.id_participant = :id_participant
-        ORDER BY 
-        CASE 
-            WHEN status = 'ongoing' THEN 1
-            WHEN status = 'pending' THEN 2 
-            ELSE 3 
-        END,
-        departure_date ASC";
+        $query = "SELECT p.nb_seats AS participate_nb_seats,
+                    r.status,
+                    r.departure_date,
+                    r.departure_city,
+                    r.arrival_city,
+                    r.price_per_seat,
+                    FROM participate p
+                    LEFT JOIN {$this->tableName} r
+                    ON r.id_ridesharing = p.id_ridesharing
+                    AND p.confirmed = true         -- Pour ne pas compter des participations qui ne seraient pas encore validée.
+                    WHERE p.id_participant = :id_participant
+                    GROUP BY
+                    p.nb_seats,
+                    p.created_at,
+                    p.nb_seats,
+                    r.status,
+                    r.departure_date,
+                    r.departure_city,
+                    r.arrival_city,
+                    r.price_per_seat,
+                    ORDER BY
+                    CASE
+                        WHEN r.status = 'ongoing' THEN 1
+                        WHEN r.status = 'pending' THEN 2
+                        ELSE 3
+                    END,
+                    r.departure_date ASC";
 
         $stmt = $this->pdo->prepare($query);
         $stmt -> bindValue(':id_participant', $idParticipant);
@@ -261,28 +269,25 @@ class RidesharingRepo extends BaseRepoSql
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         if($result)
-        {            
-            foreach ($result as $row)
-            {
-                $participationdata = [];
-
-                $ridesharingData = [];
-                foreach ($row as $key => $value)
+        {    
+            $paricipateData = [];
+            $ridesharingData = [];
+                
+                foreach ($result as $key => $value)
                 {
                     if (str_starts_with($key, 'participant_')) {
-                        $participationdata[substr($key, 12)] = $value;
+                        $paricipateData[substr($key, 12)] = $value;
                     } else {
                         $ridesharingData[$key] = $value;
                     }
                 }
-                $participation = new ParticipateModel($participationdata);
-                $ridesharing = new RidesharingModel($ridesharingData);
-                $participationList=[
+                $participation = ParticipateModel::createAndHydrate($paricipateData);
+                $ridesharing = RidesharingModel::createAndHydrate($ridesharingData);
+                
+                return $participationList[] = [
                     'participant'=>$participation,
                     'ridesharing'=>$ridesharing
                 ];
-            }
-            return $participationList;
         }
         return null;
     }
