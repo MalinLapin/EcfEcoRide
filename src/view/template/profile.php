@@ -25,6 +25,7 @@
 
     <div class="myCars">
         <ul class="listCars">
+            <?php if (!empty($listCar)): ?>
             <?php foreach ($listCar as $row):
                 $car = $row['carInfo'];
                 $brand = $row['brandInfo'];?>
@@ -51,7 +52,9 @@
                     <span class="material-symbols-outlined">edit</span>
                 </div>    
             </li>
-            <?php endforeach; ?>
+            <?php endforeach;  else: ?>
+                <li><span class="material-symbols-outlined">warning</span> Si vous souhaitez créer votre propre covoiturage il vous faut ajouter une voiture.</li>
+            <?php endif; ?>
         </ul>
         <div class="addCarBtn">
             <a href="/addCar">
