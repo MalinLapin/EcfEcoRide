@@ -17,57 +17,44 @@
             <img src="" alt="photo de profil">
         </div>
         <div class='userInfo'>
-            <p class='pseudo'>testPseudo</p>
-            <p class='creationDate'>29 octobre 2025</p>
-            <p class='creditBalance'><span class="robotoBold">35 </span>crédits</p>
+            <p class='pseudo'><?=$user->getPseudo()?></p>
+            <p class='creationDate'><?=$user->getCreatedAt()->format('d-m-Y')?></p>
+            <p class='creditBalance'><span class="robotoBold"><?=$user->getCreditBalance()?> </span>crédits</p>
         </div>
     </div>
 
     <div class="myCars">
         <ul class="listCars">
+            <?php foreach ($listCar as $row):
+                $car = $row['carInfo'];
+                $brand = $row['brandInfo'];?>
             <li>
                 <div class="carLogo">
                     <span class="material-symbols-outlined">directions_car</span>
                 </div>
                 <div class ="brandCar">
-                    <p>Dacia</p>
+                    <p><?=$brand->getLabel()?></p>
                 </div>
                 <div class="modelCar">
-                    <p>Duster</p>
+                    <p><?=$car->getModel()?></p>
                 </div>
-                <div class="Seats">
-                    <p>4 p.</p>
-                </div>
-                <div class="energyType">
-                    <span class="material-symbols-outlined">local_gas_station</span>
-                </div>
+                <?php if ($car->getEnergyType()->value=='electric'):?>
+                    <div class="energyType">
+                        <span class="material-symbols-outlined">electric_bolt</span>
+                    </div>
+                <?php else: ?>
+                    <div class="energyType">
+                        <span class="material-symbols-outlined">local_gas_station</span>
+                    </div>
+                    <?php endif; ?>
                 <div class="editCar">
                     <span class="material-symbols-outlined">edit</span>
                 </div>    
             </li>
-            <li>
-                <div class="carLogo">
-                    <span class="material-symbols-outlined">directions_car</span>
-                </div>
-                <div class ="brandCar">
-                    <p>Audi</p>
-                </div>
-                <div class="modelCar">
-                    <p>e-tron</p>
-                </div>
-                <div class="Seats">
-                    <p>1 p.</p>
-                </div>
-                <div class="energyType">
-                    <span class="material-symbols-outlined">electric_bolt</span>
-                </div>
-                <div class="editCar">
-                    <span class="material-symbols-outlined">edit</span>
-                </div>    
-            </li>
+            <?php endforeach; ?>
         </ul>
         <div class="addCarBtn">
-            <a href="addCar">
+            <a href="/addCar">
                 <span class="material-symbols-outlined">directions_car</span>
                 <span class="material-symbols-outlined">add</span>
             </a>  
