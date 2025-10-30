@@ -205,17 +205,20 @@ class RidesharingController extends BaseController
         $this->requireAuth();
 
         // Récupération de l'ID de l'utilisateur connecté
-        $userId = $_SESSION['id_user'];
+        $userId = $_SESSION['idUser'];
 
 
-        // Récupération des covoiturages où l'utilisateur est conducteur ou passager
+        // Récupération des covoiturages où l'utilisateur est conducteur et/ou passager
         $listParticipate = $this->ridesharingRepo->findRidesharingByParticipant($userId);
         $listRidesharing = $this->ridesharingRepo->findRidesharingByDriver($userId);        
         
-        $this->render('my-ridesharing', [
-            'title' => 'Mes covoiturages',
+
+        $flashMessage = $this->getFlashMessage();
+
+        $this->render('myRidesharing', [
             'participates' => $listParticipate,
-            'ridesharings' => $listRidesharing
+            'ridesharings' => $listRidesharing,
+            'flash'=>$flashMessage
         ]);
         
     }
