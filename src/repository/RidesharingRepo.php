@@ -172,34 +172,40 @@ class RidesharingRepo extends BaseRepoSql
     }
 
     /**
-     * Trouve les covoiturages d'un conducteur (avec participants uniquement)
+     * Trouve les covoiturages d'un conducteur.
      * 
      * @param int $idDriver
      * @return RidesharingModel[]|null
-     * On utilise JOIN et non LEFT JOIN pour ne pas afficher les trajets sans participant.
+     * On utilise LEFT JOIN pour afficher même les trajets sans participant.
      */
     public function findRidesharingByDriver(int $idDriver): ?array
     {
         $query = "SELECT r.status,
-        r.id_ridesharing,
-        r.departure_date,
-        r.departure_city,
-        r.arrival_date,
-        r.arrival_city,
-        r.arrival_address,
-        r.price_per_seat,
-        COUNT(p.id_ridesharing) as nbParticipant
-        FROM {$this->tableName} r
-        JOIN participate p ON r.id_ridesharing = p.id_ridesharing
-        WHERE r.id_driver = :id_driver
-        GROUP BY r.id_ridesharing
-        ORDER BY 
-        CASE 
-            WHEN status = 'ongoing' THEN 1
-            WHEN status = 'pending' THEN 2 
-            ELSE 3 
-        END,
-        departure_date ASC";
+                    r.id_ridesharing,
+                    r.departure_date,
+                    r.departure_city,
+                    r.arrival_city,
+                    r.price_per_seat,
+                    COALESCE(COUNT(DISTINCT p.id_participant), 0) AS nb_participants
+                    FROM ridesharing r
+                    LEFT JOIN participate p
+                    ON p.id_ridesharing = r.id_ridesharing
+                    AND p.confirmed = true         -- Pour ne pas compter des participations qui ne seraient pas encore validée.
+                    WHERE r.id_driver = :id_driver
+                    GROUP BY
+                    r.id_ridesharing,
+                    r.status,
+                    r.departure_date,
+                    r.departure_city,
+                    r.arrival_city,
+                    r.price_per_seat
+                    ORDER BY
+                    CASE
+                        WHEN r.status = 'ongoing' THEN 1
+                        WHEN r.status = 'pending' THEN 2
+                        ELSE 3
+                    END,
+                    r.departure_date ASC";
 
         $stmt = $this->pdo->prepare($query);
         $stmt -> bindValue(':id_driver', $idDriver);
@@ -212,7 +218,7 @@ class RidesharingRepo extends BaseRepoSql
             $ridesharingList = [];
             foreach ($result as $row)
             {
-                $ridesharing = new RidesharingModel($row);
+                $ridesharing = RidesharingModel::createAndHydrate($row);
                 $ridesharingList[] = $ridesharing;
             }
             return $ridesharingList;
