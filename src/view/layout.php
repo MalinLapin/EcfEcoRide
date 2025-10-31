@@ -24,7 +24,7 @@
         
         
         <link rel="stylesheet" href="/assets/css/default.css">
-        <?php if (isset($pageCss)&& $pageCss): ?>
+        <?php if (!empty($pageCss)): ?>
         <link rel="stylesheet" href="/assets/css/<?=$pageCss?>.css">
         <?php endif; ?>
         
@@ -80,6 +80,9 @@
             <a href="/mentionLegal" class="robotoRegular">Mention-légales</a>
         </footer>
         <script src="/assets/js/navbar.js"></script>
+        <?php if (!empty($scriptJs)): ?>
+        <script src="/assets/js/<?=$scriptJs?>.js"></script>
+        <?php endif; ?>
     </body>
             
 </html>
