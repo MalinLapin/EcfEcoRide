@@ -36,7 +36,7 @@ class RidesharingModel extends BaseModel
     private DateTimeImmutable $createdAt; //Date de création du covoiturage
 
     #[NotMapped]
-    private ?int $nbParticipant; // N'est pas stocker en base de données.
+    private ?int $nbParticipant = 0; // N'est pas stocker en base de données.
     
 
     public function __construct(array $data = [])
