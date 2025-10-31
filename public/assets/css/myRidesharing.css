@@ -1,0 +1,335 @@
+.profileSection {
+  width: 100%;
+  padding-bottom: 30px;
+}
+
+.titleDiv {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.navBarProfil {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin: 30px 0;
+}
+
+.navBarProfil div {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.navBarProfil a {
+  color: black;
+}
+
+.compteBtn {
+  border-right: solid 1px black;
+  background-color: #90ee90;
+}
+
+.myRideBtn {
+  background-color: #27ae60;
+}
+
+/* Onglets des trajets */
+.ridesTabsContainer {
+  margin-top: 20px;
+}
+
+.ridesTabs {
+  display: flex;
+  width: 100%;
+  border-bottom: 2px solid #27ae60;
+}
+
+.rideTab {
+  width: 50%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #90ee90;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-right: 1px solid black;
+}
+
+.rideTab:last-child {
+  border-right: none;
+}
+
+.rideTab.activeTab {
+  background-color: #27ae60;
+  color: white;
+}
+
+.rideTab:hover {
+  opacity: 0.8;
+}
+
+/* Contenu des onglets */
+.ridesContent {
+  display: none;
+  padding: 20px 10px;
+}
+
+.ridesContent.activeContent {
+  display: block;
+}
+
+/* Liste des trajets */
+.ridesList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Carte de trajet */
+.rideCard {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #27ae60;
+}
+
+.rideCard.in_progress {
+  border-left-color: #3498db;
+}
+
+.rideCard.completed {
+  border-left-color: #95a5a6;
+  opacity: 0.8;
+}
+
+.rideCard.pending {
+  border-left-color: #f39c12;
+}
+
+/* En-tête du trajet */
+.rideHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.statusBadge {
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.statusBadge.upcoming {
+  background-color: #27ae60;
+  color: white;
+}
+
+.statusBadge.inProgress {
+  background-color: #3498db;
+  color: white;
+}
+
+.statusBadge.completed {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.statusBadge.pending {
+  background-color: #f39c12;
+  color: white;
+}
+
+.rideDate {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9rem;
+}
+
+.rideDate .material-symbols-outlined {
+  font-size: 1.2rem;
+}
+
+/* Informations du trajet */
+.rideInfo {
+  margin-bottom: 15px;
+}
+
+.rideRoute {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.routePoint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.routePoint .material-symbols-outlined {
+  color: #27ae60;
+  font-size: 1.5rem;
+}
+
+.routePoint p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.routeLine {
+  width: 2px;
+  height: 20px;
+  background-color: #27ae60;
+  margin-left: 11px;
+}
+
+/* Détails du trajet */
+.rideDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.detailItem .material-symbols-outlined {
+  font-size: 1.2rem;
+  color: #27ae60;
+}
+
+/* Actions sur les trajets */
+.rideActions {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.rideActions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.cancelParticipationBtn {
+  background-color: #c0392b;
+  color: white;
+}
+
+.cancelParticipationBtn:hover {
+  background-color: #e74c3c;
+}
+
+.cancelRideBtn {
+  background-color: #c0392b;
+  color: white;
+}
+
+.cancelRideBtn:hover {
+  background-color: #e74c3c;
+}
+
+.startRideBtn {
+  background-color: #2980b9;
+  color: white;
+}
+
+.startRideBtn:hover {
+  background-color: #3498db;
+}
+
+.completeRideBtn {
+  background-color: #229954;
+  color: white;
+}
+
+.completeRideBtn:hover {
+  background-color: #90ee90;
+}
+
+.rideActions button .material-symbols-outlined {
+  font-size: 1.3rem;
+}
+
+/* État vide */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  gap: 15px;
+}
+
+.emptyState .material-symbols-outlined {
+  font-size: 4rem;
+  color: #95a5a6;
+}
+
+.emptyState p {
+  color: #7f8c8d;
+  font-size: 1rem;
+}
+
+.searchRideBtn,
+.newRideBtn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #27ae60;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  border: 1px solid black;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.searchRideBtn:hover,
+.newRideBtn:hover {
+  background-color: #229954;
+}
+
+/* Responsive - Tablet et plus */
+@media (min-width: 768px) {
+  .ridesContent {
+    padding: 30px 20px;
+  }
+
+  .rideCard {
+    padding: 20px;
+  }
+
+  .rideDetails {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .rideActions button {
+    width: auto;
+    min-width: 200px;
+  }
+}
