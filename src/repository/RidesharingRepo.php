@@ -215,11 +215,19 @@ class RidesharingRepo extends BaseRepoSql
 
         if($result)
         {
-            $ridesharingList = [];
             foreach ($result as $row)
             {
-                $ridesharing = RidesharingModel::createAndHydrate($row);
-                $ridesharingList[] = $ridesharing;
+                $ridesharingData = [];
+
+                foreach ($row as $key => $value)
+                {
+                    $ridesharingData[$key] = $value;                    
+                }
+                $ride = RidesharingModel::createAndHydrate($ridesharingData);
+
+                $ridesharingList [] = [
+                    'ride'=>$ride,
+                ];
             }
             return $ridesharingList;
         }
@@ -234,7 +242,6 @@ class RidesharingRepo extends BaseRepoSql
      */
     public function findRidesharingByParticipant(int $idParticipant): ?array
     {
-        var_dump("debug 1: entré dans la methode du repo.");
         $query = "SELECT p.nb_seats AS participate_nb_seats,
                     r.status,
                     r.departure_date,
@@ -272,10 +279,13 @@ class RidesharingRepo extends BaseRepoSql
 
         if($result)
         {    
-            $paricipateData = [];
-            $ridesharingData = [];
-                
-                foreach ($result as $key => $value)
+            
+            foreach($result as $row)
+            {   
+                $paricipateData = [];
+                $ridesharingData = [];
+
+                foreach ($row as $key => $value)
                 {
                     if (str_starts_with($key, 'participant_')) {
                         $paricipateData[substr($key, 12)] = $value;
@@ -283,13 +293,16 @@ class RidesharingRepo extends BaseRepoSql
                         $ridesharingData[$key] = $value;
                     }
                 }
+
                 $participation = ParticipateModel::createAndHydrate($paricipateData);
-                $ridesharingParticipated = RidesharingModel::createAndHydrate($ridesharingData);
+                $ride = RidesharingModel::createAndHydrate($ridesharingData);
                 
-                return $participationList[] = [
-                    'participant'=>$participation,
-                    'participateRidesharing'=>$ridesharingParticipated
+                $participationList [] = [
+                    'participation'=>$participation,
+                    'ride'=>$ride
                 ];
+            }
+            return $participationList;
         }
         return null;
     }
