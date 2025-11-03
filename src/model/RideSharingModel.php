@@ -15,7 +15,7 @@ enum Status: string
         case pending = 'pending'; // le covoiturage est en attente.
         case ongoing = 'ongoing'; // le covoiturage est en cours
         case completed = 'completed'; // le covoiturage est fini
-        case cancelled = 'cancelled'; // le covoiturage annulé par le chauffeur ou un employer/admin
+        case cancelled = 'canceled'; // le covoiturage annulé par le chauffeur ou un employer/admin
 }
 
 // Fichier contenant notre classe RideSharingModel qui étend la classe BaseModel.
