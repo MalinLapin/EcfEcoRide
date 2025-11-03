@@ -2,34 +2,16 @@
 
 namespace App\controller;
 
-use App\utils\Logger;
-use App\utils\Response;
-use App\security\Validator;
-use App\security\TokenManager;
+
 use App\model\RidesharingModel;
-use App\repository\RidesharingRepo;
 use App\model\PreferenceModel;
-use App\repository\PreferenceRepo;
-use App\repository\ReviewRepo;
-use App\repository\UserRepo;
-use App\service\MailService;
+
 
 class RidesharingController extends BaseController
 {
-    private Logger $logger;
-    private RidesharingRepo $ridesharingRepo;
-    private PreferenceRepo $preferenceRepo;
-    private UserRepo $userRepo;
-    private ReviewRepo $reviewRepo;
 
     public function __construct() 
-    {
-        $this->logger = new Logger();
-        $this->ridesharingRepo = new RidesharingRepo();
-        $this->preferenceRepo = new PreferenceRepo();
-        $this->userRepo = new UserRepo();
-        $this->reviewRepo = new ReviewRepo();
-        
+    {        
         parent::__construct();
     }
     
@@ -143,16 +125,14 @@ class RidesharingController extends BaseController
      * Afficher les détails d'un covoiturage spécifique
      * @param int $idRidesharing
      */
-    public function showRidesharingDetail(array $params = []): void
-    {
-        $idRidesharing = (int) ($params['id'] ?? 0);
-    
-        if ($idRidesharing === 0) {
+    public function showRidesharingDetail(int $idRide): void
+    {    
+        if ($idRide <= 0) {
             $this->response->error('ID manquant', 400);
             return;
         }
         
-        $ridesharingDetails = $this->ridesharingRepo->findByIdWithDetails($idRidesharing);
+        $ridesharingDetails = $this->ridesharingRepo->findByIdWithDetails($idRide);
         // On vérifie que le covoiturage existe
         if (!$ridesharingDetails) {
             $this->response->error('Covoiturage non trouvé.', 404);
@@ -179,7 +159,7 @@ class RidesharingController extends BaseController
         }
 
         // Récuperer les préférences du conducteur pour le trajet.
-        $listPreference = $this->preferenceRepo->findByRidesharing($idRidesharing);
+        $listPreference = $this->preferenceRepo->findByRidesharing($idRide);
 
         $flashMessage = $this->getFlashMessage();
         // Affichage des détails du covoiturage 
@@ -209,7 +189,7 @@ class RidesharingController extends BaseController
 
 
         // Récupération des covoiturages où l'utilisateur est passager 
-        $participations = $this->ridesharingRepo->findRidesharingByParticipant($userId);
+        $participations = $this->participateRepo->findListParticipationByUser($userId);
 
         // Récupération des covoiturages où l'utilisateur est conducteur
         $offeredRides = $this->ridesharingRepo->findRidesharingByDriver($userId);
@@ -460,46 +440,103 @@ class RidesharingController extends BaseController
      * 
      * @return void
      */
-    public function cancelRidesharing(): void
+    public function cancelRidesharing(int $idRidesharing): void
     {
+        // On vérifie si la requête du front est bien en AJAX
+        $isAjax = isset($_SERVER['HTTP_TYPEREQUETE']) && strtolower($_SERVER['HTTP_TYPEREQUETE']) === 'ajax';
+        
+
+        // Si c'est le cas on définit le header JSON
+        if($isAjax){
+            header('Content-Type: application/json; charset=utf-8');
+        }
+        
+        
+        // On vérifie que l'utilisateur est bien connecter.
         $this->requireAuth();
+        
 
         // On s'assure que la requête est de type POST.
-        if ($_SERVER['REQUEST_METHOD'] != 'POST')
-        {
-            $this->response->redirect('page/createRidesharing');
-            return;
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+
+            http_response_code(405);
+            echo json_encode(['success' => false, 'message' => 'Méthode non autorisée']);
+            exit;
         }
-
-        // Récupération et nettoyage des données du formulaire
-        $data = $this->getPostData();
-
+        
+        
         // Validation du token CSRF
-        if (!$this->tokenManager->validateCsrfToken($data['csrf_token']??''))
+        if (!$this->tokenManager->validateCsrfToken($_SERVER['HTTP_CSRFTOKEN']??''))
         {
-            $this->response->error('Token de sécurité invalide.', 403);
-            return;
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Token de sécurité invalide']);
+            exit;
         }
 
-        $ridesharing = $this->ridesharingRepo->findById($data['id_ridesharing']??0);
+
+        $ridesharing = $this->ridesharingRepo->findById($idRidesharing);
         $driver = $this->userRepo->findById($ridesharing->getIdDriver());
         
         // On vérifie que le covoiturage existe et que l'utilisateur connecté est bien le conducteur.
-        if (!$ridesharing || $driver->getIdUser() !== $_SESSION['id_user'])
+        if (!$ridesharing || $driver->getIdUser() !== $_SESSION['idUser'])
         {
-            $this->response->error('Covoiturage non trouvé ou accès refusé.', 403);
-            return;
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => "Vous n'avez pas le droit d'annuler ce trajet."
+            ]);
+            exit;
+        }
+
+        // On récupère la liste des participants prévu.
+        $listParticipants = $this->participateRepo->findParticipantsByRide($idRidesharing);
+
+        foreach ($listParticipants as $participant){
+
+            // On recherche sa participation.
+            $participation = $this->participateRepo->findParticipationByUser($participant->getIdUser());
+
+            // Envoie du mail d'annulation de covoiturage.
+            try{
+                $this->mailService->sendRideCancelledEmail($ridesharing, $participant);
+            }catch (\Exception $e){
+                $this->logger->log('ERROR', "Erreur lors de l'envoie du mail a l'utilisateurs: ".$participant->getPseudo() . " suite à l'annulation d'un covoiturage : " . $e->getMessage());
+            }
+
+            $amountCredit = ($participation->getNbSeats() * $ridesharing->getPricePerSeat());
+            $participant->setCreditBalance($participant->getCreditBalance() + $amountCredit);
+            
+            // Modifcation du solde de crédit des participants.
+            try{
+
+                $this->userRepo->update($participant);
+
+            }catch (\Exception $e){
+                $this->logger->log('ERROR', "Erreur lors de la mise à jour du solde de crédit de l'utilisateur: ".$participant->getPseudo()." suite à l'annulation d'un covoiturage : " . $e->getMessage());
+            }    
+        }
+
+        // Enfin nous annulons le trajet
+        try {
+            $this->ridesharingRepo->cancelRide($idRidesharing);
+
+        } catch (\Exception $e) {
+
+            $this->logger->log('ERROR', 'Erreur lors de l\'annulation du trajet : ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Une erreur est survenue, veuillez réessayer.'
+            ]);
+            exit;
         }
         
-        $this->ridesharingRepo->cancelRide($data['id_ridesharing']);
-
-        // Envoie du mail d'annulation de covoiturage.
-
-        // Modification du solde de crédit de l'utilisateur.
-
-        // Modifcation du solde de crédit des participants.
-
-        $this->response->redirect("page/myRidesharing");
+        http_response_code(200);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Votre proposition de trajet a été annulée.'
+        ]);
+        exit;
     }
 
 }
