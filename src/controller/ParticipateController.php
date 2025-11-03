@@ -166,71 +166,71 @@ class ParticipateController extends BaseController
     }
 
 
-    public function cancelParticipation(): void
+    public function cancelParticipation(int $idParticipation): void
     {
+        
+        // On vérifie si la requête du front est bien en AJAX
+        $isAjax = isset($_SERVER['HTTP_TYPEREQUETE']) && strtolower($_SERVER['HTTP_TYPEREQUETE']) === 'ajax';
+        
+
+        // Si c'est le cas on définit le header JSON
+        if($isAjax){
+            header('Content-Type: application/json; charset=utf-8');
+        }
+        
+        
         // On vérifie que l'utilisateur est bien connecter.
         $this->requireAuth();
-
-        // On récupère toutes les infos de notre utilisateur
-        $user = $this->userRepo->findById($_SESSION['id_user']);
+        
 
         // On s'assure que la requête est de type POST.
-        if ($_SERVER['REQUEST_METHOD'] != 'POST')
-        {
-            $this->response->redirect('page/myRidesharing');
-            return;
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+
+            http_response_code(405);
+            echo json_encode(['success' => false, 'message' => 'Méthode non autorisée']);
+            exit;
         }
-
-        // Récupération et nettoyage des données du formulaire
-        $data = $this->getPostData();
-
+        
+        
         // Validation du token CSRF
-        if (!$this->tokenManager->validateCsrfToken($data['csrf_token']??''))
+        if (!$this->tokenManager->validateCsrfToken($_SERVER['HTTP_CSRFTOKEN']??''))
         {
-            $this->response->error('Token de sécurité invalide.', 403);
-            return;
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Token de sécurité invalide']);
+            exit;
         }
-
-        // On vérifie que l'ID de la participation est bien présent et valide.
-        $idParticipate = $data['id_participate'];
-
-        // Si l'ID de la participation n'est pas valide, on redirige avec un message d'erreur.
-        if (!$idParticipate) {
-            $this->response->redirect('page/myRidesharing', [
-                'title' => 'Mes covoiturages',
-                'errors' => 'Participation invalide.',
-                'csrf_token' => $this->tokenManager->generateCsrfToken()
-            ]);
-            return;
-        }
-
+        
         // On récupère la participation
-        $participate = $this->participateRepo->findById($idParticipate);
+        $participate = $this->participateRepo->findById($idParticipation);
+        
 
         // On vérifie que la participation existe et appartient à l'utilisateur connecté.
-        if (!$participate || $participate->getIdParticipant() !== $user->getIdUser()) {
-            $this->response->redirect('page/myRidesharing', [
-                'title' => 'Mes covoiturages',
-                'errors' => 'Participation invalide ou non autorisée.',
-                'csrf_token' => $this->tokenManager->generateCsrfToken()
-            ]);
-            return;
+        if (!$participate || $participate->getIdParticipant() !== $_SESSION['idUser']) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Participation invalide']);
+            exit;
         }
         // On tente de supprimer la participation.
         try {
-            $this->participateRepo->delete($idParticipate);
+            $this->participateRepo->delete($idParticipation);
         } catch (\Exception $e) {
             $this->logger->log('ERROR', 'Erreur lors de l\'annulation de la participation : ' . $e->getMessage());
-            $this->response->redirect('page/myRidesharing', [
-                'title' => 'Mes covoiturages',
-                'errors' => 'Une erreur est survenue lors de l\'annulation de votre participation, veuillez réessayer plus tard.',
-                'csrf_token' => $this->tokenManager->generateCsrfToken()
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Une erreur est survenue, veuillez réessayer.'
             ]);
-            return;
+            exit;
         }
 
+        // on récupere l'objet ridesharing
+        $ride = $this->ridesharingRepo->findById($participate->getIdRidesharing());
+
         // Si tout ce passe bien on remet à jour le solde de crédit de l'utilisateur
-        $refundAmount = $participate->getNbSeats() * $participate->getPricePerSeat();
+        $refundAmount = $participate->getNbSeats() * $ride->getPricePerSeat();
+
+        $user = $this->userRepo->findById($_SESSION['idUser']);
+
         $user->setCreditBalance($user->getCreditBalance() + $refundAmount);
         try {
             $this->userRepo->update($user);
@@ -252,9 +252,11 @@ class ParticipateController extends BaseController
         }
 
         // Redirection avec message de succès.
-        $this->response->redirect('page/myRidesharing', [
-            'title' => 'Mes covoiturages',
-            'validation' => 'Votre participation a bien été annulée.'
+        http_response_code(200);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Votre participation à ce trajet a été annulée avec succès.'
         ]);
+        exit;
     }
 }
