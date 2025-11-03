@@ -5,7 +5,6 @@ namespace App\repository;
 use App\model\RidesharingModel;
 use App\model\UserModel;
 use App\model\CarModel;
-use App\model\ParticipateModel;
 use Exception;
 
 class RidesharingRepo extends BaseRepoSql
@@ -235,76 +234,6 @@ class RidesharingRepo extends BaseRepoSql
     }
 
     /**
-     * Trouve les covoiturages auxquels un participant est inscrit.
-     * 
-     * @param int $idParticipant L'identifiant du participant.
-     * @return ParticipateModel[]|null Un tableau d'instances de ParticipateModel avec les détails des trajets, ou null si aucun trajet n'est trouvé.
-     */
-    public function findRidesharingByParticipant(int $idParticipant): ?array
-    {
-        $query = "SELECT p.*,
-                    r.status AS ridesharing_status,
-                    r.departure_date AS ridesharing_departure_date,
-                    r.departure_city AS ridesharing_departure_city,
-                    r.arrival_city AS ridesharing_arrival_city,
-                    r.price_per_seat AS ridesharing_price_per_seat
-                    FROM participate p
-                    JOIN {$this->tableName} r
-                    ON r.id_ridesharing = p.id_ridesharing
-                    AND p.confirmed = true         -- Pour ne pas compter des participations qui ne seraient pas encore validée.
-                    WHERE p.id_participant = :id_participant
-                    GROUP BY
-                    r.status,
-                    r.departure_date,
-                    r.departure_city,
-                    r.arrival_city,
-                    r.price_per_seat
-                    ORDER BY
-                    CASE
-                        WHEN r.status = 'ongoing' THEN 1
-                        WHEN r.status = 'pending' THEN 2
-                        ELSE 3
-                    END,
-                    r.departure_date ASC";
-
-        $stmt = $this->pdo->prepare($query);
-        $stmt -> bindValue(':id_participant', $idParticipant);
-        
-        $stmt -> execute();
-        
-        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-        if($result)
-        {    
-            
-            foreach($result as $row)
-            {   
-                $paricipateData = [];
-                $ridesharingData = [];
-
-                foreach ($row as $key => $value)
-                {
-                    if (str_starts_with($key, 'ridesharing_')) {
-                        $ridesharingData[substr($key, 12)] = $value;
-                    } else {
-                        $paricipateData[$key] = $value;
-                    }
-                }
-
-                $participation = ParticipateModel::createAndHydrate($paricipateData);
-                $ride = RidesharingModel::createAndHydrate($ridesharingData);
-                
-                $participationList [] = [
-                    'participation'=>$participation,
-                    'ride'=>$ride
-                ];
-            }
-            return $participationList;
-        }
-        return null;
-    }
-
-    /**
      * Marque un trajet comme terminé.
      *
      * @param int $rideId Identifiant du trajet fini.
@@ -317,8 +246,9 @@ class RidesharingRepo extends BaseRepoSql
         WHERE id_ridesharing = :id_ridesharing 
         AND status = 'pending'";
         $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':id_ridesharing', $rideId);
 
-        return $stmt->execute(['id_ridesharing' => $rideId ]);
+        return $stmt->execute();
     }
 
     /**
@@ -331,11 +261,12 @@ class RidesharingRepo extends BaseRepoSql
     public function cancelRide(int $rideId): bool
     {
         $sql = "UPDATE {$this->tableName} 
-        SET status = 'cancelled' 
+        SET status = 'canceled' 
         WHERE id_ridesharing = :id_ridesharing 
         AND status = 'pending'";
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute(['id_ridesharing' => $rideId ]);
+        $stmt->bindValue(':id_ridesharing', $rideId);
+        return $stmt->execute();
     }
 
     /**
