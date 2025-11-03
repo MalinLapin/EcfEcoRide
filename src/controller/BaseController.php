@@ -31,7 +31,7 @@ abstract class BaseController
     protected ReviewRepo $reviewRepo;
     protected ParticipateRepo $participateRepo;
     protected MailService $mailService;
-    protected CarRepo $carRepo;
+    protected CarRepo $carRepo; 
 
     public function __construct()
     {

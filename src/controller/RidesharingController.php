@@ -513,7 +513,9 @@ class RidesharingController extends BaseController
 
             }catch (\Exception $e){
                 $this->logger->log('ERROR', "Erreur lors de la mise à jour du solde de crédit de l'utilisateur: ".$participant->getPseudo()." suite à l'annulation d'un covoiturage : " . $e->getMessage());
-            }    
+            }
+            
+            $this->participateRepo->delete($participation->getIdParticipate());   
         }
 
         // Enfin nous annulons le trajet
