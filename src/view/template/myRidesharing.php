@@ -71,9 +71,9 @@
                                 </div>
                             </div>
 
-                            <?php if ($ride->getStatus()->value == 'pending'): ?>
+                            <?php if ($ride->getStatus()->value == 'pending'):?>
                                 <div class="rideActions">
-                                    <button class="cancelParticipationBtn robotoBold" data-ride-id="<?=$ride->getIdRidesharing()?>">
+                                    <button class="cancelParticipationBtn robotoBold" data-participate-id="<?=$participation->getIdParticipate()?>">
                                         <span class="material-symbols-outlined">cancel</span>
                                         <span>Annuler ma participation</span>
                                     </button>
