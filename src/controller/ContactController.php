@@ -35,7 +35,6 @@ class ContactController extends BaseController
 
     public function handleSubmitEmail():void
     {
-        var_dump("débug1: entré dans la méthode handleSubmitEmail");
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
@@ -45,7 +44,6 @@ class ContactController extends BaseController
             ]);
             return;
         }
-        var_dump("débug 2: vérification POST");
 
         $data = $this->getPostData();
 
@@ -55,7 +53,6 @@ class ContactController extends BaseController
             $this->response->error('Token de sécurité invalide.', 403);
             return;
         }
-        var_dump("débug 3: vérification CSRF");
 
         $errors = [];
 
@@ -70,7 +67,6 @@ class ContactController extends BaseController
                 $errors['emailSender'] = 'Veuillez verifier votre adresse mail.';
             }
         }
-        var_dump("débug 4: vérification mail de l'envoyeur");
         
         if (empty($data['subject'])) {
             $errors['subject'] = 'Le sujet est requis.';
@@ -79,12 +75,9 @@ class ContactController extends BaseController
         } elseif (strlen($data['subject']) > 200) {
             $errors['subject'] = 'Le sujet ne peut dépasser 200 caractères.';
         }
-        var_dump("débug 5: vérification de l'objet");
         
         // On néttoie les données.
         $subject = htmlspecialchars(trim($data['subject']));
-
-        var_dump($subject);
 
         if (empty($data['content'])) {
             $errors['content'] = 'Le message est requis.';
@@ -93,11 +86,8 @@ class ContactController extends BaseController
         } elseif (strlen($data['content']) > 2000) {
             $errors['content'] = 'Le message ne peut dépasser 2000 caractères.';
         }
-        var_dump("débug 6: vérification du contenue");
 
         $content = htmlspecialchars(trim($data['content']));
-
-        var_dump($content);
 
         if (!empty($errors)) {
             $this->setFlashMessage('error', 'Veuillez corriger les erreurs du formulaire.');
@@ -108,8 +98,6 @@ class ContactController extends BaseController
             ]);
             return;
         }
-
-        var_dump("débug 7: Aucune erreur de relever dans les données envoyer");
 
         try{
             MailService::sendContactEmail($emailSender, $subject, $content);
