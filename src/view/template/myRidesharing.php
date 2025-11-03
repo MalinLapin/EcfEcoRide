@@ -134,7 +134,7 @@
                                     </div>
                                     <div class="detailItem">
                                         <span class="material-symbols-outlined">payments</span>
-                                        <span class="robotoBold"><?=$ride->getPricePerSeat()*($ride->getNbParticipant())?> crédits</span>
+                                        <span class="robotoBold"><?=$ride->getPricePerSeat()-2?> crédits / participants</span>
                                     </div>
                                 </div>
                             </div>
