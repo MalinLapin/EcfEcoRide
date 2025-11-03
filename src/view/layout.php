@@ -17,6 +17,10 @@
         <meta name="twitter:description"
         content="Ecoride, la plateforme de covoiturage écologique dédiée aux trajets en voiture. Simplifiez vos déplacements tout en préservant l’environnement grâce à une application web moderne, intuitive et engagée dans la mobilité durable en France.">
         <meta name="twitter:image" content="https://www.exemple.com/assets/images/Logo_Slogan.jpeg">
+
+        <!-- Meta contenant le token CSRF-->
+        <meta name="csrfToken" content="<?= htmlspecialchars($csrf_token) ?>">
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto&display=swap" rel="stylesheet">
