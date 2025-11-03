@@ -10,16 +10,12 @@ use DateTimeImmutable;
 
 class AuthController extends BaseController
 {
-    private Logger $logger;
-    private UserRepo $userRepo;
     /**
      * Constructeur de la classe AuthController
      * Il initialise les modèles nécessaires pour l'authentification.
      */
     public function __construct()
     {
-        $this->logger = new Logger();
-        $this->userRepo = new UserRepo();
         // Appel du constructeur de la classe parente
         parent::__construct();
     }
