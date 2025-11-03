@@ -24,6 +24,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+    function getToken() {
+        const tokenMeta = document.querySelector("meta[name='csrfToken']");
+        if (!tokenMeta) {
+            console.error('Token CSRF introuvable')
+            return null;
+        }
+
+        return tokenMeta.getAttribute('content');
+    }
 
     // --------------------- Partie passager--------------------------------------------
 
@@ -35,37 +44,62 @@ document.addEventListener('DOMContentLoaded', function () {
     //On boucle sur chaque bouton pour ajouter un evenement.
     cancelParticipationBtns.forEach(btn => {
         btn.addEventListener('click', function () {
-            const rideId = this.dataset.rideId;
+            const participateId = this.dataset.participateId;
             if (confirm('Êtes-vous sûr de vouloir annuler votre participation à ce trajet ?')) {
-                cancelParticipation(rideId);
+                cancelParticipation(participateId);
             }
         });
     });
 
     // Fonction pour annuler une participation
-    function cancelParticipation(rideId) {
-        fetch(`/cancelParticipation/${rideId}`, {
+    function cancelParticipation(participateId) {
+        console.log('🚀 Début de la requête, ID:', participateId);
+
+        fetch(`/cancelParticipation/${participateId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'csrfToken': getToken(),
+                'typeRequete': 'ajax'
             }
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Votre participation a été annulée avec succès.');
-                    location.reload();
-                } else {
-                    alert('Une erreur est survenue lors de l\'annulation de votre participation.');
+            .then(response => {
+                console.log('📊 Status HTTP:', response.status);
+                console.log('📋 Headers:', [...response.headers.entries()]);
+
+                // ⚠️ On lit d'abord en TEXT (pas JSON)
+                return response.text();
+            })
+            .then(text => {
+                console.log('📄 RÉPONSE BRUTE (200 premiers caractères):');
+                console.log(text.substring(0, 200));
+                console.log('📄 RÉPONSE COMPLÈTE:');
+                console.log(text);
+
+                // Maintenant on essaie de parser en JSON
+                try {
+                    const data = JSON.parse(text);
+                    console.log('✅ JSON parsé avec succès:', data);
+
+                    if (data.success) {
+                        alert('Votre participation a été annulée avec succès.');
+                        location.reload();
+                    } else {
+                        alert(data.message || 'Une erreur est survenue.');
+                    }
+                } catch (error) {
+                    console.error('❌ Impossible de parser en JSON');
+                    console.error('Erreur:', error);
+                    alert('Erreur technique : la réponse n\'est pas au bon format.');
                 }
             })
             .catch(error => {
-                console.error('Erreur:', error);
-                alert('Une erreur est survenue.');
+                console.error('💥 Erreur réseau:', error);
+                alert('Une erreur réseau est survenue.');
             });
     }
 
-    // --------------------- Partie passager--------------------------------------------
+    // --------------------- Partie conducteur--------------------------------------------
 
 
     // Gestion démarrage trajet
