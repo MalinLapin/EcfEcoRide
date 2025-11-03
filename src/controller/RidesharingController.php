@@ -219,6 +219,7 @@ class RidesharingController extends BaseController
         $this->render('myRidesharing', [
             'pageCss'=>'myRidesharing',
             'flash'=>$flashMessage,
+            'csrf_token'=>$this->tokenManager->generateCsrfToken(),
             'scriptJs'=>'myRidesharing',
             'participations' => $participations,
             'offeredRides' => $offeredRides            
