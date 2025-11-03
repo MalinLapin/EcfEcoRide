@@ -148,18 +148,8 @@ abstract class BaseRepoSql
             $stmt->bindValue(":{$key}", $preparedValue);
         }
         
-        try {
-            var_dump("=== JUSTE AVANT EXECUTE ===");
-            $result = $stmt->execute();
-            var_dump("=== JUSTE APRÈS EXECUTE ===");
-            var_dump("Résultat execute() : " . ($result ? 'true' : 'false'));
-            var_dump("RowCount : " . $stmt->rowCount());
-        } catch (\PDOException $e) {
-            var_dump("=== ERREUR PDO ===");
-            var_dump("Message : " . $e->getMessage());
-            var_dump("Code : " . $e->getCode());
-            die();
-        }
+        $stmt->execute();
+        
         // On test si le nombre de ligne à bien été modifier
         return $stmt->rowCount() > 0;
     }
