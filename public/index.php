@@ -33,6 +33,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
     $r->addRoute('POST', '/search', [App\controller\RidesharingController::class, 'searchRidesharing']);    
     $r->addRoute('GET', '/ridesharingDetail/{id:\d+}', [App\controller\RidesharingController::class, 'showRidesharingDetail']);
     $r->addRoute('GET', '/myRidesharing', [App\controller\RidesharingController::class, 'myRidesharing']);
+    $r->addRoute('POST', '/cancelRide/{id:\d+}', [App\controller\RidesharingController::class, 'cancelRidesharing']);
     $r->addRoute('POST', '/participate', [App\controller\ParticipateController::class, 'participateToRidesharing']);
     $r->addRoute('POST', '/cancelParticipation/{id:\d+}', [App\controller\ParticipateController::class, 'cancelParticipation']);
 });
