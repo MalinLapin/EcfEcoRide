@@ -242,21 +242,18 @@ class RidesharingRepo extends BaseRepoSql
      */
     public function findRidesharingByParticipant(int $idParticipant): ?array
     {
-        $query = "SELECT p.nb_seats AS participate_nb_seats,
-                    r.status,
-                    r.departure_date,
-                    r.departure_city,
-                    r.arrival_city,
-                    r.price_per_seat
+        $query = "SELECT p.*,
+                    r.status AS ridesharing_status,
+                    r.departure_date AS ridesharing_departure_date,
+                    r.departure_city AS ridesharing_departure_city,
+                    r.arrival_city AS ridesharing_arrival_city,
+                    r.price_per_seat AS ridesharing_price_per_seat
                     FROM participate p
                     JOIN {$this->tableName} r
                     ON r.id_ridesharing = p.id_ridesharing
                     AND p.confirmed = true         -- Pour ne pas compter des participations qui ne seraient pas encore validée.
                     WHERE p.id_participant = :id_participant
                     GROUP BY
-                    p.nb_seats,
-                    p.created_at,
-                    p.nb_seats,
                     r.status,
                     r.departure_date,
                     r.departure_city,
@@ -287,10 +284,10 @@ class RidesharingRepo extends BaseRepoSql
 
                 foreach ($row as $key => $value)
                 {
-                    if (str_starts_with($key, 'participant_')) {
-                        $paricipateData[substr($key, 12)] = $value;
+                    if (str_starts_with($key, 'ridesharing_')) {
+                        $ridesharingData[substr($key, 12)] = $value;
                     } else {
-                        $ridesharingData[$key] = $value;
+                        $paricipateData[$key] = $value;
                     }
                 }
 
