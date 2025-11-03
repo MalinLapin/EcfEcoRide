@@ -53,8 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Fonction pour annuler une participation
     function cancelParticipation(participateId) {
-        console.log('🚀 Début de la requête, ID:', participateId);
-
         fetch(`/cancelParticipation/${participateId}`, {
             method: 'POST',
             headers: {
@@ -63,39 +61,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 'typeRequete': 'ajax'
             }
         })
-            .then(response => {
-                console.log('📊 Status HTTP:', response.status);
-                console.log('📋 Headers:', [...response.headers.entries()]);
-
-                // ⚠️ On lit d'abord en TEXT (pas JSON)
-                return response.text();
-            })
-            .then(text => {
-                console.log('📄 RÉPONSE BRUTE (200 premiers caractères):');
-                console.log(text.substring(0, 200));
-                console.log('📄 RÉPONSE COMPLÈTE:');
-                console.log(text);
-
-                // Maintenant on essaie de parser en JSON
-                try {
-                    const data = JSON.parse(text);
-                    console.log('✅ JSON parsé avec succès:', data);
-
-                    if (data.success) {
-                        alert('Votre participation a été annulée avec succès.');
-                        location.reload();
-                    } else {
-                        alert(data.message || 'Une erreur est survenue.');
-                    }
-                } catch (error) {
-                    console.error('❌ Impossible de parser en JSON');
-                    console.error('Erreur:', error);
-                    alert('Erreur technique : la réponse n\'est pas au bon format.');
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Votre participation a été annulée avec succès.');
+                    location.reload();
+                } else {
+                    alert('Une erreur est survenue lors de l\'annulation de votre participation.');
                 }
             })
             .catch(error => {
-                console.error('💥 Erreur réseau:', error);
-                alert('Une erreur réseau est survenue.');
+                console.error('Erreur:', error);
+                alert('Une erreur est survenue.');
             });
     }
 
@@ -134,73 +111,76 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    // Fonction pour démarrer un trajet
+    function startRide(rideId) {
+        fetch(`/startRide/${rideId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Le trajet a démarré avec succès.');
+                    location.reload();
+                } else {
+                    alert('Une erreur est survenue lors du démarrage du trajet.');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Une erreur est survenue.');
+            });
+    }
+
+    // Fonction pour terminer un trajet
+    function completeRide(rideId) {
+        fetch(`/completeRide/${rideId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Le trajet a été marqué comme effectué.');
+                    location.reload();
+                } else {
+                    alert('Une erreur est survenue lors de la validation du trajet.');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Une erreur est survenue.');
+            });
+    }
+
+    // Fonction pour annuler un trajet
+    function cancelRide(rideId) {
+        fetch(`/cancelRide/${rideId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'csrfToken': getToken(),
+                'typeRequete': 'ajax'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Le trajet a été annulé avec succès.');
+                    location.reload();
+                } else {
+                    alert('Une erreur est survenue lors de l\'annulation du trajet.');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Une erreur est survenue.');
+            });
+    }
 });
 
-// Fonction pour démarrer un trajet
-function startRide(rideId) {
-    fetch(`/startRide/${rideId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Le trajet a démarré avec succès.');
-                location.reload();
-            } else {
-                alert('Une erreur est survenue lors du démarrage du trajet.');
-            }
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-            alert('Une erreur est survenue.');
-        });
-}
-
-// Fonction pour terminer un trajet
-function completeRide(rideId) {
-    fetch(`/completeRide/${rideId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Le trajet a été marqué comme effectué.');
-                location.reload();
-            } else {
-                alert('Une erreur est survenue lors de la validation du trajet.');
-            }
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-            alert('Une erreur est survenue.');
-        });
-}
-
-// Fonction pour annuler un trajet
-function cancelRide(rideId) {
-    fetch(`/cancelRide/${rideId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Le trajet a été annulé avec succès.');
-                location.reload();
-            } else {
-                alert('Une erreur est survenue lors de l\'annulation du trajet.');
-            }
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-            alert('Une erreur est survenue.');
-        });
-}
