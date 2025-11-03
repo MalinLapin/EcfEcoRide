@@ -3,29 +3,14 @@
 namespace App\controller;
 
 use App\model\ParticipateModel;
-use App\utils\Logger;
-use App\utils\Response;
-use App\security\Validator;
-use App\security\TokenManager;
-use App\repository\ParticipateRepo;
-use App\repository\RidesharingRepo;
-use App\repository\UserRepo;
 use App\service\MailService;
 use DateTimeImmutable;
 
 class ParticipateController extends BaseController
 {
-    private Logger $logger;
-    private ParticipateRepo $participateRepo;
-    private UserRepo $userRepo;
-    private RidesharingRepo $ridesharingRepo;
 
     public function __construct()
     {
-        $this->logger = new Logger();
-        $this->participateRepo = new ParticipateRepo();
-        $this->userRepo = new UserRepo();
-        $this->ridesharingRepo = new RidesharingRepo();
         parent::__construct();
     }
 
@@ -97,7 +82,7 @@ class ParticipateController extends BaseController
                         ->setIdRidesharing($ridesharing->getIdRidesharing())
                         ->setNbSeats($data['nbSeats'])
                         ->setCreatedAt(new DateTimeImmutable());
-        
+                        
         // On vérifie que le solde de crédit de l'utilisateur permette la participation
         try{
             if ($user->getCreditBalance() < $ridesharing->getPricePerSeat() * $data['nbSeats']) 

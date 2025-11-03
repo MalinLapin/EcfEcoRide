@@ -2,23 +2,13 @@
 
 namespace App\controller;
 
-use App\utils\Logger;
-use App\security\TokenManager;
-use DateTimeImmutable;
-use App\service\MailService;
+
 use Exception;
 
 class ContactController extends BaseController
 {
-    private Logger $logger;
-    private MailService $mailService;
-
-
     public function __construct()
     {
-        $this->logger = new Logger();
-        $this->mailService = new MailService();
-
         parent::__construct();
     }
 
@@ -100,7 +90,7 @@ class ContactController extends BaseController
         }
 
         try{
-            MailService::sendContactEmail($emailSender, $subject, $content);
+            $this->mailService->sendContactEmail($emailSender, $subject, $content);
             $this->setFlashMessage('Votre message a été envoyé avec succès !', 'success');
         }catch(Exception $e){
             error_log("erreur lors de la verification de l'email:". $e->getMessage());

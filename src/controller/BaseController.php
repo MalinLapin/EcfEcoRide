@@ -2,9 +2,17 @@
 
 namespace App\controller;
 
-use App\security\TokenManager;
-use App\security\Validator;
+use App\utils\Logger;
 use App\utils\Response;
+use App\security\Validator;
+use App\repository\UserRepo;
+use App\service\MailService;
+use App\repository\ReviewRepo;
+use App\security\TokenManager;
+use App\repository\PreferenceRepo;
+use App\repository\ParticipateRepo;
+use App\repository\RidesharingRepo;
+use App\repository\CarRepo;
 
 /**
  * Controler de base
@@ -16,12 +24,28 @@ abstract class BaseController
     protected Response $response;
     protected Validator $validator;
     protected TokenManager $tokenManager;
+    protected Logger $logger;
+    protected RidesharingRepo $ridesharingRepo;
+    protected PreferenceRepo $preferenceRepo;
+    protected UserRepo $userRepo;
+    protected ReviewRepo $reviewRepo;
+    protected ParticipateRepo $participateRepo;
+    protected MailService $mailService;
+    protected CarRepo $carRepo;
 
     public function __construct()
     {
         $this->response = new Response();
         $this->validator = new Validator();
         $this->tokenManager = new TokenManager();
+        $this->logger = new Logger();
+        $this->ridesharingRepo = new RidesharingRepo();
+        $this->preferenceRepo = new PreferenceRepo();
+        $this->userRepo = new UserRepo();
+        $this->reviewRepo = new ReviewRepo();
+        $this->participateRepo = new ParticipateRepo();
+        $this->mailService = new MailService(); 
+        $this->carRepo = new CarRepo(); 
     }
 
     /**

@@ -7,14 +7,8 @@ use App\repository\CarRepo;
 
 class ProfileController extends BaseController
 {
-    private UserRepo $userRepo;
-    private CarRepo $carRepo;
-
     public function __construct()
     {
-        $this->userRepo= new UserRepo();
-        $this->carRepo = new CarRepo();
-
         parent::__construct();
     }
 
