@@ -118,6 +118,8 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'csrfToken': getToken(),
+                'typeRequete': 'ajax'
             }
         })
             .then(response => response.json())

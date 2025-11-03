@@ -355,39 +355,56 @@ class RidesharingController extends BaseController
      * 
      * @return void
      */
-    public function startRidesharing(): void 
+    public function startRidesharing(int $idRidesharing): void 
     {
+        // On vérifie si la requête du front est bien en AJAX
+        $isAjax = isset($_SERVER['HTTP_TYPEREQUETE']) && strtolower($_SERVER['HTTP_TYPEREQUETE']) === 'ajax';
+        
+
+        // Si c'est le cas on définit le header JSON
+        if($isAjax){
+            header('Content-Type: application/json; charset=utf-8');
+        }
+        
+        
+        // On vérifie que l'utilisateur est bien connecter.
         $this->requireAuth();
+        
 
         // On s'assure que la requête est de type POST.
-        if ($_SERVER['REQUEST_METHOD'] != 'POST')
-        {
-            $this->response->redirect('page/createRidesharing');
-            return;
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+
+            http_response_code(405);
+            echo json_encode(['success' => false, 'message' => 'Méthode non autorisée']);
+            exit;
         }
-
-        // Récupération et nettoyage des données du formulaire
-        $data = $this->getPostData();
-
+        
+        
         // Validation du token CSRF
-        if (!$this->tokenManager->validateCsrfToken($data['csrf_token']??''))
+        if (!$this->tokenManager->validateCsrfToken($_SERVER['HTTP_CSRFTOKEN']??''))
         {
-            $this->response->error('Token de sécurité invalide.', 403);
-            return;
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Token de sécurité invalide']);
+            exit;
         }
 
-        $ridesharing = $this->ridesharingRepo->findById($data['id_ridesharing']??0);
+        $ridesharing = $this->ridesharingRepo->findById($idRidesharing);
         $driver = $this->userRepo->findById($ridesharing->getIdDriver());
         
         // On vérifie que le covoiturage existe et que l'utilisateur connecté est bien le conducteur.
-        if (!$ridesharing || $driver->getIdUser() !== $_SESSION['id_user'])
+        if (!$ridesharing || $driver->getIdUser() !== $_SESSION['idUser'])
         {
             $this->response->error('Covoiturage non trouvé ou accès refusé.', 403);
             return;
         }
         
-        $this->ridesharingRepo->startRide($data['id_ridesharing']);
-        $this->response->redirect("page/myRidesharing");
+        $this->ridesharingRepo->startRide($idRidesharing);
+        http_response_code(200);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Votre trajet a commencé.'
+        ]);
+        exit;
     }
     
     /**
