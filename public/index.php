@@ -33,7 +33,8 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
     $r->addRoute('POST', '/search', [App\controller\RidesharingController::class, 'searchRidesharing']);    
     $r->addRoute('GET', '/ridesharingDetail/{id:\d+}', [App\controller\RidesharingController::class, 'showRidesharingDetail']);
     $r->addRoute('GET', '/myRidesharing', [App\controller\RidesharingController::class, 'myRidesharing']);
-    $r->addRoute('POST', '/participate', [App\controller\ParticipateController::class, 'participateToRidesharing']); 
+    $r->addRoute('POST', '/participate', [App\controller\ParticipateController::class, 'participateToRidesharing']);
+    $r->addRoute('POST', '/cancelParticipation/{id:\d+}', [App\controller\ParticipateController::class, 'cancelParticipation']);
 });
 
 // Traitement de la requête
@@ -70,7 +71,7 @@ switch ($routeInfo[0]) {
         $vars = $routeInfo[2];
         try{
             $controller = new $controllerClass();
-            $controller->$method($vars);
+            $controller->$method(...array_values($vars));
         }catch(\Exception $e){
             if(Config::get('APP_DEBUG') === 'true'){
                 $response->error("Erreur 500 : " . $e->getMessage() . " dans " . $e->getFile() . ":" . $e->getLine(), 500);
