@@ -73,15 +73,20 @@ abstract class BaseRepoMongo
     /**
      * Crée une nouvelle entrée dans la collection à partir d'un modèle.
      * @param object|array $model Le modèle à insérer dans la collection.
-     * @return string Retourne l'ID du document inséré.
+     * @return bool Retourne true si le document à été inséré.
      * 
      */
-    public function create(object|array $model): string
+    public function create(object|array $model): bool
     {
         $doc = $this->toDocument($model);
         
         $result = $this->collection->insertOne($doc);
-        return (string) $result->getInsertedId();
+
+        if ($result){
+            $result->getInsertedId();
+            return true;
+        }
+        return false;
     }
 
     /**
