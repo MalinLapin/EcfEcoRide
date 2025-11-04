@@ -292,4 +292,28 @@ class RidesharingRepo extends BaseRepoSql
 
         return $stmt->rowCount() > 0 ;
     }
+
+
+    public function creatRide(RidesharingModel $ride):int
+    {
+        $data = $this->extractData($ride);
+
+        unset($data['idRidesharing']);
+
+        // On construit la requête d'insertion
+        $columns = implode(',', array_keys($data));
+        $placeholders = ':' . implode(',:', array_keys($data));
+
+        // On prépare et exécute la requête
+        $sql = "INSERT INTO {$this->tableName} ({$columns}) VALUES ({$placeholders})";
+        $stmt = $this->pdo->prepare($sql);
+        // On lie les valeurs aux paramètres de la requête
+        foreach ($data as $key => $value) {
+            $stmt->bindValue(":{$key}", $this->prepareParamForDatabase($value));
+
+        }
+        $stmt->execute();
+
+        return $this->pdo->lastInsertId();
+    }
 }
