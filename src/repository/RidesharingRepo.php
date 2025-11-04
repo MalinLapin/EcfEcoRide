@@ -242,13 +242,16 @@ class RidesharingRepo extends BaseRepoSql
     public function endRide(int $rideId): bool
     {
         $sql = "UPDATE {$this->tableName} 
-        SET status = 'completed' 
-        WHERE id_ridesharing = :id_ridesharing 
-        AND status = 'pending'";
+            SET status = 'completed'
+            WHERE id_ridesharing = :id_ridesharing 
+            AND status = 'ongoing'";
+    
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':id_ridesharing', $rideId);
-
-        return $stmt->execute();
+        
+        $stmt->execute();
+        
+        return $stmt->rowCount() > 0;
     }
 
     /**
@@ -256,7 +259,7 @@ class RidesharingRepo extends BaseRepoSql
      *
      * @param int $rideId L'identifiant du trajet.
      * @return bool Vrai si la mise à jour a réussi, faux sinon.
-     * On en pourra pas supprimer un trajet completment de la bdd on changera seulement sont status en 'cancelled'.
+     * On en pourra pas supprimer un trajet completment de la bdd on changera seulement sont status en 'canceled'.
      */
     public function cancelRide(int $rideId): bool
     {
@@ -266,7 +269,9 @@ class RidesharingRepo extends BaseRepoSql
         AND status = 'pending'";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':id_ridesharing', $rideId);
-        return $stmt->execute();
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0 ;
     }
 
     /**
@@ -282,6 +287,9 @@ class RidesharingRepo extends BaseRepoSql
                 WHERE id_ridesharing = :id_ridesharing 
                 AND status = 'pending'";
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute(['id_ridesharing' => $rideId]);
+        $stmt->bindValue(':id_ridesharing', $rideId);
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0 ;
     }
 }
