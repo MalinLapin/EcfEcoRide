@@ -47,7 +47,9 @@ abstract class BaseModel
     public function hydrate(array $data):void
     {
         foreach ($data as $key => $value)
-            {
+        {
+            // Pour les données reçue lors de l'hydratation par la bdd les $key seront en snake_case sinon le reste en camelCase nous devons donc gérer les deux conventions de nommage.
+            $normalizedKey = $this->toSnakeCase($key);
             
             // Problème avec les noms de colonnes comme first_name.
             $methodName = str_replace(array('-','_'), ' ', $key); // first name
@@ -66,7 +68,7 @@ abstract class BaseModel
                 {
                     
                 // Champs date convertie en intance de DateTimeImmutable
-                if(in_array($key, $this->dateFields))
+                if(in_array($normalizedKey, $this->dateFields))
                     {
                     // On s'assure que la valeur est une chaîne de caractères avant de la convertir
                     if(is_string($value))
@@ -76,7 +78,7 @@ abstract class BaseModel
                     }             
                 
                 // Champs enum convertie en instance d'enum
-                if (in_array($key, $this->enumFields))
+                if (in_array($normalizedKey, $this->enumFields))
                 {
                         // On s'assure que la valeur est une chaîne de caractères avant de la convertir
                     if(is_string($value))
@@ -92,19 +94,19 @@ abstract class BaseModel
                 }   
 
                 // Champs int
-                if (in_array($key, $this->intFields))
+                if (in_array($normalizedKey, $this->intFields))
                 {
                     $value = (int)$value;
                 }
 
                 // Champs float
-                if (in_array($key, $this->floatFields))
+                if (in_array($normalizedKey, $this->floatFields))
                 {
                     $value = (float)$value;
                 }
 
                 // Champs bool
-                if (in_array($key, $this->boolFields)) 
+                if (in_array($normalizedKey, $this->boolFields)) 
                 {
                     // Gère les formats "1"/"0", true/false, int, string
                     $tmp = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
@@ -116,6 +118,17 @@ abstract class BaseModel
                 
             }            
         }
+    }
+
+    /**
+     * Convertit une clé camelCase en snake_case pour la comparaison avec les tableaux de configuration.
+     * 
+     * @param string $key Clé en camelCase ou snake_case
+     * @return string Clé en snake_case
+     */
+    private function toSnakeCase(string $key): string
+    {
+        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $key));
     }
 
     public function __debugInfo(): array
