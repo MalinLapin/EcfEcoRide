@@ -10,17 +10,17 @@ db.createCollection("review", {
     validator: {
         $jsonSchema: {
             bsonType: "object",
-            required: ["id_target", "id_redactor", "status_review", "created_at"],
+            required: ["idTarget", "idRedactor", "statusReview", "createdAt"],
 
             properties: {
-                id_target: { bsonType: "int" },
-                id_redactor: { bsonType: "int" },
-                status_review: { enum: ["pending", "approved", "rejected"] },
+                idTarget: { bsonType: "int" },
+                idRedactor: { bsonType: "int" },
+                statusReview: { enum: ["pending", "approved", "rejected"] },
                 rating: { bsonType: "int", minimum: 1, maximum: 5 },
                 comment: { bsonType: "string", maxLength: 1000 },
-                created_at: { bsonType: "date" },
-                reviewed_by: { bsonType: "int" }, // Id de l'employer qui a validé ou rejeté la review
-                reviewed_at: { bsonType: "date" }, // Date de la validation ou du rejet
+                createdAt: { bsonType: "date" },
+                reviewedBy: { bsonType: "int" }, // Id de l'employer qui a validé ou rejeté la review
+                reviewedAt: { bsonType: "date" }, // Date de la validation ou du rejet
                 reason: { bsonType: ["string", "null"], maxLength: 500 } // Raison du rejet, peut être null si la review est approuvée
             },
             additionalProperties: true
@@ -35,9 +35,9 @@ db.createCollection("preference", {
     validator: {
         $jsonSchema: {
             bsonType: "object",
-            required: ["id_ridesharing", "label"],
+            required: ["idRidesharing", "label"],
             properties: {
-                id_ridesharing: { bsonType: "int" },
+                idRidesharing: { bsonType: "int" },
                 label: { bsonType: "string" },
             },
             additionalProperties: true
@@ -48,105 +48,105 @@ db.createCollection("preference", {
 });
 
 dbEco.review.insertOne({
-    id_target: NumberInt(101),
-    id_redactor: NumberInt(12),
-    status_review: "pending",
+    idTarget: NumberInt(101),
+    idRedactor: NumberInt(12),
+    statusReview: "pending",
     rating: NumberInt(5),
     comment: "Très ponctuel, conduite sûre.",
-    created_at: new Date()
+    createdAt: new Date()
 });
 
 dbEco.preference.insertOne({
-    id_ridesharing: NumberInt(5551),
+    idRidesharing: NumberInt(5551),
     label: "silence"
 });
 
 dbEco.review.insertMany([
     {
-        id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
-        id_redactor: 3,      // L'auteur de l'avis (doit exister en SQL)
-        status_review: "approved",
+        idTarget: 2,        // L'utilisateur évalué (doit exister en SQL)
+        idRedactor: 3,      // L'auteur de l'avis (doit exister en SQL)
+        statusReview: "approved",
         rating: 5,
         comment: "Avis 1",
-        created_at: new Date("2024-01-15"),
-        reviewed_by: 5,      // L'employé qui a validé (milkauny)
-        reviewed_at: new Date("2024-01-16"),
+        createdAt: new Date("2024-01-15"),
+        reviewedBy: 5,      // L'employé qui a validé (milkauny)
+        reviewedAt: new Date("2024-01-16"),
         reason: null
     },
     {
-        id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
-        id_redactor: 4,      // L'auteur de l'avis (doit exister en SQL)
-        status_review: "rejected",
+        idTarget: 2,        // L'utilisateur évalué (doit exister en SQL)
+        idRedactor: 4,      // L'auteur de l'avis (doit exister en SQL)
+        statusReview: "rejected",
         rating: 1,
         comment: "test, grossier",
-        created_at: new Date("2024-01-15"),
-        reviewed_by: 5,      // L'employé qui a validé (milkauny)
-        reviewed_at: new Date("2024-01-17"),
+        createdAt: new Date("2024-01-15"),
+        reviewedBy: 5,      // L'employé qui a validé (milkauny)
+        reviewedAt: new Date("2024-01-17"),
         reason: "contenu inappropriés"
     },
     {
-        id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
-        id_redactor: 4,      // L'auteur de l'avis (doit exister en SQL)
-        status_review: "pending",
+        idTarget: 2,        // L'utilisateur évalué (doit exister en SQL)
+        idRedactor: 4,      // L'auteur de l'avis (doit exister en SQL)
+        statusReview: "pending",
         rating: 4,
         comment: "Avis 3",
-        created_at: new Date("2024-01-15")
+        createdAt: new Date("2024-01-15")
     },
     {
-        id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
-        id_redactor: 4,      // L'auteur de l'avis (doit exister en SQL)
-        status_review: "approved",
+        idTarget: 2,        // L'utilisateur évalué (doit exister en SQL)
+        idRedactor: 4,      // L'auteur de l'avis (doit exister en SQL)
+        statusReview: "approved",
         rating: 2,
         comment: "Avis 4",
-        created_at: new Date("2024-01-15"),
-        reviewed_by: 5,      // L'employé qui a validé (milkauny)
-        reviewed_at: new Date("2024-01-16"),
+        createdAt: new Date("2024-01-15"),
+        reviewedBy: 5,      // L'employé qui a validé (milkauny)
+        reviewedAt: new Date("2024-01-16"),
         reason: null
     },
     {
-        id_target: 2,        // L'utilisateur évalué (doit exister en SQL)
-        id_redactor: 1,      // L'auteur de l'avis (doit exister en SQL)
-        status_review: "approved",
+        idTarget: 2,        // L'utilisateur évalué (doit exister en SQL)
+        idRedactor: 1,      // L'auteur de l'avis (doit exister en SQL)
+        statusReview: "approved",
         rating: 4,
         comment: "Avis 5",
-        created_at: new Date("2024-01-15"),
-        reviewed_by: 5,      // L'employé qui a validé (milkauny)
-        reviewed_at: new Date("2024-01-16"),
+        createdAt: new Date("2024-01-15"),
+        reviewedBy: 5,      // L'employé qui a validé (milkauny)
+        reviewedAt: new Date("2024-01-16"),
         reason: null
     },
     {
-        id_target: 3,        // L'utilisateur évalué (doit exister en SQL)
-        id_redactor: 2,      // L'auteur de l'avis (doit exister en SQL)
-        status_review: "approved",
+        idTarget: 3,        // L'utilisateur évalué (doit exister en SQL)
+        idRedactor: 2,      // L'auteur de l'avis (doit exister en SQL)
+        statusReview: "approved",
         rating: 2,
         comment: "Avis 6",
-        created_at: new Date("2024-01-15"),
-        reviewed_by: 5,      // L'employé qui a validé (milkauny)
-        reviewed_at: new Date("2024-01-16"),
+        createdAt: new Date("2024-01-15"),
+        reviewedBy: 5,      // L'employé qui a validé (milkauny)
+        reviewedAt: new Date("2024-01-16"),
         reason: null
     },
 ]);
 
 dbEco.preference.insertMany([
     {
-        id_ridesharing: 1,   // Trajet Paris-Lyon de marctest
+        idRidesharing: 1,   // Trajet Paris-Lyon de marctest
         label: "Non fumeur"
     },
 
     {
-        id_ridesharing: 1,   // Trajet Paris-Lyon de marctest
+        idRidesharing: 1,   // Trajet Paris-Lyon de marctest
         label: "Pas de musique"
     },
     {
-        id_ridesharing: 3,   // Trajet Paris-Lyon de marctest
+        idRidesharing: 3,   // Trajet Paris-Lyon de marctest
         label: "Animaux accepter"
     },
     {
-        id_ridesharing: 2,   // Trajet Paris-Lyon de marctest
+        idRidesharing: 2,   // Trajet Paris-Lyon de marctest
         label: "fumeur ok mais demande de pause"
     },
     {
-        id_ridesharing: 6,   // Trajet Paris-Lyon de marctest
+        idRidesharing: 6,   // Trajet Paris-Lyon de marctest
         label: "Non fumeur"
     },
 ]);
