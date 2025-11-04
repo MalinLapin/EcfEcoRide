@@ -5,7 +5,7 @@
 
     <div class='navBarProfil robotoBold'>
         <div id="compteBtn" class="compteBtn">
-            <a href="/profile">Mon compte</a>
+            <a href="/profile">Mon profil</a>
         </div>
         <div id="myRideBtn" class="myRideBtn">
             <a href="/myRidesharing">Mes trajets</a>
