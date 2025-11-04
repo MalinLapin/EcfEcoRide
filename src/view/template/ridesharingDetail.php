@@ -30,14 +30,13 @@
                 <span class="material-symbols-outlined">calendar_month</span>
                 <p><?=$ride->getDepartureDate()->format('Y-m-d')?></p>
             </div>
+            <?php if($ride->getArrivalDate() != null): 
+                $interval = $ride->getArrivalDate()->diff($ride->getDepartureDate());?>
             <div class='clock'>
                 <span class="material-symbols-outlined">nest_clock_farsight_analog</span>
-                <p>0 h 30</p>
+                <p><?= $interval->format("%H:%I:%S")?></p>
             </div>
-            <div class='road'>
-                <span class="material-symbols-outlined">road</span>
-                <p>70 km</p>
-            </div>
+            <?php endif; ?>
             <div class='availableSeats'>
                 <span class="material-symbols-outlined">group</span>
                 <p><?=$ride->getAvailableSeats()?> dispo.</p>
