@@ -216,10 +216,17 @@ class RidesharingController extends BaseController
     public function showCreateRidesharing(): void
     {
         $this->requireAuth();
+
+        // On recupere la liste des voitures de l'utilisateur.
+        $listCar = $this->carRepo->findListCarByUserId($_SESSION['idUser']);
+
+        $flashMessage = $this->getFlashMessage();
         
         $this->render('createRidesharing', [
-            'title' => 'Créer un covoiturage',
-            'csrf_token' => $this->tokenManager->generateCsrfToken()
+            'csrf_token' => $this->tokenManager->generateCsrfToken(),
+            'pageCss' => 'createRidesharing',
+            'flashMessage' => $flashMessage,
+            'listCar' => $listCar
         ]);       
     }
 
@@ -230,12 +237,13 @@ class RidesharingController extends BaseController
      */
     public function createRidesharing(): void
     {
+        
         $this->requireAuth();
 
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {
-            $this->response->redirect('ridesharing/createRidesharing');
+            $this->redirect('createRidesharing');
             return;
         }
 
@@ -274,22 +282,26 @@ class RidesharingController extends BaseController
             $errors['arrivalCity'] = "La ville d'arrivée est requise.";
         }
 
-        if (empty($data['arrivalAddress'])) {
-            $errors['arrivalAddress'] = "L'adresse d'arrivée est requise.";
+        if (empty($data['arrivalCity'])) {
+            $errors['pricePerSeat'] = "Veuillez indiquer un prix par participant";
         }
 
-        if (empty($data['nbSeats']) || !is_numeric($data['nbSeats']) || $data['nbSeats'] < 1 || $data['nbSeats'] > 6) {
+        if (empty($data['availableSeats']) || !is_numeric($data['availableSeats']) || $data['availableSeats'] < 1 || $data['availableSeats'] > 6) {
             $errors['nbSeats'] = "Le nombre de places doit être un nombre entre 1 et 6.";
         }
 
-        if (empty($data['id_car'])) {
-            $errors['id_car'] = "Veuillez selectionner un véhicule.";
+        if (empty($data['idCar'])) {
+            $errors['idCar'] = "Veuillez selectionner un véhicule.";
+        }
+
+        if (!empty($data['arrivalDate']) < $data['departureDate']){
+            $errors ['arrivalDate'] = "La date d'arrivée ne peut être antérieur à la date de départ.";
         }
 
         if (!empty($errors)) 
         {
             $this->render('createRidesharing', [
-                'title' => 'Créer un covoiturage',
+                'pageCss' => 'createRidesharing',
                 'errors' => $errors,
                 'old' => $data,
                 'csrf_token' => $this->tokenManager->generateCsrfToken()
@@ -297,58 +309,64 @@ class RidesharingController extends BaseController
             return;
         }
 
-        // Préparation des données pour la création du covoiturage
-        $ridesharingModel = new RidesharingModel(
-            $data['departureCity'],
-            $data['departureAddress'],
-            new \DateTimeImmutable($data['departureDate']),
-            $data['arrivalCity'],
-            $data['arrivalAddress'],
-            $data['nbSeats'],
-            $data['id_car'],
-            $_SESSION['id_user'],
-            'pending'
-        );
-        // Création du covoiturage + recuperation de son ID
-        $ridesharingId = $this->ridesharingRepo->create($ridesharingModel);
+        // On retire les préférences du tableau envoyé par la vue si ce dernier en a renseigné
+        if(array_key_exists('preferenceList', $data)){
 
-        if(!$ridesharingId)
+            $preferenceList = array_intersect_key($data, array_flip(['preferenceList']));
+        }
+
+        
+        
+        // Il faut aussi retiré le token maintenant qu'il à été vérifier.
+        unset($data['csrf_token']);
+        $data['idDriver'] = $_SESSION['idUser'];
+
+        // on hydrate et crée un objet ridesharing avec le reste des données envoyé par la vue
+        $ridesharing = RidesharingModel::createAndHydrate($data);
+
+        $ridesharing->setIdDriver($_SESSION['idUser'])
+                    ->setCreatedAt(new DateTimeImmutable());
+
+        // Création du covoiturage
+        $newIdRide = $this->ridesharingRepo->creatRide($ridesharing);
+
+        if(!$newIdRide)
         {
             $this->response->error('Une erreur est survenue lors de la création du covoiturage.', 500);
             return;
         }
 
-        // Recupération des preferences défini par le conducteur.
-        foreach ($data['preferences'] as $pref) 
-        {
-            if (!empty($pref['label'])) 
-            {
-                $preferenceData = [
-                    'label' => $pref['label'],
-                    'isAccepted' => $pref['isAccepted'],
-                    'idRidesharing' => $ridesharingId
-                ];
-                $preferenceModel = new PreferenceModel($preferenceData);
-                $preference = $this->preferenceRepo->create($preferenceModel);
 
-                if(!$preference) 
-                {
-                    $this->ridesharingRepo->delete($ridesharingId); // Suppression du covoiturage créé précédemment en cas d'erreur.
-                    $errors[] = "Une erreur est survenue lors de l'enregistrement des préférences.";
-                    $this->render('createRidesharing', [
-                        'title' => 'Créer un covoiturage',
-                        'errors' => $errors,
-                        'old' => $data,
-                        'csrf_token' => $this->tokenManager->generateCsrfToken()
-                    ]);
-                    
-                    return;
-                }
+        // Recupération des preferences défini par le conducteur.
+        foreach ($preferenceList as $pref) 
+        {
+
+            $preferenceData = [
+                'label' => $pref,
+                'idRidesharing' => $newIdRide
+            ];
+            $preferenceModel = PreferenceModel::createAndHydrate($preferenceData);
+
+            $isCreated = $this->preferenceRepo->create($preferenceModel);
+
+
+            if(!$isCreated) 
+            {
+                $this->ridesharingRepo->delete($ridesharing->getIdRidesharing()); // Suppression du covoiturage créé précédemment en cas d'erreur.
+                $errors[] = "Une erreur est survenue lors de l'enregistrement des préférences.";
+                $this->render('createRidesharing', [
+                    'errors' => $errors,
+                    'csrf_token' => $this->tokenManager->generateCsrfToken()
+                ]);
+                
+                return;
             }
+            
         }
 
+        die();
         // Redirection vers la page de détails du covoiturage nouvellement créé
-        $this->response->redirect("/page/ridesharing-detail?id=$ridesharingId");
+        $this->redirect("/myRidesharing");
     }
 
     /**
