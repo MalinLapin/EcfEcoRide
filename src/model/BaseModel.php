@@ -12,7 +12,7 @@ abstract class BaseModel
 {
     
     //Champs de type dateTime pour hydratation
-    private array $dateFields = ['created_at', 'updated_at', 'departure_date', 'arrival_date', 'first_registration'];
+    private array $dateFields = ['created_at', 'updated_at', 'departure_date', 'arrival_date', 'first_registration', 'completed_at'];
 
     //Champs de type enum pour hydratation
     private array $enumFields = ['role', 'status', 'status_review', 'energy_type'];
