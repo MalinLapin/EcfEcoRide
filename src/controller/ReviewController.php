@@ -61,21 +61,24 @@ class ReviewController extends BaseController
                 ->setIdRedactor($_SESSION['idUser'])
                 ->setIdTarget($data['idDriver']);
 
+        $this->reviewRepo->create($review);
+
         try{
-            $this->reviewRepo->create($review);
+            $isCreated = $this->reviewRepo->create($review);
         }catch(\Exception){
             http_response_code(500);
             echo json_encode([
-                'success' => false,
-                'message' => "Un problème lors de l'envoi de l'avis, veuillez réessayer plus tard."
+                'success' => true,
+                'message' => "Une erreur lors de la création de votre avis, veuillez réessayer plus tard."
             ]);
+            exit; 
         }
-
         http_response_code(200);
         echo json_encode([
             'success' => true,
             'message' => 'Votre avis à bien été transmis, il sera visible après confirmation de nos équipes.'
         ]);
         exit;
+        
     }
 }
