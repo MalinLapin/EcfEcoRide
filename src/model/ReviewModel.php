@@ -28,8 +28,8 @@ class ReviewModel extends BaseModel
     private int $rating; // Note attribuée dans la revue, généralement entre 1 et 5.
     private DateTimeImmutable $createdAt; // Date de création de la revue.
     private StatusReview $statusReview; // Statut de la revue, défini par l'énumération StatusReview.
-    private ?int $reviewedBy; // Id de l'employer qui a validé ou rejeté la review
-    private ?DateTimeImmutable $reviewedAt; // Date de la validation ou du rejet
+    private ?int $reviewedBy = null; // Id de l'employer qui a validé ou rejeté la review
+    private ?DateTimeImmutable $reviewedAt = null; // Date de la validation ou du rejet
     private ?string $reason = null; // La raison du refus, peut être null si avis accepté
     private int $idRedactor; // Identifiant de l'utilisateur qui a créé la revue.
     private int $idTarget; // Identifiant de l'utilisateur qui est la cible de la revue.

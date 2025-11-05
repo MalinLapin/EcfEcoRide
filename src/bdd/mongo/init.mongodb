@@ -19,8 +19,8 @@ db.createCollection("review", {
                 rating: { bsonType: "int", minimum: 1, maximum: 5 },
                 comment: { bsonType: "string", maxLength: 1000 },
                 createdAt: { bsonType: "date" },
-                reviewedBy: { bsonType: "int" }, // Id de l'employer qui a validé ou rejeté la review
-                reviewedAt: { bsonType: "date" }, // Date de la validation ou du rejet
+                reviewedBy: { bsonType: ["int", "null"] }, // Id de l'employer qui a validé ou rejeté la review
+                reviewedAt: { bsonType: ["date", "null"] }, // Date de la validation ou du rejet
                 reason: { bsonType: ["string", "null"], maxLength: 500 } // Raison du rejet, peut être null si la review est approuvée
             },
             additionalProperties: true
