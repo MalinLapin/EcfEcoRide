@@ -88,14 +88,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const commentTextarea = document.getElementById('comment');
     const charCount = document.querySelector('.charCount');
 
-    let idRidesharing = null;
     let idDriver = null;
 
     // Ouvrir le modal d'avis
     const letReviewBtns = document.querySelectorAll('.letReviewBtn');
     letReviewBtns.forEach(btn => {
         btn.addEventListener('click', function () {
-            idRidesharing = this.dataset.rideId;
             idDriver = this.dataset.driverId;
             reviewModal.classList.add('show');
             resetReviewForm();
@@ -159,11 +157,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Envoi de l'avis
-        submitReview(idRidesharing, idDriver, rating, commentSanitized);
+        submitReview(idDriver, rating, commentSanitized);
     });
 
     // Fonction pour envoyer l'avis
-    function submitReview(idRidesharing, idDriver, rating, comment) {
+    function submitReview(idDriver, rating, comment) {
         fetch('/letReview', {
             method: 'POST',
             headers: {
@@ -172,7 +170,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 'typeRequete': 'ajax'
             },
             body: JSON.stringify({
-                idRidesharing: idRidesharing,
                 idDriver: idDriver,
                 rating: rating,
                 comment: comment

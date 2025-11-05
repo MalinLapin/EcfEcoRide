@@ -2,10 +2,8 @@
 
 namespace App\controller;
 
-use App\utils\Logger;
+
 use App\model\UserModel;
-use App\repository\UserRepo;
-use App\security\TokenManager;
 use DateTimeImmutable;
 
 class AuthController extends BaseController
