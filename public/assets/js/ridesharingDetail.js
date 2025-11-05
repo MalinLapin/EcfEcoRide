@@ -1,18 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-
-    // Pour la confirmation 
-    const confirmedInput = document.getElementById('confirmed');
-    const reservationForm = document.getElementById('reservationForm');
-
-    reservationForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        if (confirm('Êtes-vous sûr de vouloir participer à ce trajet ?')) {
-            confirmedInput.value = true;
-            reservationForm.submit();
-        }
-    })
-
     // Affichage du prix selon le nombre de place.
 
     const nbSeats = document.getElementById('nbSeats');
@@ -24,5 +11,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     nbSeats.addEventListener('input', totalPrice);
+
+    // Pour la confirmation 
+    const confirmedInput = document.getElementById('confirmed');
+    const reservationForm = document.getElementById('reservationForm');
+
+    reservationForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        if (confirm(`Êtes-vous sûr de vouloir participer à ce trajet ?\n\nNombre de places : ${nbSeats.value}\nMontant total : ${pricePerSeat * nbSeats.value} Crédits`)) {
+            confirmedInput.value = true;
+            reservationForm.submit();
+        }
+    })
 
 });
