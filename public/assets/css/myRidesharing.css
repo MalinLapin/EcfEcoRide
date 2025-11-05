@@ -234,22 +234,11 @@
   width: 100%;
 }
 
-.cancelParticipationBtn {
+.cancelParticipationBtn,
+.cancelRideBtn,
+.cancelReviewBtn {
   background-color: #c0392b;
   color: white;
-}
-
-.cancelParticipationBtn:hover {
-  background-color: #e74c3c;
-}
-
-.cancelRideBtn {
-  background-color: #c0392b;
-  color: white;
-}
-
-.cancelRideBtn:hover {
-  background-color: #e74c3c;
 }
 
 .startRideBtn {
@@ -257,17 +246,10 @@
   color: white;
 }
 
-.startRideBtn:hover {
-  background-color: #3498db;
-}
-
-.completeRideBtn {
+.completeRideBtn,
+.submitReviewBtn {
   background-color: #229954;
   color: white;
-}
-
-.completeRideBtn:hover {
-  background-color: #90ee90;
 }
 
 .rideActions button .material-symbols-outlined {
@@ -308,9 +290,105 @@
   transition: all 0.3s ease;
 }
 
-.searchRideBtn:hover,
-.newRideBtn:hover {
-  background-color: #229954;
+/* Modal d'avis */
+.reviewModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.reviewModal.show {
+  display: flex;
+}
+
+.reviewModal .modalContent {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.reviewModal .closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+}
+
+.reviewModal .closeBtn:hover {
+  color: #000;
+}
+
+.reviewModal h3 {
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+/* Système d'étoiles */
+.starsContainer {
+  display: flex;
+  gap: 5px;
+  font-size: 2.5rem;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.star {
+  cursor: pointer;
+  color: #ddd;
+  transition: color 0.2s;
+}
+
+.star:hover,
+.star.active {
+  color: #f39c12;
+}
+
+/* Textarea */
+.reviewModal textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-family: "Roboto", sans-serif;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.reviewModal textarea:focus {
+  outline: none;
+  border-color: #27ae60;
+}
+
+.charCount {
+  display: block;
+  text-align: right;
+  color: #7f8c8d;
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+/* Bouton laisser un avis */
+.letReviewBtn {
+  background-color: #f39c12;
+  color: black;
+  font-size: large;
 }
 
 /* Responsive - Tablet et plus */

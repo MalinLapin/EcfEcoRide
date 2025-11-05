@@ -24,7 +24,8 @@ class ParticipateRepo extends BaseRepoSql
                     r.departure_date AS ridesharing_departure_date,
                     r.departure_city AS ridesharing_departure_city,
                     r.arrival_city AS ridesharing_arrival_city,
-                    r.price_per_seat AS ridesharing_price_per_seat
+                    r.price_per_seat AS ridesharing_price_per_seat,
+                    r.id_driver AS ridesharing_id_driver
                     FROM {$this->tableName} p
                     JOIN  ridesharing r
                     ON r.id_ridesharing = p.id_ridesharing

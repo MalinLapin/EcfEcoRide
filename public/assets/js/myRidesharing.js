@@ -75,6 +75,142 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('Une erreur est survenue.');
             });
     }
+    // --------------------- Partie avis sur le chauffeur ------------------------------------
+
+    // Gestion du modal d'avis
+    const reviewModal = document.getElementById('reviewModal');
+    const closeReviewModal = document.getElementById('closeReviewModal');
+    const cancelReviewBtn = document.getElementById('cancelReviewBtn');
+    const reviewForm = document.getElementById('reviewForm');
+    const reviewErrorMsg = document.getElementById('reviewErrorMsg');
+    const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('rating');
+    const commentTextarea = document.getElementById('comment');
+    const charCount = document.querySelector('.charCount');
+
+    let idRidesharing = null;
+    let idDriver = null;
+
+    // Ouvrir le modal d'avis
+    const letReviewBtns = document.querySelectorAll('.letReviewBtn');
+    letReviewBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            idRidesharing = this.dataset.rideId;
+            idDriver = this.dataset.driverId;
+            reviewModal.classList.add('show');
+            resetReviewForm();
+        });
+    });
+
+    // Fermer le modal
+    function closeReviewModalFunc() {
+        reviewModal.classList.remove('show');
+        resetReviewForm();
+    }
+
+    closeReviewModal.addEventListener('click', closeReviewModalFunc);
+    cancelReviewBtn.addEventListener('click', closeReviewModalFunc);
+
+    // Fermer en cliquant en dehors
+    reviewModal.addEventListener('click', function (e) {
+        if (e.target === reviewModal) {
+            closeReviewModalFunc();
+        }
+    });
+
+    // Gestion des étoiles
+    stars.forEach(star => {
+        star.addEventListener('click', function () {
+            const rating = this.dataset.rating;
+            ratingInput.value = rating;
+
+            // Mettre à jour l'affichage des étoiles
+            stars.forEach(s => {
+                if (s.dataset.rating <= rating) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+        });
+    });
+
+    // Soumission du formulaire d'avis
+    reviewForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const rating = parseInt(ratingInput.value);
+        const comment = commentTextarea.value.trim();
+        const commentSanitized = comment.replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#x27;')
+            .replace(/\//g, '&#x2F;');
+
+        // Validation
+        if (rating === 0) {
+            showReviewError('Veuillez sélectionner une note');
+            return;
+        }
+
+        if (commentSanitized.length > 500) {
+            showReviewError('Le commentaire ne peut pas dépasser 500 caractères');
+            return;
+        }
+
+        // Envoi de l'avis
+        submitReview(idRidesharing, idDriver, rating, commentSanitized);
+    });
+
+    // Fonction pour envoyer l'avis
+    function submitReview(idRidesharing, idDriver, rating, comment) {
+        fetch('/letReview', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'csrfToken': getToken(),
+                'typeRequete': 'ajax'
+            },
+            body: JSON.stringify({
+                idRidesharing: idRidesharing,
+                idDriver: idDriver,
+                rating: rating,
+                comment: comment
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Votre avis a été envoyé avec succès !');
+                    closeReviewModalFunc();
+                    location.reload();
+                } else {
+                    showReviewError(data.message || 'Une erreur est survenue lors de l\'envoi de votre avis.');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                showReviewError('Une erreur est survenue. Veuillez réessayer.');
+            });
+    }
+
+    // Fonction pour afficher une erreur
+    function showReviewError(message) {
+        reviewErrorMsg.textContent = message;
+        reviewErrorMsg.classList.add('show');
+        setTimeout(() => {
+            reviewErrorMsg.classList.remove('show');
+        }, 5000);
+    }
+
+    // Fonction pour réinitialiser le formulaire
+    function resetReviewForm() {
+        reviewForm.reset();
+        ratingInput.value = '0';
+        stars.forEach(s => s.classList.remove('active'));
+        charCount.textContent = '0/500 caractères';
+        reviewErrorMsg.classList.remove('show');
+    }
 
     // --------------------- Partie conducteur--------------------------------------------
 

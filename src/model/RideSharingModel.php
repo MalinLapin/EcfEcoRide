@@ -26,9 +26,9 @@ class RidesharingModel extends BaseModel
     private int $idCar; // Identifiant de la voiture utiliser pour le covoiturage.
     private DateTimeImmutable $departureDate; //Date de départ
     private string $departureCity; //Ville de départ
-    private string $departureAddress; //Adresse de départ
+    private ?string $departureAddress; //Adresse de départ peut etre null pour les petite ville
     private string $arrivalCity; //Ville d'arriver
-    private string $arrivalAddress; //Adresse d'arriver
+    private ?string $arrivalAddress; //Adresse d'arriver peut etre null pour les petites ville
     private ?DateTimeImmutable $arrivalDate = null; //Date d'arriver
     private int $availableSeats; //Places disponibles
     private int $pricePerSeat; //Prix par place
@@ -137,7 +137,7 @@ class RidesharingModel extends BaseModel
     /**
      * Get the value of departureAddress
      */
-    public function getDepartureAddress(): string
+    public function getDepartureAddress(): ?string
     {
         return $this->departureAddress;
     }
@@ -145,7 +145,7 @@ class RidesharingModel extends BaseModel
     /**
      * Set the value of departureAddress
      */
-    public function setDepartureAddress(string $departureAddress): self
+    public function setDepartureAddress(?string $departureAddress): self
     {
         $this->departureAddress = $departureAddress;
 
@@ -173,7 +173,7 @@ class RidesharingModel extends BaseModel
     /**
      * Get the value of arrivalAddress
      */
-    public function getArrivalAddress(): string
+    public function getArrivalAddress(): ?string
     {
         return $this->arrivalAddress;
     }
@@ -181,7 +181,7 @@ class RidesharingModel extends BaseModel
     /**
      * Set the value of arrivalAddress
      */
-    public function setArrivalAddress(string $arrivalAddress): self
+    public function setArrivalAddress(?string $arrivalAddress): self
     {
         $this->arrivalAddress = $arrivalAddress;
 

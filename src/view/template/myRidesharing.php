@@ -71,6 +71,7 @@
                                 </div>
                             </div>
 
+                            <!-- Bouton si le trajet est en attente.-->
                             <?php if ($ride->getStatus()->value == 'pending'):?>
                                 <div class="rideActions">
                                     <button class="cancelParticipationBtn robotoBold" data-participate-id="<?=$participation->getIdParticipate()?>">
@@ -79,6 +80,18 @@
                                     </button>
                                 </div>
                             <?php endif; ?>
+
+                            <!-- Bouton si le trajet est terminer.-->
+                            <?php if ($ride->getStatus()->value == 'completed'):?>
+                                <div class="rideActions">
+                                    <button class="letReviewBtn robotoBold" 
+                                            data-ride-id="<?=$ride->getIdRidesharing()?>" 
+                                            data-driver-id="<?=$ride->getIdDriver()?>">
+                                        <span class="material-symbols-outlined">rate_review</span>
+                                        <span>Laisser un avis</span>
+                                    </button>
+                                </div>
+                            <?php endif; ?>                            
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -141,9 +154,11 @@
                                         <span class="robotoBold"><?=$ride->getPricePerSeat()-2?> crédits / participants</span>
                                     </div>
                                 </div>
-                            </div>
-
+                            </div>                            
+                            
                             <div class="rideActions">
+
+                                <!-- Si le trajet est en attente deux bouton d'action -->
                                 <?php if ($ride->getStatus()->value == 'pending'): ?>
                                     <button class="startRideBtn robotoBold" data-ride-id="<?=$ride->getIdRidesharing()?>">
                                         <span class="material-symbols-outlined">play_arrow</span>
@@ -153,6 +168,7 @@
                                         <span class="material-symbols-outlined">delete</span>
                                         <span>Annuler le trajet</span>
                                     </button>
+                                <!-- Si le trajet est en cour juste le bouton pour finir le trajet. -->
                                 <?php elseif ($ride->getStatus()->value == 'ongoing'): ?>
                                     <button class="completeRideBtn robotoBold" data-ride-id="<?=$ride->getIdRidesharing()?>">
                                         <span class="material-symbols-outlined">check_circle</span>
@@ -172,4 +188,39 @@
             <?php endif; ?>
         </div>
     </div>
+
+
+    <!-- Modal pour laisser un avis -->
+<div id="reviewModal" class="reviewModal">
+    <div class="modalContent">
+        <span id="closeReviewModal" class="closeBtn">&times;</span>
+        <h3 class="montserratBold titleColor">Laisser un avis sur le chauffeur</h3>
+        
+        <form id="reviewForm">
+            <div class="formGroup">
+                <label>Note :</label>
+                <div class="starsContainer">
+                    <span class="star" data-rating="1">★</span>
+                    <span class="star" data-rating="2">★</span>
+                    <span class="star" data-rating="3">★</span>
+                    <span class="star" data-rating="4">★</span>
+                    <span class="star" data-rating="5">★</span>
+                </div>
+                <input type="hidden" id="rating" name="rating" value="0" required>
+            </div>
+
+            <div class="formGroup">
+                <label for="comment">Commentaire :</label>
+                <textarea id="comment" name="comment" rows="4" placeholder="Partagez votre expérience avec ce chauffeur..." maxlength="500"></textarea>
+            </div>
+
+            <div class="forActions">
+                <button type="submit" class="submitReviewBtn robotoBold">Envoyer</button>
+                <button type="button" id="cancelReviewBtn" class="cancelReviewBtn robotoBold">Annuler</button>
+            </div>
+
+            <div id="reviewErrorMsg" class="errorMessage"></div>
+        </form>
+    </div>
+</div>
 </section>
