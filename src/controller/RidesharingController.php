@@ -170,7 +170,8 @@ class RidesharingController extends BaseController
             'listPreference'=>$listPreference,
             'flash'=>$flashMessage,
             'csrf_token'=>$this->tokenManager->generateCsrfToken(),
-            'pageCss' => 'ridesharingDetail'
+            'pageCss' => 'ridesharingDetail',
+            'scriptJs' => 'ridesharingDetail'
         ]);
     }
 

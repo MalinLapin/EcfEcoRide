@@ -45,7 +45,7 @@
     </div>
     
     <div class='participationInfo'>
-        <form action="/participate" method='POST' class='seatForm'>
+        <form action="/participate" method='POST' class='seatForm' id="reservationForm">
             <div class='participationCard'>
                 <div class='ridesharingPrice'>
                     <p><span class='robotoBold'><?=$ride->getPricePerSeat()?> </span>Crédits /places</p>
@@ -55,7 +55,8 @@
             </div>
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
             <input type="hidden" name="idRidesharing" value="<?=$ride->getIdRidesharing() ?>">
-            <button type='submit' class="btnSearch robotoBold">Réserver</button>
+            <input type="hidden" id="confirmed" name="confirmed" value="false">
+            <button type='submit' class="btnSearch robotoBold" id="reservationBtn">Réserver</button>
         </form>
     </div>
     

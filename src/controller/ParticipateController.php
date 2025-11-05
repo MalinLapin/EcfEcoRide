@@ -81,7 +81,8 @@ class ParticipateController extends BaseController
         $newparticipate->setIdParticipant($_SESSION['idUser'])
                         ->setIdRidesharing($ridesharing->getIdRidesharing())
                         ->setNbSeats($data['nbSeats'])
-                        ->setCreatedAt(new DateTimeImmutable());
+                        ->setCreatedAt(new DateTimeImmutable())
+                        ->setConfirmed($data['confirmed']);
                         
         // On vérifie que le solde de crédit de l'utilisateur permette la participation
         try{
