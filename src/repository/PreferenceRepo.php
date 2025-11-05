@@ -11,18 +11,7 @@ class PreferenceRepo extends BaseRepoMongo
     // Recherche une préférences par l'identifiant du covoiturage
     public function findByRidesharing(int $idRidesharing): array
     {
-        $cursor = $this->collection->find(['id_car' => $idRidesharing]);
-        $out = [];
-        foreach ($cursor as $doc) {
-            $out[] = $this->toModel($doc);
-        }
-        return $out;
-    }
-
-    // Recherche une préférence par son statut d'acceptation
-    public function findByAccept(bool $isAccepted): array
-    {
-        $cursor = $this->collection->find(['is_accepted' => $isAccepted]);
+        $cursor = $this->collection->find(['idRidesharing' => $idRidesharing]);
         $out = [];
         foreach ($cursor as $doc) {
             $out[] = $this->toModel($doc);
