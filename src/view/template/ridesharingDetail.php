@@ -47,8 +47,8 @@
     <div class='participationInfo'>
         <form action="/participate" method='POST' class='seatForm' id="reservationForm">
             <div class='participationCard'>
-                <div class='ridesharingPrice'>
-                    <p><span class='robotoBold'><?=$ride->getPricePerSeat()?> </span>Crédits /places</p>
+                <div class='ridesharingPrice' id="ridesharingPrice" data-price="<?=$ride->getPricePerSeat()?>">
+                    <p><span class='robotoBold' id="totalAmount"><?=$ride->getPricePerSeat()?> </span>Crédits /places</p>
                 </div>
                 <label for="nbSeat">Veuillez choisir le nombre de siège désiré :</label>
                 <input type="number" name="nbSeats" id="nbSeats" value="1" max='6' placeholder="Nombre de place">

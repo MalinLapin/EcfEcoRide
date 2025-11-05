@@ -13,6 +13,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     })
 
+    // Affichage du prix selon le nombre de place.
 
+    const nbSeats = document.getElementById('nbSeats');
+    const pricePerSeat = document.getElementById('ridesharingPrice').dataset.price;
+    console.log(pricePerSeat);
+    const totalAmount = document.getElementById('totalAmount');
+
+    function totalPrice() {
+        totalAmount.textContent = pricePerSeat * nbSeats.value;
+    }
+
+    nbSeats.addEventListener('input', totalPrice);
 
 });
