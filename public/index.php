@@ -41,6 +41,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
     $r->addRoute('POST', '/createRidesharing', [App\controller\RidesharingController::class, 'createRidesharing']);
     $r->addRoute('POST', '/participate', [App\controller\ParticipateController::class, 'participateToRidesharing']);
     $r->addRoute('POST', '/cancelParticipation/{id:\d+}', [App\controller\ParticipateController::class, 'cancelParticipation']);
+    $r->addRoute('POST', '/letReview', [App\controller\ReviewController::class, 'letReview']);
 });
 
 // Traitement de la requête
