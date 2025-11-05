@@ -13,6 +13,7 @@ use App\repository\PreferenceRepo;
 use App\repository\ParticipateRepo;
 use App\repository\RidesharingRepo;
 use App\repository\CarRepo;
+use App\repository\BrandRepo;
 
 /**
  * Controler de base
@@ -31,7 +32,8 @@ abstract class BaseController
     protected ReviewRepo $reviewRepo;
     protected ParticipateRepo $participateRepo;
     protected MailService $mailService;
-    protected CarRepo $carRepo; 
+    protected CarRepo $carRepo;
+    protected BrandRepo $brandRepo;
 
     public function __construct()
     {
@@ -46,6 +48,7 @@ abstract class BaseController
         $this->participateRepo = new ParticipateRepo();
         $this->mailService = new MailService(); 
         $this->carRepo = new CarRepo(); 
+        $this->brandRepo = new BrandRepo(); 
     }
 
     /**

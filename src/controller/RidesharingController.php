@@ -518,10 +518,9 @@ class RidesharingController extends BaseController
         }catch(\Exception $e){
             http_response_code(500);
             echo json_encode([
-            'success' => false,
-            'message' => 'le changement de status du trajet n\'est pas effectuer.
-            '
-        ]);
+                'success' => false,
+                'message' => 'le changement de status du trajet n\'est pas effectuer.'
+            ]);
         exit;
         }
         

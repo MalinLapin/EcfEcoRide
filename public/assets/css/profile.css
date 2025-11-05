@@ -7,6 +7,7 @@
   margin-top: 30px;
 }
 
+/* -------------navBar------------------ */
 .navBarProfil {
   display: flex;
   justify-content: space-around;
@@ -35,6 +36,7 @@
   background-color: #90ee90;
 }
 
+/* -------------Espace Utilisateur------------------ */
 .userCard {
   background-color: #90ee90;
   border-radius: 5%;
@@ -56,6 +58,7 @@
   margin-top: 10px;
 }
 
+/* -------------Espace véhicule------------------ */
 .myCars {
   border-top: solid 1px black;
   padding-top: 20px;
@@ -90,6 +93,134 @@
   color: black;
 }
 
+/* -------------Modal d'ajout de voiture------------------ */
+.addCarModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.addCarModal.show {
+  display: flex;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+}
+
+.closeBtn:hover {
+  color: #000;
+}
+
+.modalContent h3 {
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+/* Form */
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.formGroup input,
+.formGroup select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: #27ae60;
+}
+
+/* Form Actions */
+.forActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.submitBtn,
+.cancelBtn {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.submitBtn {
+  background-color: #27ae60;
+  color: white;
+}
+
+.submitBtn:hover {
+  background-color: #229954;
+}
+
+.cancelBtn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.cancelBtn:hover {
+  background-color: #c0392b;
+}
+
+/* Error Message */
+.errorMessage {
+  display: none;
+  padding: 10px;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 5px;
+  color: #c33;
+  margin-top: 15px;
+}
+
+.errorMessage.show {
+  display: block;
+}
+
+/* -------------Proposer un trajet------------------ */
 .newRide {
   background-color: #27ae60;
   border: solid 1px black;
@@ -103,4 +234,23 @@
 
 .newRide a {
   color: black;
+}
+
+/* -------------Responsive------------------ */
+
+@media (max-width: 768px) {
+  .addCarModal .modalContent {
+    width: 95%;
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .addCarModal .form-actions {
+    flex-direction: column;
+  }
+
+  .addCarModal .btn-submit,
+  .addCarModal .btn-cancel {
+    width: 100%;
+  }
 }

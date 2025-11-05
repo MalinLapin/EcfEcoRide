@@ -222,7 +222,6 @@ class RidesharingRepo extends BaseRepoSql
                 {
                     $ridesharingData[$key] = $value;                    
                 }
-                var_dump($ridesharingData);
                 $ride = RidesharingModel::createAndHydrate($ridesharingData);
 
                 $ridesharingList [] = [

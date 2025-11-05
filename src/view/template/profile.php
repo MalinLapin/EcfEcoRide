@@ -57,11 +57,70 @@
             <?php endif; ?>
         </ul>
         <div class="addCarBtn">
-            <a href="/addCar">
+            <button id="openAddCarModal" class="addCarBtn robotoBold">
                 <span class="material-symbols-outlined">directions_car</span>
                 <span class="material-symbols-outlined">add</span>
-            </a>  
+            </button>  
         </div>        
+    </div>
+
+    <div id="modalAddCar" class="addCarModal">
+        <div class="modalContent">
+            <button id="closeModal" class="closeBtn" type="button">&times;</button>
+            <h3 class="montserratBold titleColor">Ajouter un véhicule</h3>
+
+            <form id="formAddCar" class="robotoRegular">
+
+                <div class="formGroup">
+                    <label for="brandId">Marque</label>
+                    <select id="brandId" name="brandId" required>
+                        <option value="">-- Choisir --</option>
+                        <?php foreach ($listBrand as $brand): ?>
+                            <option value="<?=$brand->getIdBrand()?>"><?=$brand->getLabel()?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="formGroup">
+                    <label for="model">Modèle</label>
+                    <input type="text" id="model" name="model" placeholder="Ex: Clio, 308..." required>
+                </div>
+
+                <div class="formGroup">
+                    <label for="registrationNumber">Plaque d'immatriculation</label>
+                    <input type="text" id="registrationNumber" name="registrationNumber" pattern="[A-Z]{2}-[0-9]{3}-[A-Z]{2}" placeholder="AB-123-CD" required>
+                </div>
+
+                <div class="formGroup">
+                    <label for="firstRegistration">Date de 1ère mise en circulation</label>
+                    <input type="date" id="firstRegistration" name="firstRegistration" required>
+                </div>
+
+                <div class="formGroup">
+                    <label for="energyType">Type d'énergie</label>
+                    <select id="energyType" name="energyType" required>
+                        <option value="">-- Choisir --</option>
+                        <option value="electric">Électrique</option>
+                        <option value="hybrid">Hybride</option>
+                        <option value="gpl">GPL</option>
+                        <option value="essence">Essence</option>
+                        <option value="diesel">Diesel</option>                
+                    </select>
+                </div>
+
+                <div class="formGroup">
+                    <label for="color">Couleur</label>
+                    <input type="text" id="color" name="color" placeholder="Ex: Blanc, Noir..." required>
+                </div>
+
+                <div class="forActions">
+                    <button type="submit" class="submitBtn robotoBold">Ajouter</button>
+                    <button type="button" id="cancelBtn" class="cancelBtn robotoBold">Annuler</button>
+                </div>
+
+                <div id="errorMsg" class="errorMessage"></div>
+            </form>
+        </div>
     </div>
 
     <div class='newRide'>
