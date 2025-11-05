@@ -2,6 +2,7 @@
 
 namespace App\model;
 
+use DateTime;
 use DateTimeImmutable;
 
 /**
@@ -27,6 +28,9 @@ class ReviewModel extends BaseModel
     private int $rating; // Note attribuée dans la revue, généralement entre 1 et 5.
     private DateTimeImmutable $createdAt; // Date de création de la revue.
     private StatusReview $statusReview; // Statut de la revue, défini par l'énumération StatusReview.
+    private ?int $reviewedBy; // Id de l'employer qui a validé ou rejeté la review
+    private ?DateTimeImmutable $reviewedAt; // Date de la validation ou du rejet
+    private ?string $reason = null; // La raison du refus, peut être null si avis accepté
     private int $idRedactor; // Identifiant de l'utilisateur qui a créé la revue.
     private int $idTarget; // Identifiant de l'utilisateur qui est la cible de la revue.
 
@@ -122,6 +126,44 @@ class ReviewModel extends BaseModel
     {
         $this->statusReview = $statusReview;
 
+        return $this;
+    }
+
+    public function getReviewedBy(): ?int
+    {
+        return $this->reviewedBy;
+    }
+
+    public function setReviewedBy(?int $reviewedBy): self
+    {
+        $this->reviewedBy = $reviewedBy;
+
+        return $this;
+    }
+
+    public function getReviewedAt(): ?DateTimeImmutable
+    {
+        return $this->reviewedAt;
+    }
+
+    public function setReviewedAt(?DateTimeImmutable $reviewedAt): self
+    {
+        $this->reviewedAt = $reviewedAt;
+
+        return $this;
+    }
+
+    public function getReason(): ?string
+    {
+        return $this->reason;
+    }
+
+    /**
+     * Set the value of idReview
+     */
+    public function setReason(?string $reason): self
+    {
+        $this->reason = $reason;
         return $this;
     }
 
