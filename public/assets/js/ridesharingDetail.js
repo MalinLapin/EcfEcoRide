@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const nbSeats = document.getElementById('nbSeats');
     const pricePerSeat = document.getElementById('ridesharingPrice').dataset.price;
-    console.log(pricePerSeat);
     const totalAmount = document.getElementById('totalAmount');
 
     function totalPrice() {

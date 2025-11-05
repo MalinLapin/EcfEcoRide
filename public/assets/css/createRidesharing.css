@@ -32,6 +32,15 @@
   margin-top: 20px;
 }
 
+.preferenceChoice {
+  margin-bottom: 5px;
+}
+
+.addPreferenceBtn {
+  margin-top: 10px;
+  background-color: #27ae60;
+}
+
 .errorsList {
   margin-left: 5px;
   padding-inline-start: 20px;

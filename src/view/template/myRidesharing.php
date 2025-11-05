@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="detailItem">
                                         <span class="material-symbols-outlined">payments</span>
-                                        <span class="robotoBold"><?=$ride->getPricePerSeat()?> crédits</span>
+                                        <span class="robotoBold"><?=$ride->getPricePerSeat()?> crédits / sièges</span>
                                     </div>
                                 </div>
                             </div>

@@ -49,10 +49,11 @@
                 </div>
                 <div class="preferenceDiv">
                     <label for="preferenceList">Lister vos préférences :</label>
-                    <div class="preferenceList">
-                        <input type="text" name="preferenceList" id="preferenceList" placeholder="Ex: non fumeur!">
+                    <div class="preferenceList" id="preferenceList">
                     </div>
-                    <button class="addPreferenceBtn"><span class="material-symbols-outlined">add</span></button>                    
+                    <button type="button" class="addPreferenceBtn" id="addPreferenceBtn">
+                        <span class="material-symbols-outlined">add</span>
+                    </button>                    
                 </div>
                 
                 <div class='errorsList'>

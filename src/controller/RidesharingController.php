@@ -226,6 +226,7 @@ class RidesharingController extends BaseController
         $this->render('createRidesharing', [
             'csrf_token' => $this->tokenManager->generateCsrfToken(),
             'pageCss' => 'createRidesharing',
+            'scriptJs'=> 'createRidesharing',
             'flashMessage' => $flashMessage,
             'listCar' => $listCar
         ]);       
@@ -311,12 +312,11 @@ class RidesharingController extends BaseController
         }
 
         // On retire les préférences du tableau envoyé par la vue si ce dernier en a renseigné
-        if(array_key_exists('preferenceList', $data)){
+        if($data['preferenceChoice']){
 
-            $preferenceList = array_intersect_key($data, array_flip(['preferenceList']));
+            $preferenceList = $data['preferenceChoice'];
+            unset($data['preferenceChoice']);
         }
-
-        
         
         // Il faut aussi retiré le token maintenant qu'il à été vérifier.
         unset($data['csrf_token']);
@@ -336,7 +336,6 @@ class RidesharingController extends BaseController
             $this->response->error('Une erreur est survenue lors de la création du covoiturage.', 500);
             return;
         }
-
 
         // Recupération des preferences défini par le conducteur.
         foreach ($preferenceList as $pref) 
@@ -365,7 +364,6 @@ class RidesharingController extends BaseController
             
         }
 
-        die();
         // Redirection vers la page de détails du covoiturage nouvellement créé
         $this->redirect("/myRidesharing");
     }
