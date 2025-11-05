@@ -100,6 +100,14 @@ class RidesharingController extends BaseController
             return;
         }
 
+        // On parcour le tableau $data pour supprimer les données vides.
+        foreach($data as $key =>$value){
+            if ($value === ''){
+                unset($data[$key]);
+            }
+            $data[$key] = strtolower($value);
+        }
+
         $listRidesharing = $this->ridesharingRepo->getRidesharingByParams($data);
         // Recherche des covoiturages en fonction des critères fournis
         if($listRidesharing === null)
