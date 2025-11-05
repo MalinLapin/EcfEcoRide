@@ -185,7 +185,7 @@ class RidesharingRepo extends BaseRepoSql
                     r.departure_city,
                     r.arrival_city,
                     r.price_per_seat,
-                    COALESCE(COUNT(DISTINCT p.id_participant), 0) AS nb_participants
+                    SUM(p.nb_seats) AS nb_participation
                     FROM {$this->tableName} r
                     LEFT JOIN participate p
                     ON p.id_ridesharing = r.id_ridesharing
@@ -222,6 +222,7 @@ class RidesharingRepo extends BaseRepoSql
                 {
                     $ridesharingData[$key] = $value;                    
                 }
+                var_dump($ridesharingData);
                 $ride = RidesharingModel::createAndHydrate($ridesharingData);
 
                 $ridesharingList [] = [

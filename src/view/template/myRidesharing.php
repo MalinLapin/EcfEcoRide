@@ -96,7 +96,7 @@
             <?php if (!empty($offeredRides)): ?>
                 <div class="ridesList">
                     <?php foreach ($offeredRides as $offeredRide):
-                        $ride = $offeredRide['ride']; ?>
+                        $ride = $offeredRide['ride'];?>
                         <div class="rideCard <?=$ride->getStatus()->value?>">
                             <div class="rideHeader">
                                 <div class="rideStatus">
@@ -130,7 +130,11 @@
                                 <div class="rideDetails">
                                     <div class="detailItem">
                                         <span class="material-symbols-outlined">group</span>
-                                        <span><?=$ride->getNbParticipant()?> places reservées</span>
+                                        <span><?php if($ride->getNbParticipation() != null):
+                                                echo $ride->getNbParticipation()?> places reservées 
+                                                <?php else: echo 0 ?> places reservées                                                
+                                            <?php endif;?>
+                                        </span>
                                     </div>
                                     <div class="detailItem">
                                         <span class="material-symbols-outlined">payments</span>

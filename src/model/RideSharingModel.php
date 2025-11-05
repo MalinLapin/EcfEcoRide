@@ -36,7 +36,7 @@ class RidesharingModel extends BaseModel
     private DateTimeImmutable $createdAt; //Date de création du covoiturage
 
     #[NotMapped]
-    private ?int $nbParticipant = 0; // N'est pas stocker en base de données.
+    private ?int $nbParticipation = 0; // N'est pas stocker en base de données.
     
 
     public function __construct(array $data = [])
@@ -279,19 +279,19 @@ class RidesharingModel extends BaseModel
     }
 
     /**
-     * Get the value of nbParticipant
+     * Get the value of nbParticipation
      */
-    public function getNbParticipant(): ?int
+    public function getNbParticipation(): ?int
     {
-        return $this->nbParticipant;
+        return $this->nbParticipation;
     }
 
     /**
-     * Set the value of nbParticipant
+     * Set the value of nbParticipation
      */
-    public function setNbParticipant(?int $nbParticipant): self
+    public function setNbParticipation(?int $nbParticipation): self
     {
-        $this->nbParticipant = $nbParticipant;
+        $this->nbParticipation = $nbParticipation;
 
         return $this;
     }
