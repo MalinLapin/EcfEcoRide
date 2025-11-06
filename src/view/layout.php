@@ -41,7 +41,7 @@
             <div class="headerContent">
                 <div class="headerSearch">
                     <a href="/search"><span class="material-symbols-outlined">search</span></a>
-                </div>
+                </div>                
                 <div class="headerLogo">
                     <a href="/"><img class="headerLogo" src="/assets/images/LogoSF.png"
                         alt="Logo de la plateforme EcoRide"></a>
@@ -54,15 +54,25 @@
                 </button>
                 <nav class="navMenu" id="navMenu">
                     <ul>
-                        <li><a href="/profile"><span class="material-symbols-outlined">person</span> Mon profil</a></li>
-                        <li><a href="/myRidesharing"><span class="material-symbols-outlined">directions_car</span> Mes trajets</a></li>
-                        <li><a href="/contact"><span class="material-symbols-outlined">mail</span>Contact</a></li>
-                        <li>
-                            <form method="POST" action="/logout">
-                                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
-                                <button type="submit"><span class="material-symbols-outlined">logout</span> Déconnexion</button>
-                            </form>
-                        </li>
+                        <?php if($_SESSION['role'] == 'employe'):?>
+                            <li><a href="/employeeSpace"><span class="material-symbols-outlined">work</span> Espace Employer</a></li>
+                            <li>
+                                <form method="POST" action="/logout">
+                                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+                                    <button type="submit"><span class="material-symbols-outlined">logout</span> Déconnexion</button>
+                                </form>
+                            </li>
+                        <?php else :?>
+                            <li><a href="/profile"><span class="material-symbols-outlined">person</span> Mon profil</a></li>
+                            <li><a href="/myRidesharing"><span class="material-symbols-outlined">directions_car</span> Mes trajets</a></li>
+                            <li><a href="/contact"><span class="material-symbols-outlined">mail</span>Contact</a></li>
+                            <li>
+                                <form method="POST" action="/logout">
+                                    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+                                    <button type="submit"><span class="material-symbols-outlined">logout</span> Déconnexion</button>
+                                </form>
+                            </li>
+                        <?php endif;?>
                     </ul>
                 </nav>
             <?php else: ?>

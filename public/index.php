@@ -19,17 +19,27 @@ session_start();
 
 // Définir des routes avec la bibliothèque FastRoute
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
+
+    /* --------------------Route gérer par HomeController----------------------------- */
     $r->addRoute('GET', '/', [App\controller\HomeController::class, 'index']);
     $r->addRoute('GET', '/mentionLegal', [App\controller\HomeController::class, 'mentionLegal']);
+
+    /* --------------------Route gérer par ProfileController----------------------------- */
     $r->addRoute('GET', '/profile', [App\controller\ProfileController::class, 'profile']);
     $r->addRoute('POST', '/addCar', [App\controller\ProfileController::class, 'addCar']);
+
+    /* --------------------Route gérer par ContactController----------------------------- */
     $r->addRoute('GET', '/contact', [App\controller\ContactController::class, 'showContact']);
     $r->addRoute('POST', '/contact', [App\controller\ContactController::class, 'handleSubmitEmail']);
+
+    /* --------------------Route gérer par AuthController----------------------------- */
     $r->addRoute('GET', '/login', [App\controller\AuthController::class, 'showLogin']);
     $r->addRoute('POST', '/login', [App\controller\AuthController::class, 'login']);
     $r->addRoute('GET', '/register', [App\controller\AuthController::class, 'showRegister']);
     $r->addRoute('POST', '/register', [App\controller\AuthController::class, 'register']);
-    $r->addRoute('POST', '/logout', [App\controller\AuthController::class, 'logout']);    
+    $r->addRoute('POST', '/logout', [App\controller\AuthController::class, 'logout']);
+    
+    /* --------------------Route gérer par RidesharingController----------------------------- */
     $r->addRoute('GET', '/search', [App\controller\RidesharingController::class, 'showSearchRidesharing']);    
     $r->addRoute('POST', '/search', [App\controller\RidesharingController::class, 'searchRidesharing']);    
     $r->addRoute('GET', '/ridesharingDetail/{id:\d+}', [App\controller\RidesharingController::class, 'showRidesharingDetail']);
@@ -39,9 +49,17 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
     $r->addRoute('POST', '/completeRide/{id:\d+}', [App\controller\RidesharingController::class, 'completeRide']);
     $r->addRoute('GET', '/showCreateRidesharing', [App\controller\RidesharingController::class, 'showCreateRidesharing']);
     $r->addRoute('POST', '/createRidesharing', [App\controller\RidesharingController::class, 'createRidesharing']);
+
+    /* --------------------Route gérer par ParticipateController----------------------------- */
     $r->addRoute('POST', '/participate', [App\controller\ParticipateController::class, 'participateToRidesharing']);
     $r->addRoute('POST', '/cancelParticipation/{id:\d+}', [App\controller\ParticipateController::class, 'cancelParticipation']);
+
+    /* --------------------Route gérer par ReviewController----------------------------- */
     $r->addRoute('POST', '/letReview', [App\controller\ReviewController::class, 'letReview']);
+
+    /* --------------------Route gérer par EmployeeController----------------------------- */
+    $r->addRoute('get', '/employeeSpace', [App\controller\EmployeeController::class, 'showEmployeeSpace']);
+
 });
 
 // Traitement de la requête

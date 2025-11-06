@@ -1,0 +1,618 @@
+/* ===== ESPACE EMPLOYÉ ===== */
+.employeeSpace {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* En-tête */
+.employeeHeader {
+  margin-bottom: 30px;
+}
+
+.employeeHeader h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.statsCards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.statCard {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.statCard .material-symbols-outlined {
+  font-size: 3rem;
+}
+
+.statCard.pending .material-symbols-outlined {
+  color: #f39c12;
+}
+
+.statCard.processed .material-symbols-outlined {
+  color: #27ae60;
+}
+
+.statInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.statValue {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.statLabel {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin: 0;
+}
+
+/* Container des avis */
+.reviewsContainer {
+  display: flex;
+  gap: 20px;
+  min-height: 500px;
+}
+
+.reviewsList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Item d'avis */
+.reviewItem {
+  display: flex;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.reviewItem:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.reviewItem.pending {
+  border-left: 4px solid #f39c12;
+}
+
+.reviewItem.processed {
+  border-left: 4px solid #27ae60;
+  opacity: 0.8;
+}
+
+.reviewStatus {
+  width: 8px;
+  position: relative;
+}
+
+.statusIndicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.statusIndicator.pending {
+  background-color: #f39c12;
+  animation: pulse 2s infinite;
+}
+
+.statusIndicator.processed {
+  background-color: #27ae60;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.reviewContent {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Informations du trajet */
+.tripInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.tripDate {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.tripDate .material-symbols-outlined {
+  font-size: 1.2rem;
+}
+
+.tripRoute {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.routePoint {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1;
+}
+
+.routePoint .material-symbols-outlined {
+  color: #27ae60;
+  font-size: 1.3rem;
+  margin-top: 2px;
+}
+
+.locationInfo p {
+  margin: 0;
+}
+
+.locationInfo .robotoBold {
+  font-size: 1rem;
+}
+
+.addressDetail {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+  margin-top: 2px;
+}
+
+.routeArrow {
+  display: flex;
+  align-items: center;
+  color: #95a5a6;
+}
+
+.routeArrow .material-symbols-outlined {
+  font-size: 1.5rem;
+}
+
+/* Informations de l'avis */
+.reviewInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.driverInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.driverInfo .material-symbols-outlined {
+  color: #3498db;
+  font-size: 1.3rem;
+}
+
+.reviewRating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.reviewRating .star {
+  font-size: 1.3rem;
+  color: #ddd;
+}
+
+.reviewRating .star.filled {
+  color: #f39c12;
+}
+
+.ratingValue {
+  margin-left: 5px;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.reviewText {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+  border-left: 3px solid #3498db;
+}
+
+.reviewText p {
+  margin: 0;
+  line-height: 1.6;
+  color: #2c3e50;
+}
+
+.reviewMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.85rem;
+  color: #7f8c8d;
+}
+
+.reviewMeta span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.reviewMeta .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+.processedBy {
+  color: #27ae60;
+}
+
+/* Actions sur l'avis */
+.reviewActions {
+  display: flex;
+  gap: 10px;
+  padding-top: 15px;
+  border-top: 1px solid #ecf0f1;
+  flex-wrap: wrap;
+}
+
+.reviewActions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 150px;
+}
+
+.detailsBtn {
+  background-color: #3498db;
+  color: white;
+}
+
+.detailsBtn:hover {
+  background-color: #2980b9;
+}
+
+.validateBtn {
+  background-color: #27ae60;
+  color: white;
+}
+
+.validateBtn:hover {
+  background-color: #229954;
+}
+
+.rejectBtn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.rejectBtn:hover {
+  background-color: #c0392b;
+}
+
+.reviewActions button .material-symbols-outlined {
+  font-size: 1.2rem;
+}
+
+/* Panneau de détails */
+.detailsPanel {
+  position: sticky;
+  top: 20px;
+  width: 500px;
+  max-height: calc(100vh - 40px);
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.detailsPanel.active {
+  display: flex;
+}
+
+.detailsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #ecf0f1;
+  background-color: #f8f9fa;
+}
+
+.detailsHeader h3 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.closeDetailsBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.closeDetailsBtn:hover {
+  background-color: #e74c3c;
+  color: white;
+  border-radius: 50%;
+}
+
+.closeDetailsBtn .material-symbols-outlined {
+  font-size: 1.5rem;
+}
+
+.detailsContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Détails utilisateur */
+.userDetails h4 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ecf0f1;
+}
+
+.userDetails h4 .material-symbols-outlined {
+  font-size: 1.4rem;
+}
+
+.driverDetails h4 {
+  color: #3498db;
+}
+
+.passengerDetails h4 {
+  color: #9b59b6;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.infoItem.fullWidth {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.infoItem .label {
+  font-weight: 500;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.infoItem .value {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.infoItem .statusBadge {
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+.infoItem .statusBadge.active {
+  background-color: #d5f4e6;
+  color: #27ae60;
+}
+
+.infoItem .statusBadge.suspended {
+  background-color: #fadbd8;
+  color: #e74c3c;
+}
+
+/* Actions dans les détails */
+.detailsActions {
+  padding: 20px;
+  border-top: 1px solid #ecf0f1;
+  background-color: #f8f9fa;
+  display: flex;
+  gap: 10px;
+}
+
+.detailsActions button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.detailsActions .validateBtn {
+  background-color: #27ae60;
+  color: white;
+}
+
+.detailsActions .validateBtn:hover {
+  background-color: #229954;
+}
+
+.detailsActions .rejectBtn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.detailsActions .rejectBtn:hover {
+  background-color: #c0392b;
+}
+
+/* État vide */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px dashed #ddd;
+}
+
+.emptyState .material-symbols-outlined {
+  font-size: 5rem;
+  color: #95a5a6;
+  margin-bottom: 15px;
+}
+
+.emptyState p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Responsive - Tablette */
+@media (max-width: 1024px) {
+  .reviewsContainer {
+    flex-direction: column;
+  }
+
+  .detailsPanel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 500px;
+    height: 100vh;
+    max-height: 100vh;
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .detailsPanel.active {
+    transform: translateX(0);
+  }
+
+  /* Overlay pour fermer le panneau */
+  .detailsPanel.active::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .employeeSpace {
+    padding: 15px;
+  }
+
+  .employeeHeader h2 {
+    font-size: 1.5rem;
+  }
+
+  .statsCards {
+    flex-direction: column;
+  }
+
+  .statCard {
+    min-width: 100%;
+  }
+
+  .tripRoute {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .routeArrow {
+    transform: rotate(90deg);
+    margin: 5px 0;
+  }
+
+  .reviewActions {
+    flex-direction: column;
+  }
+
+  .reviewActions button {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .detailsPanel {
+    max-width: 100%;
+  }
+}

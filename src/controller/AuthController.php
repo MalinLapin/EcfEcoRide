@@ -100,12 +100,20 @@ class AuthController extends BaseController
             $_SESSION['idUser']=$user->getIdUser();
             $_SESSION['role']=$user->getRole()->value;
             $_SESSION['pseudo']=$user->getPseudo();
-            $_SESSION['photo']=$user->getPhoto();
 
+            // Si la personne est un user on ajoute sa photo et il est rediriger sur la page d'acceuil
+            if ($_SESSION['role'] == 'user'){
+                
+                $_SESSION['photo']=$user->getPhoto();
+                $this->redirect('/');
+                return;
+            }elseif ($_SESSION['role'] == 'employe'){
+                //Si c'est un employer il est rediriger directement sur son espace de travail.
+                $this->redirect('/employeeSpace');
+                return;
+            }
 
-            // Redirection vers la page d'acceuil
-            $this->redirect('/');
-            return;
+            
         }else{
             // Si l'authentification échoue, on ré-affiche le formulaire avec un message d'erreur
             $this->render('login', [
