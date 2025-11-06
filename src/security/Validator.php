@@ -112,7 +112,7 @@ class Validator
     }
 
     /**
-     * Nettoie les données en échappant les caractères spéciaux
+     * Nettoie les espaces inutiles dans les données. Les requêtes SQL sont protégées par PDO->prepare->bindValue->execute.
      *
      * @param array $data Les données à nettoyer
      * @return array Les données nettoyées
@@ -120,10 +120,22 @@ class Validator
     public function sanitize(array $data):array
     {
         $sanitized = [];
-        foreach ($data as $key => $value) 
-        {            
-            $sanitized[$key] = is_string($value) ? htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8') : $value;
+    
+        foreach ($data as $key => $value) {
+            // Si c'est une chaîne : trim uniquement
+            if (is_string($value)) {
+                $sanitized[$key] = trim($value);
+            }
+            // Si c'est un tableau : récursif
+            elseif (is_array($value)) {
+                $sanitized[$key] = $this->sanitize($value);
+            }
+            // Autres types : conserver tel quel
+            else {
+                $sanitized[$key] = $value;
+            }
         }
+        
         return $sanitized;
     }
 
