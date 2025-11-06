@@ -4,18 +4,7 @@ namespace App\model;
 
 use DateTime;
 use DateTimeImmutable;
-
-/**
- * Enumération pour représenter les différents statuts d'une revue.
- * Cette énumération permet de définir clairement les états possibles d'une revue,
- * ce qui aide à éviter les erreurs de typage et de logique dans le code.
- */
-enum StatusReview: string
-{
-    case pending = 'pending'; // La revue est en attente de traitement.
-    case approved = 'approved'; // La revue a été approuvée.
-    case rejected = 'rejected'; // La revue a été rejetée.
-}
+use App\model\StatusReview;
 
 /**
  * Fichier contenant notre classe ReviewModel qui étend la classe BaseModel.
@@ -23,7 +12,7 @@ enum StatusReview: string
  */
 class ReviewModel extends BaseModel
 {
-    private ?string $idReview = null; // Identifiant de l'avis. En string car l'id en MongoDb est un ObjectId
+    private ?string $id = null; // Identifiant de l'avis. En string car l'id en MongoDb est un ObjectId
     private string $comment; // Contenu de la revue.
     private int $rating; // Note attribuée dans la revue, généralement entre 1 et 5.
     private DateTimeImmutable $createdAt; // Date de création de la revue.
@@ -42,17 +31,17 @@ class ReviewModel extends BaseModel
     /**
      * Get the value of idReview
      */
-    public function getIdReview(): string
+    public function getId(): string
     {
-        return $this->idReview;
+        return $this->id;
     }
 
     /**
      * Set the value of idReview
      */
-    public function setIdReview(string $idReview): self
+    public function setId(string $id): self
     {
-        $this->idReview = $idReview;
+        $this->id = $id;
 
         return $this;
     }

@@ -61,10 +61,8 @@ class ReviewController extends BaseController
                 ->setIdRedactor($_SESSION['idUser'])
                 ->setIdTarget($data['idDriver']);
 
-        $this->reviewRepo->create($review);
-
         try{
-            $isCreated = $this->reviewRepo->create($review);
+            $this->reviewRepo->create($review);
         }catch(\Exception){
             http_response_code(500);
             echo json_encode([

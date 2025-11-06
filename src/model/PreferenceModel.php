@@ -8,7 +8,7 @@ namespace App\model;
  */
 class PreferenceModel extends BaseModel
 {
-    private ?string $idPreference = null; // Identifiant des preferences. En string car l'id en MongoDb est un ObjectId
+    private ?string $id = null; // Identifiant des preferences. En string car l'id en MongoDb est un ObjectId
     private string $label; // Label de la préférence.    
     private int $idRidesharing; // Identifiant du trajet associé.
 
@@ -21,17 +21,17 @@ class PreferenceModel extends BaseModel
     /**
      * Get the value of idPreference
      */
-    public function getIdPreference(): string
+    public function getId(): string
     {
-        return $this->idPreference;
+        return $this->id;
     }
 
     /**
      * Set the value of idPreference
      */
-    public function setIdPreference(string $idPreference): self
+    public function setId(string $id): self
     {
-        $this->idPreference = $idPreference;
+        $this->id = $id;
 
         return $this;
     }
