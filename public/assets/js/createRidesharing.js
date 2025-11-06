@@ -5,7 +5,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const preferenceList = document.getElementById('preferenceList');
 
 
-    addPreferenceBtn.addEventListener('click', function () {
+    addPreferenceBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        const currentInputs = preferenceList.querySelectorAll('.preferenceChoice');
+
+        if (currentInputs.length >= 4) {
+            alert(`Maximum 4 préférences autorisées`, 'warning');
+            return;
+        }
+
         let newInpute = document.createElement("input");
         newInpute.type = "text";
         newInpute.name = "preferenceChoice[]";
