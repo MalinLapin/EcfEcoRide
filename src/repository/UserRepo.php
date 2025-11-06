@@ -19,7 +19,7 @@ class UserRepo extends BaseRepoSql
     {
         $query = "SELECT * FROM {$this->tableName} WHERE pseudo = :pseudo";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(':pseudo', $pseudo);
+        $stmt->bindValue(':pseudo', $pseudo , \PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetch(\PDO::FETCH_ASSOC);
         if ($data) {
@@ -40,7 +40,7 @@ class UserRepo extends BaseRepoSql
     {
         $query = "SELECT * FROM {$this->tableName} WHERE email = :email";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(':email', $email);
+        $stmt->bindValue(':email', $email, \PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetch(\PDO::FETCH_ASSOC);
         if ($data) {

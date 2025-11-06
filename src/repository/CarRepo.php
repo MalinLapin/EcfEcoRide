@@ -21,7 +21,7 @@ class CarRepo extends BaseRepoSql
                     WHERE u.id_user = :id_user";
 
         $stmt = $this->pdo->prepare($query);
-        $stmt -> bindValue(':id_user', $idUser);
+        $stmt -> bindValue(':id_user', $idUser,\PDO::PARAM_INT);
         $stmt -> execute();
 
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);

@@ -207,7 +207,7 @@ class RidesharingRepo extends BaseRepoSql
                     r.departure_date ASC";
 
         $stmt = $this->pdo->prepare($query);
-        $stmt -> bindValue(':id_driver', $idDriver);
+        $stmt -> bindValue(':id_driver', $idDriver,\PDO::PARAM_INT);
         $stmt -> execute();
 
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -247,7 +247,7 @@ class RidesharingRepo extends BaseRepoSql
             AND status = 'ongoing'";
     
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':id_ridesharing', $rideId);
+        $stmt->bindValue(':id_ridesharing', $rideId, \PDO::PARAM_INT);
         
         $stmt->execute();
         
@@ -268,7 +268,7 @@ class RidesharingRepo extends BaseRepoSql
         WHERE id_ridesharing = :id_ridesharing 
         AND status = 'pending'";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':id_ridesharing', $rideId);
+        $stmt->bindValue(':id_ridesharing', $rideId,\PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->rowCount() > 0 ;
@@ -287,7 +287,7 @@ class RidesharingRepo extends BaseRepoSql
                 WHERE id_ridesharing = :id_ridesharing 
                 AND status = 'pending'";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':id_ridesharing', $rideId);
+        $stmt->bindValue(':id_ridesharing', $rideId , \PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->rowCount() > 0 ;

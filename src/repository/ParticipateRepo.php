@@ -46,7 +46,7 @@ class ParticipateRepo extends BaseRepoSql
                     r.departure_date ASC";
 
         $stmt = $this->pdo->prepare($query);
-        $stmt -> bindValue(':id_participant', $idUser);
+        $stmt -> bindValue(':id_participant', $idUser,\PDO::PARAM_INT);
         
         $stmt -> execute();
         
@@ -95,7 +95,7 @@ class ParticipateRepo extends BaseRepoSql
                     WHERE p.id_participant = :id_participant";
 
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(':id_participant', $idParticipant);
+        $stmt->bindValue(':id_participant', $idParticipant,\PDO::PARAM_INT);
         $stmt->execute();
 
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -118,8 +118,8 @@ class ParticipateRepo extends BaseRepoSql
     {
         $query = "UPDATE {$this->tableName} SET confirmed = TRUE WHERE id_participant = :id_participate AND id_ridesharing = :id_ridesharing AND confirmed = 0";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(':id_participate', $userId);
-        $stmt->bindValue(':id_ridesharing', $rideId);
+        $stmt->bindValue(':id_participate', $userId,\PDO::PARAM_INT);
+        $stmt->bindValue(':id_ridesharing', $rideId,\PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->rowCount() === 1; // Retourne true uniquement si une ligne a été affectée
     }
@@ -134,8 +134,8 @@ class ParticipateRepo extends BaseRepoSql
     {
         $query = "UPDATE user SET credit_balance = credit_balance - :amount WHERE id_user = :id_user AND credit_balance >= :amount";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(':amount', $amount);
-        $stmt->bindValue(':id_user', $idUser);
+        $stmt->bindValue(':amount', $amount,\PDO::PARAM_INT);
+        $stmt->bindValue(':id_user', $idUser,\PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->rowCount() === 1; // Retourne true uniquement si une ligne a été affectée
     }
@@ -153,10 +153,9 @@ class ParticipateRepo extends BaseRepoSql
                 WHERE id_ridesharing = :id_ridesharing ";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            'nbSeats' => $nbSeats,
-            'id_ridesharing' => $rideId
-        ]);
+        $stmt->bindValue(':nbSeats', $nbSeats);
+        $stmt->bindValue(':id_ridesharing', $rideId, \PDO::PARAM_INT);
+        $stmt->execute();
         return $stmt->rowCount() === 1;
     }
 
@@ -173,10 +172,9 @@ class ParticipateRepo extends BaseRepoSql
                 WHERE id_ridesharing = :id_ridesharing 
                 AND available_seats >= :nbSeats"; // On ne peut pas descendre en dessous de zéro place disponible.
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            'nbSeats' => $nbSeats,
-            'id_ridesharing' => $rideId
-        ]);
+        $stmt->bindValue(':nbSeats',$nbSeats);
+        $stmt->bindValue(':id_ridesharing',$rideId, \PDO::PARAM_INT);
+        $stmt->execute();
         return $stmt->rowCount() === 1;
     }
 
@@ -192,7 +190,7 @@ class ParticipateRepo extends BaseRepoSql
                     JOIN {$this->tableName} p ON u.id_user = p.id_participant
                     WHERE p.id_ridesharing = :id_ridesharing ";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(':id_ridesharing', $rideId);
+        $stmt->bindValue(':id_ridesharing', $rideId, \PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -204,6 +202,11 @@ class ParticipateRepo extends BaseRepoSql
             return $participants;
         }
         return [];
+    }
+
+    public function findDetailDriverAndPassangerByParticipation()
+    {
+
     }
 
     
