@@ -58,7 +58,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
     $r->addRoute('POST', '/letReview', [App\controller\ReviewController::class, 'letReview']);
 
     /* --------------------Route gérer par EmployeeController----------------------------- */
-    $r->addRoute('get', '/employeeSpace', [App\controller\EmployeeController::class, 'showEmployeeSpace']);
+    $r->addRoute('GET', '/employeeSpace', [App\controller\EmployeeController::class, 'showEmployeeSpace']);
 
 });
 
