@@ -89,12 +89,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const charCount = document.querySelector('.charCount');
 
     let idDriver = null;
+    let idParticipation = null;
 
     // Ouvrir le modal d'avis
     const letReviewBtns = document.querySelectorAll('.letReviewBtn');
     letReviewBtns.forEach(btn => {
         btn.addEventListener('click', function () {
             idDriver = this.dataset.driverId;
+            idParticipation = this.dataset.participateId;
             reviewModal.classList.add('show');
             resetReviewForm();
         });
@@ -139,11 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const rating = parseInt(ratingInput.value);
         const comment = commentTextarea.value.trim();
-        const commentSanitized = comment.replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#x27;')
-            .replace(/\//g, '&#x2F;');
+
 
         // Validation
         if (rating === 0) {
@@ -151,17 +149,17 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (commentSanitized.length > 500) {
+        if (comment.length > 500) {
             showReviewError('Le commentaire ne peut pas dépasser 500 caractères');
             return;
         }
 
         // Envoi de l'avis
-        submitReview(idDriver, rating, commentSanitized);
+        submitReview(idDriver, idParticipation, rating, comment);
     });
 
     // Fonction pour envoyer l'avis
-    function submitReview(idDriver, rating, comment) {
+    function submitReview(idDriver, idParticipation, rating, comment) {
         fetch('/letReview', {
             method: 'POST',
             headers: {
@@ -170,9 +168,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 'typeRequete': 'ajax'
             },
             body: JSON.stringify({
-                idDriver: idDriver,
-                rating: rating,
-                comment: comment
+                idDriver: parseInt(idDriver),
+                idParticipation: parseInt(idParticipation),
+                rating: parseInt(rating),
+                comment: comment,
             })
         })
             .then(response => response.json())
