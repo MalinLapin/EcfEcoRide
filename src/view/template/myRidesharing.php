@@ -218,8 +218,6 @@
                 <button type="submit" class="submitReviewBtn robotoBold">Envoyer</button>
                 <button type="button" id="cancelReviewBtn" class="cancelReviewBtn robotoBold">Annuler</button>
             </div>
-
-            <div id="reviewErrorMsg" class="errorMessage"></div>
         </form>
     </div>
 </div>
