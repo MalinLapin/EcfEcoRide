@@ -122,7 +122,8 @@ class AuthController extends BaseController
     {
         $this->render('register', [
             'csrf_token'=>$this->tokenManager->generateCsrfToken(),
-            'pageCss'=>'register'
+            'pageCss'=>'register',
+            'scriptJs'=>'register'
         ]);
     }
 

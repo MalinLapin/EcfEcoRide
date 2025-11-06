@@ -14,4 +14,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         preferenceList.appendChild(newInpute);
     });
+
+    const pricePerSeat = document.getElementById('pricePerSeat');
+    console.log("Élément trouvé ?", pricePerSeat);
+
+    const message = "Afin de garantir le bon fonctionnement de la plateforme, veuillez prendre en compte que 2 crédits/passager seront prélevé par Ecoride.";
+
+    function showMessage() {
+        alert(message);
+    }
+
+    pricePerSeat.addEventListener('click', showMessage);
 });
