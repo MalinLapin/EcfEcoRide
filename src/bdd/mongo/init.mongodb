@@ -15,6 +15,7 @@ db.createCollection("review", {
             properties: {
                 idTarget: { bsonType: "int" },
                 idRedactor: { bsonType: "int" },
+                idParticipation: { bsonType: "int" },
                 statusReview: { enum: ["pending", "approved", "rejected"] },
                 rating: { bsonType: "int", minimum: 1, maximum: 5 },
                 comment: { bsonType: "string", maxLength: 1000 },
@@ -83,47 +84,6 @@ dbEco.review.insertMany([
         reviewedBy: 5,      // L'employé qui a validé (milkauny)
         reviewedAt: new Date("2024-01-17"),
         reason: "contenu inappropriés"
-    },
-    {
-        idTarget: 2,        // L'utilisateur évalué (doit exister en SQL)
-        idRedactor: 4,      // L'auteur de l'avis (doit exister en SQL)
-        statusReview: "pending",
-        rating: 4,
-        comment: "Avis 3",
-        createdAt: new Date("2024-01-15")
-    },
-    {
-        idTarget: 2,        // L'utilisateur évalué (doit exister en SQL)
-        idRedactor: 4,      // L'auteur de l'avis (doit exister en SQL)
-        statusReview: "approved",
-        rating: 2,
-        comment: "Avis 4",
-        createdAt: new Date("2024-01-15"),
-        reviewedBy: 5,      // L'employé qui a validé (milkauny)
-        reviewedAt: new Date("2024-01-16"),
-        reason: null
-    },
-    {
-        idTarget: 2,        // L'utilisateur évalué (doit exister en SQL)
-        idRedactor: 1,      // L'auteur de l'avis (doit exister en SQL)
-        statusReview: "approved",
-        rating: 4,
-        comment: "Avis 5",
-        createdAt: new Date("2024-01-15"),
-        reviewedBy: 5,      // L'employé qui a validé (milkauny)
-        reviewedAt: new Date("2024-01-16"),
-        reason: null
-    },
-    {
-        idTarget: 3,        // L'utilisateur évalué (doit exister en SQL)
-        idRedactor: 2,      // L'auteur de l'avis (doit exister en SQL)
-        statusReview: "approved",
-        rating: 2,
-        comment: "Avis 6",
-        createdAt: new Date("2024-01-15"),
-        reviewedBy: 5,      // L'employé qui a validé (milkauny)
-        reviewedAt: new Date("2024-01-16"),
-        reason: null
     },
 ]);
 
