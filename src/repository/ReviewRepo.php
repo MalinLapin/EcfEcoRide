@@ -3,6 +3,7 @@
 namespace App\repository;
 
 use App\model\ReviewModel;
+use App\model\StatusReview;
 
 class ReviewRepo extends BaseRepoMongo
 {
@@ -43,13 +44,14 @@ class ReviewRepo extends BaseRepoMongo
     }
 
     // Recherche un avis par son statut
-    public function findByStatus(string $status): array
+    public function findByStatus(StatusReview $status): array
     {
-        $cursor = $this->collection->find(['status_review' => $status]);
+        $cursor = $this->collection->find(['statusReview' => $status]);
         $out = [];
         foreach ($cursor as $doc) {
             $out[] = $this->toModel($doc);
         }
+        var_dump($out);
         return $out;
     }
 
@@ -57,8 +59,8 @@ class ReviewRepo extends BaseRepoMongo
     public function getAverageRatingByIdUser(int $id): float
     {
         // On selectionne ques les avis approved par les employés
-        $filters = ['id_target' => $id,
-                    'status_review'=> 'approved'];
+        $filters = ['idTarget' => $id,
+                    'statuReview'=> 'approved'];
         
         // On recherche dans notre collection les documents qui correspondent.
         $cursor = $this->collection->find([$filters]);
