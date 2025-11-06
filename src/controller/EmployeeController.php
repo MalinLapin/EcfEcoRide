@@ -2,7 +2,7 @@
 
 namespace App\controller;
 
-use App\model\ReviewModel;
+
 use App\model\StatusReview;
 
 class EmployeeController extends BaseController
@@ -12,16 +12,27 @@ class EmployeeController extends BaseController
         parent::__construct();
     }
 
+
     public function showEmployeeSpace():void
     {
 
-        $listReviewPending = $this->reviewRepo->findByStatus(StatusReview::pending);        
+        // On recherche les avis qui ont sont en attente de validation.
+        $listReviewPending = $this->reviewRepo->findByStatus(StatusReview::pending);
+
+        // On compte le total d'avis en attente.
+        $countReview = count($listReviewPending);
 
         $this->render('employeeSpace', [
             'csrf_token'=>$this->tokenManager->generateCsrfToken(),
             'pageCss'=>'employeeSpace',
             'scriptJs'=>'employeeSpace',
-            'listReviewPending'=>$listReviewPending
+            'listReviewPending'=>$listReviewPending,
+            'countReview' => $countReview
         ]);
+    }
+
+    public function showDetailReview(string $id):void
+    {
+        
     }
 }
