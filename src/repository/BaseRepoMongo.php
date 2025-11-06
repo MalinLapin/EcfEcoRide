@@ -1,5 +1,7 @@
 <?php
-// src/repository/MongoBaseRepo.php
+
+
+
 namespace App\repository;
 
 use Exception;
@@ -7,6 +9,7 @@ use MongoDB\Client;
 use MongoDB\Collection;
 use App\config\Database;
 use App\model\BaseModel;
+use App\model\StatusReview;
 use MongoDB\BSON\ObjectId;
 use MongoDB\BSON\UTCDateTime;
 use MongoDB\Model\BSONDocument;
@@ -116,8 +119,8 @@ abstract class BaseRepoMongo
             }
         }
         
-        return $data;
-}
+        return $data;   
+    }   
 
     /**
      * UPDATE: met à jour un document existant par son identifiant.
@@ -211,6 +214,8 @@ abstract class BaseRepoMongo
                 $doc[$k] = \DateTimeImmutable::createFromInterface($v->toDateTime());
             } elseif ($v instanceof ObjectId) {
                 $doc[$k] = (string) $v;
+            } elseif ($k === 'statusReview'){
+                $doc[$k] = StatusReview::from($v);
             }
         }
 
