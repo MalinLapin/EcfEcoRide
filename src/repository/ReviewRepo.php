@@ -4,6 +4,10 @@ namespace App\repository;
 
 use App\model\ReviewModel;
 use App\model\StatusReview;
+use DateTimeImmutable;
+use DateTimeZone;
+use MongoDB\Operation\CountDocuments;
+use MongoDB\BSON\UTCDateTime; 
 
 class ReviewRepo extends BaseRepoMongo
 {
@@ -27,11 +31,11 @@ class ReviewRepo extends BaseRepoMongo
     public function getAverageRatingByIdUser(int $id): float
     {
         // On selectionne ques les avis approved par les employés
-        $filters = ['idTarget' => $id,
+        $filters = ['idTarget' => (int)$id,
                     'statuReview'=> 'approved'];
         
         // On recherche dans notre collection les documents qui correspondent.
-        $cursor = $this->collection->find([$filters]);
+        $cursor = $this->collection->find($filters);
 
         $out = [];
 
@@ -48,16 +52,24 @@ class ReviewRepo extends BaseRepoMongo
         return $totalRating/count($out[]);
     }
 
-    public function getDetailByIdReview(string $idRevew):array
+    public function findReviewApprovedByDay (DateTimeImmutable $date):int
     {
-        $cursor = $this->collection->find(['_id' => $idRevew]);
-        $out = [];
-        foreach ($cursor as $doc) {
-            $out[] = $this->toModel($doc);
-        }
+        // on convertie déjà le propriété pour récupere le début de journée.
+        $startdate = $date->setTimezone(new DateTimeZone("UTC"))->setTime(0, 0, 0);
+        // on recherche la date du lendemain
+        $endDate = $$startdate->modify('+1 day');
 
-        
+        // on génere le filtre de recherche.
+        $filter = ['statusReview'=>'approved', // uniquement les avis approuvés
+                    // on défini la date d'approbation en donnant une fourchette de début et de fin.
+                    'reviewedAt'=>[
+                        '$gte'=>new UTCDateTime($startdate->getTimestamp() * 1000), 
+                        '$lt'=>new UTCDateTime($endDate->getTimestamp() * 1000)
+                    ]];
 
+         // On compte ensuite les documents correspondant au filtre dans notre collection.
+        $count = $this->collection->countDocuments($filter); 
+
+        return $count;
     }
-
 }
