@@ -48,8 +48,8 @@ class ReviewRepo extends BaseRepoMongo
             $out[]=$review;
         }
 
-        // On divise ensuite par le nombre d'avis.
-        return $totalRating/count($out[]);
+        // on retourne le total / le nombre d'avis arrondi à un chiffre apres la virgule.
+        return round($totalRating/count($out[]) , 1);
     }
 
     public function findReviewApprovedByDay (DateTimeImmutable $date):int

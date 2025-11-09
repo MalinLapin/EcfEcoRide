@@ -5,7 +5,6 @@
 namespace App\repository;
 
 use Exception;
-use MongoDB\Client;
 use MongoDB\Collection;
 use App\config\Database;
 use App\model\BaseModel;
@@ -14,7 +13,6 @@ use MongoDB\BSON\ObjectId;
 use MongoDB\BSON\UTCDateTime;
 use MongoDB\Model\BSONDocument;
 use MongoDB\Database as MongoDatabase;
-use MongoDB\Driver\Exception\BulkWriteException;
 
 abstract class BaseRepoMongo
 {
@@ -38,13 +36,13 @@ abstract class BaseRepoMongo
         // Vérifie que le nom de la collection est défini
         // et que la collection est soit passée en paramètre, soit créée à partir de la base de données.
         if (!isset($this->collectionName) || $this->collectionName === '') {
-            throw new \LogicException('collectionName non défini dans ' . static::class);
+            throw new \Exception('collectionName non défini dans ' . static::class);
         }
         
         // Si la collection est déjà passée en paramètre, on l'utilise directement.
         // Sinon, on la crée à partir de la base de données.
         if (!isset($this->collectionName) || $this->collectionName === '') {
-            throw new \LogicException('collectionName non défini dans ' . static::class);
+            throw new \Exception('collectionName non défini dans ' . static::class);
         }
 
         // Si la collection est passée en paramètre, on l'utilise.
@@ -55,7 +53,7 @@ abstract class BaseRepoMongo
         // Vérifie que la collection est bien une instance de MongoDB\Collection
         // et l'assigne à la propriété $collection.
         if (!$collection instanceof Collection) {
-            throw new \RuntimeException('La collection doit être une instance de MongoDB\Collection');
+            throw new \Exception('La collection doit être une instance de MongoDB\Collection');
         }
         // Si la collection est une instance de Collection, on l'assigne à la propriété $collection.
         // Sinon, on lève une exception.
@@ -67,7 +65,7 @@ abstract class BaseRepoMongo
 
         $db = $db ?? Database::getInstanceMongo(); // doit retourner MongoDB\Database
         if (!$db instanceof MongoDatabase) {
-            throw new \RuntimeException('Database::getInstanceMongo() doit retourner MongoDB\Database');
+            throw new \Exception('Database::getInstanceMongo() doit retourner MongoDB\Database');
         }
 
         $this->collection = $db->selectCollection($this->collectionName);
