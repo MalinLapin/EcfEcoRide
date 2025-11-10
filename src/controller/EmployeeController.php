@@ -19,6 +19,14 @@ class EmployeeController extends BaseController
         // On recherche les avis qui ont sont en attente de validation.
         $listReviewPending = $this->reviewRepo->findByStatus(StatusReview::pending);
 
+        // on doit associer le trajet a chaque avis afin d'avoir les infos telle que ville de départ/arrivé et autre.
+        foreach($listReviewPending as $review){
+            $participate = $this->participateRepo->findById($review->getIdParticipation());
+            $ride = $this ->ridesharingRepo->findById($participate->getIdRidesharing());
+
+            $review[] = $ride;
+        }
+
         // On compte le total d'avis en attente.
         $countReview = count($listReviewPending);
 
