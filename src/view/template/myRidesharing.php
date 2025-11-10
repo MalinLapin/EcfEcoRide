@@ -85,7 +85,7 @@
                             <?php if ($ride->getStatus()->value == 'completed'):?>
                                 <div class="rideActions">
                                     <button class="letReviewBtn robotoBold" 
-                                            data-ride-id="<?=$ride->getIdRidesharing()?>" 
+                                            data-participate-id="<?=$participation->getIdParticipate()?>" 
                                             data-driver-id="<?=$ride->getIdDriver()?>">
                                         <span class="material-symbols-outlined">rate_review</span>
                                         <span>Laisser un avis</span>
