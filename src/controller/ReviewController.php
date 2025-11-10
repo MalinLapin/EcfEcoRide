@@ -53,14 +53,14 @@ class ReviewController extends BaseController
         $data = $this->validator->sanitize($data);
 
         $review = new ReviewModel();
-
-        $review->setComment($data['comment'])
+        
+        $review ->setIdParticipation($data['idParticipation'])
+                ->setComment($data['comment'])
                 ->setRating($data['rating'])
                 ->setCreatedAt(new DateTimeImmutable())
                 ->setStatusReview(StatusReview::pending)
                 ->setIdRedactor($_SESSION['idUser'])
                 ->setIdTarget($data['idDriver']);
-
         try{
             $this->reviewRepo->create($review);
         }catch(\Exception){
@@ -119,8 +119,10 @@ class ReviewController extends BaseController
         return $data;       
     }
 
-    public function countReviewValidateByDay():int
+    public function countReviewValidateByDay(DateTimeImmutable $date):int
     {
-        $listeReviewValidate = $this->reviewRepo->findByStatus(StatusReview::approved);
+        // On va rechercher le nombre d'avis valider en fonction d'une date.
+        $listeReviewValidate = $this->reviewRepo->countReviewApprovedByDay($date);
+        return (int)$listeReviewValidate;
     }
 }
