@@ -13,6 +13,7 @@ use App\model\StatusReview;
 class ReviewModel extends BaseModel
 {
     private ?string $id = null; // Identifiant de l'avis. En string car l'id en MongoDb est un ObjectId
+    private int $idParticipation; // Identifiant de la participation en Sql afin de retoruver les infos de trajet.
     private string $comment; // Contenu de la revue.
     private int $rating; // Note attribuée dans la revue, généralement entre 1 et 5.
     private DateTimeImmutable $createdAt; // Date de création de la revue.
@@ -188,6 +189,18 @@ class ReviewModel extends BaseModel
     public function setIdTarget(int $idTarget): self
     {
         $this->idTarget = $idTarget;
+
+        return $this;
+    }
+
+    public function getIdParticipation(): int
+    {
+        return $this->idParticipation;
+    }
+
+    public function setIdParticipation(int $idParticipation): self
+    {
+        $this->idParticipation = $idParticipation;
 
         return $this;
     }
