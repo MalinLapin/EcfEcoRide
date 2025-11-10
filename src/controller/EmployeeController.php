@@ -19,23 +19,36 @@ class EmployeeController extends BaseController
         // On recherche les avis qui ont sont en attente de validation.
         $listReviewPending = $this->reviewRepo->findByStatus(StatusReview::pending);
 
-        // on doit associer le trajet a chaque avis afin d'avoir les infos telle que ville de départ/arrivé et autre.
-        foreach($listReviewPending as $review){
-            $participate = $this->participateRepo->findById($review->getIdParticipation());
-            $ride = $this ->ridesharingRepo->findById($participate->getIdRidesharing());
+        $reviewsInfo=[];
 
-            $review[] = $ride;
+        // Pour chaque avis nous allons rechercher toutes les infos
+        foreach($listReviewPending as $review){
+
+            // Tout d'abord la participation
+            $participate = $this->participateRepo->findById($review->getIdParticipation());
+            // ensuite les infos du trajet
+            $ride = $this ->ridesharingRepo->findById($participate->getIdRidesharing());
+            // les infos du conducteur
+            $driver = $this->userRepo->findById($review->getIdTarget());
+            // pour finir les info du participant.
+            $passanger = $this->userRepo->findById($review->getIdRedactor());
+
+            $reviewsInfo[]=[
+                'review'=>$review,
+                'ride'=>$ride,
+                'driver'=>$driver,
+                'passanger'=>$passanger];
         }
 
         // On compte le total d'avis en attente.
-        $countReview = count($listReviewPending);
+        $countReviewPending = count($listReviewPending);
 
         $this->render('employeeSpace', [
             'csrf_token'=>$this->tokenManager->generateCsrfToken(),
             'pageCss'=>'employeeSpace',
             'scriptJs'=>'employeeSpace',
-            'listReviewPending'=>$listReviewPending,
-            'countReview' => $countReview
+            'reviewsInfo'=>$reviewsInfo,
+            'countReviewPending' => $countReviewPending
         ]);
     }
 }

@@ -23,7 +23,6 @@ class ReviewRepo extends BaseRepoMongo
         foreach ($cursor as $doc) {
             $out[] = $this->toModel($doc);
         }
-        var_dump($out);
         return $out;
     }
 
