@@ -52,7 +52,8 @@ class ReviewRepo extends BaseRepoMongo
         return round($totalRating/count($out[]) , 1);
     }
 
-    public function findReviewApprovedByDay (DateTimeImmutable $date):int
+    //
+    public function countReviewApprovedByDay (DateTimeImmutable $date):int
     {
         // on convertie déjà le propriété pour récupere le début de journée.
         $startdate = $date->setTimezone(new DateTimeZone("UTC"))->setTime(0, 0, 0);
