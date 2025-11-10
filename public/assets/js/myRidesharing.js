@@ -95,8 +95,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const letReviewBtns = document.querySelectorAll('.letReviewBtn');
     letReviewBtns.forEach(btn => {
         btn.addEventListener('click', function () {
-            idDriver = this.dataset.driverId;
-            idParticipation = this.dataset.participateId;
+
+            // On récupère les données du bouton
+            const idParticipation = this.dataset.participateId;
+            const idDriver = this.dataset.driverId;
+
+            // On stock dans le modal
+            reviewModal.dataset.idParticipation = idParticipation;
+            reviewModal.dataset.idDriver = idDriver;
+
             reviewModal.classList.add('show');
             resetReviewForm();
         });
@@ -141,6 +148,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const rating = parseInt(ratingInput.value);
         const comment = commentTextarea.value.trim();
+        const idDriver = reviewModal.dataset.idDriver;
+        const idParticipation = reviewModal.dataset.idParticipation;
 
 
         // Validation
