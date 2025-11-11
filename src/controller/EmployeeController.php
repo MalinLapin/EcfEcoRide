@@ -4,6 +4,7 @@ namespace App\controller;
 
 
 use App\model\StatusReview;
+use DateTimeImmutable;
 
 class EmployeeController extends BaseController
 {
@@ -48,7 +49,36 @@ class EmployeeController extends BaseController
             'pageCss'=>'employeeSpace',
             'scriptJs'=>'employeeSpace',
             'reviewsInfo'=>$reviewsInfo,
-            'countReviewPending' => $countReviewPending
+            'countReviewPending'=>$countReviewPending
         ]);
+    }
+
+    public function approvedReview ():void
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $idReview = $data['reviewId'];
+
+        $review = $this->reviewRepo->findById($idReview);
+        $review ->setStatusReview(StatusReview::approved)
+                ->setReviewedBy($_SESSION['idUser'])
+                ->setReviewedAt(new DateTimeImmutable());
+
+        try{
+            $this->reviewRepo->update($idReview, $review);
+        }catch(\Exception $e){
+            $this->logger->log('ERROR', 'Erreur lors de la mise à jour des places disponibles : ' . $e->getMessage());
+        }
+
+        http_response_code(200);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Avis approuver avec succès'
+        ]);
+        exit;
+    }
+
+    public function rejectReview():void
+    {
+
     }
 }
