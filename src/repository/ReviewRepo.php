@@ -26,6 +26,20 @@ class ReviewRepo extends BaseRepoMongo
         return $out;
     }
 
+    // Recherche un avis par chauffeur
+    public function findByTarget(int $id): array
+    {
+        $filters = ['idTarget' => $id,
+                    'statusReview'=> StatusReview::approved];
+
+        $cursor = $this->collection->find($filters);
+        $out = [];
+        foreach ($cursor as $doc) {
+            $out[] = $this->toModel($doc);
+        }
+        return $out;
+    }
+
     // Calcule la note moyenne d'un conducteur via les avis qui lui sont addresser
     public function getAverageRatingByIdUser(int $id): float
     {

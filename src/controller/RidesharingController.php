@@ -152,7 +152,7 @@ class RidesharingController extends BaseController
         $idDriver = $ridesharingDetails['ridesharing']->getIdDriver();
         
         // Récuperer les avis du conducteur, uniquement les avis approuver par les employers.
-        $listReview = $this->reviewRepo->findByTarget($idDriver, true);
+        $listReview = $this->reviewRepo->findByTarget($idDriver);
 
         $listReviewForView = [];
         
