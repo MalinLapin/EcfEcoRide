@@ -32,20 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
         closeModal();
     });
 
-    // Fermeture au clic en dehors du modal
-    modal.addEventListener('click', function (e) {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-
-    // Fermeture avec la touche Échap
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-            closeModal();
-        }
-    });
-
     // Fonction pour fermer le modal
     function closeModal() {
         modal.classList.remove('active');
@@ -101,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () {
             const card = this.closest('.reviewCard');
             const reviewId = card.querySelector('.reviewId').value;
-            approvedReview(reviewId, card);
+            approvedReview(currentReviewId, card);
         });
     });
 
@@ -109,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () {
             const card = this.closest('.reviewCard');
             const reviewId = card.querySelector('.reviewId').value;
-            rejectReview(reviewId, card);
+            rejectReview(currentReviewId, card);
         });
     });
 
@@ -117,14 +103,14 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('.btnValidateModal').addEventListener('click', function () {
         if (currentReviewId) {
             const card = document.querySelector(`[data-review-id="${currentReviewId}"]`);
-            handleReviewAction(currentReviewId, 'validate', card);
+            approvedReview(currentReviewId, card);
         }
     });
 
     document.querySelector('.btnRejectModal').addEventListener('click', function () {
         if (currentReviewId) {
             const card = document.querySelector(`[data-review-id="${currentReviewId}"]`);
-            handleReviewAction(currentReviewId, 'reject', card);
+            rejectReview(currentReviewId, card);
         }
     });
 
@@ -151,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'typeRequete': 'ajax'
             },
             body: JSON.stringify({
-                reviewId: parseInt(reviewId),
+                reviewId: currentReviewId,
             })
         })
             .then(response => response.json())
@@ -163,13 +149,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     setTimeout(() => {
 
                         // Mise à jour des statistiques
-                        updateStats(action);
+                        updateStats('approved');
 
                         // Vérification s'il reste des avis
                         checkIfEmpty();
 
                         // Message de succès
-                        alert(`Avis ${actionText} avec succès !`);
+                        alert(`Avis approuver avec succès !`);
                     }, 300);
                 } else {
                     // Erreur : on réactive les boutons et on affiche le message
@@ -187,9 +173,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function rejectReview(reviewId, cardElement) {
         // Confirmation de l'action
-        const reasonOfReject = 'Veuillez donner une raison à ce rejet.';
+        const reasonOfReject = prompt('Veuillez donner une raison à ce rejet.');
 
-        if (!prompt(reasonOfReject)) {
+        if (!reasonOfReject || reasonOfReject.trim() === '') {
+            alert('Le rejet nécessite une raison');
             return;
         }
 
@@ -205,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'typeRequete': 'ajax'
             },
             body: JSON.stringify({
-                reviewId: parseInt(reviewId),
+                reviewId: currentReviewId,
                 reasonOfReject: reasonOfReject
             })
         })
@@ -217,14 +204,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     setTimeout(() => {
 
-                        // Mise à jour des statistiques
-                        updateStats(action);
-
                         // Vérification s'il reste des avis
                         checkIfEmpty();
 
                         // Message de succès
-                        alert(`Avis ${actionText} avec succès !`);
+                        alert(`Avis rejeter avec succès !`);
                     }, 300);
                 } else {
                     // Erreur : on réactive les boutons et on affiche le message
