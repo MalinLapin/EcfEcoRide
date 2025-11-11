@@ -79,6 +79,29 @@ class EmployeeController extends BaseController
 
     public function rejectReview():void
     {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $idReview = $data['reviewId'];
+        $reasonOfReject = $data['reasonOfReject'];
 
+        $review = $this->reviewRepo->findById($idReview);
+
+        $review ->setStatusReview(StatusReview::rejected)
+                ->setReviewedBy($_SESSION['idUser'])
+                ->setReviewedAt(new DateTimeImmutable())
+                ->setReason($reasonOfReject);
+
+        try{
+            $this->reviewRepo->update($idReview, $review);
+        }catch(\Exception $e){
+            $this->logger->log('ERROR', 'Erreur lors de la mise à jour des places disponibles : ' . $e->getMessage());
+        }
+
+        http_response_code(200);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Avis rejeter avec succès'
+        ]);
+        exit;
+        
     }
 }
