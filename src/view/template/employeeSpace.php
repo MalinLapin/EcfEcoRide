@@ -10,13 +10,6 @@
                     <p class="statLabel">Avis à traiter</p>
                 </div>
             </div>
-            <div class="statCard processed">
-                <span class="material-symbols-outlined">task_alt</span>
-                <div class="statInfo">
-                    <p class="statValue robotoBold" id="processedCount"><?= $countReviewApproved ?? 0 ?></p>
-                    <p class="statLabel">Traités aujourd'hui</p>
-                </div>
-            </div>
         </div>
     </div>
 

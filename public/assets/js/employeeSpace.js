@@ -264,17 +264,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Mise à jour des compteurs de statistiques
     function updateStats(action) {
         const pendingCount = document.getElementById('pendingCount');
-        const processedCount = document.getElementById('processedCount');
 
         // Diminution du nombre d'avis en attente
         const currentPending = parseInt(pendingCount.textContent);
         pendingCount.textContent = Math.max(0, currentPending - 1);
-
-        // Si l'avis a été validé, augmentation du compteur traités
-        if (action === 'validate') {
-            const currentProcessed = parseInt(processedCount.textContent);
-            processedCount.textContent = currentProcessed + 1;
-        }
     }
 
     // Vérification si la liste est vide
