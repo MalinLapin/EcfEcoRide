@@ -55,20 +55,41 @@ class EmployeeController extends BaseController
 
     public function approvedReview ():void
     {
+        // on commence par récupérer ce qui est envoyer en JSON depuis le front
         $data = json_decode(file_get_contents('php://input'), true);
+        // on récupère les données de notre tableau
         $idReview = $data['reviewId'];
 
+        // on retrouve notre avis en bdd
         $review = $this->reviewRepo->findById($idReview);
+
+        // on affecte nos modification
         $review ->setStatusReview(StatusReview::approved)
                 ->setReviewedBy($_SESSION['idUser'])
                 ->setReviewedAt(new DateTimeImmutable());
 
+        // On essaie de mettre à jour
         try{
             $this->reviewRepo->update($idReview, $review);
         }catch(\Exception $e){
-            $this->logger->log('ERROR', 'Erreur lors de la mise à jour des places disponibles : ' . $e->getMessage());
+            $this->logger->log('ERROR', 'Erreur lors de la mise à jour du status de l\'avis : ' . $e->getMessage());
         }
 
+        //Si la mise à jour est effectuée, il faut mettre à jour le rang du chauffeur :
+        $newRating = $this->reviewRepo->getAverageRatingByIdUser($review->getIdTarget());
+
+        $driver = $this->userRepo->findById($review->getIdTarget());
+
+        $driver->setGrade($newRating);
+
+        try{
+            $this->userRepo->update($driver);
+        }catch(\Exception $e){
+            $this->logger->log('ERROR', 'Erreur lors de la mise à jour du rang du chauffeur : ' . $e->getMessage());
+        }
+
+
+        // Si on réussi on renvoie une réponse positive en JSON.
         http_response_code(200);
         echo json_encode([
             'success' => true,
