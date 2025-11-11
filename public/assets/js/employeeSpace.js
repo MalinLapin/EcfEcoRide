@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () {
             const card = this.closest('.reviewCard');
             const reviewId = card.querySelector('.reviewId').value;
-            handleReviewAction(reviewId, 'validate', card);
+            approvedReview(reviewId, card);
         });
     });
 
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () {
             const card = this.closest('.reviewCard');
             const reviewId = card.querySelector('.reviewId').value;
-            handleReviewAction(reviewId, 'reject', card);
+            rejectReview(reviewId, card);
         });
     });
 
@@ -129,10 +129,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // ===== FONCTION PRINCIPALE DE TRAITEMENT =====
-    function handleReviewAction(reviewId, action, cardElement) {
+
+
+    function approvedReview(reviewId, cardElement) {
         // Confirmation de l'action
-        const actionText = action === 'validate' ? 'valider' : 'rejeter';
-        const confirmMessage = `Êtes-vous sûr de vouloir ${actionText} cet avis ?`;
+        const confirmMessage = `Êtes-vous sûr de vouloir approuver cet avis ?`;
 
         if (!confirm(confirmMessage)) {
             return;
@@ -142,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
         disableAllButtons(cardElement);
 
         // Envoi de la requête au serveur
-        fetch('/processReview', {
+        fetch('/approvedReview', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -151,7 +152,6 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify({
                 reviewId: parseInt(reviewId),
-                action: action
             })
         })
             .then(response => response.json())
@@ -160,13 +160,62 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Succès : on ferme le modal et on supprime la carte
                     closeModal();
 
-                    // Animation de suppression
-                    cardElement.style.transition = 'all 0.3s ease';
-                    cardElement.style.opacity = '0';
-                    cardElement.style.transform = 'translateX(-100%)';
+                    setTimeout(() => {
+
+                        // Mise à jour des statistiques
+                        updateStats(action);
+
+                        // Vérification s'il reste des avis
+                        checkIfEmpty();
+
+                        // Message de succès
+                        alert(`Avis ${actionText} avec succès !`);
+                    }, 300);
+                } else {
+                    // Erreur : on réactive les boutons et on affiche le message
+                    enableAllButtons(cardElement);
+                    alert(data.message || 'Une erreur est survenue');
+                }
+            })
+            .catch(error => {
+                // Erreur réseau : on réactive les boutons
+                console.error('Erreur:', error);
+                enableAllButtons(cardElement);
+                alert('Une erreur est survenue lors de la communication avec le serveur');
+            });
+    }
+
+    function rejectReview(reviewId, cardElement) {
+        // Confirmation de l'action
+        const reasonOfReject = 'Veuillez donner une raison à ce rejet.';
+
+        if (!prompt(reasonOfReject)) {
+            return;
+        }
+
+        // Désactivation de tous les boutons pendant le traitement
+        disableAllButtons(cardElement);
+
+        // Envoi de la requête au serveur
+        fetch('/rejectReview', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'csrfToken': getCsrfToken(),
+                'typeRequete': 'ajax'
+            },
+            body: JSON.stringify({
+                reviewId: parseInt(reviewId),
+                reasonOfReject: reasonOfReject
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Succès : on ferme le modal et on supprime la carte
+                    closeModal();
 
                     setTimeout(() => {
-                        cardElement.remove();
 
                         // Mise à jour des statistiques
                         updateStats(action);
