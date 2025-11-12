@@ -54,6 +54,7 @@
                 </button>
                 <nav class="navMenu" id="navMenu">
                     <ul>
+                        <!--Les employer aurons accès uniquement à leur espace.-->
                         <?php if($_SESSION['role'] == 'employe'):?>
                             <li><a href="/employeeSpace"><span class="material-symbols-outlined">work</span> Espace Employer</a></li>
                             <li>
@@ -63,6 +64,12 @@
                                 </form>
                             </li>
                         <?php else :?>
+                            <!--L'admin aura accès à toutes les page en plus de son espace-->
+                            <?php if($_SESSION['role'] == 'admin'):?>
+                                <li><a href="/employeeSpace"><span class="material-symbols-outlined">work</span> Espace Employer</a></li>
+                                <li><a href="/adminSpace"><span class="material-symbols-outlined">work</span> Espace Admin</a></li>
+                            <?php endif;?>
+                            <!--Les utilisateurs auront accès aux pages de service de l'application. -->
                             <li><a href="/profile"><span class="material-symbols-outlined">person</span> Mon profil</a></li>
                             <li><a href="/myRidesharing"><span class="material-symbols-outlined">directions_car</span> Mes trajets</a></li>
                             <li><a href="/contact"><span class="material-symbols-outlined">mail</span>Contact</a></li>
@@ -81,7 +88,8 @@
                 </div>
             </div>
         </header>
-                
+        
+        <!--On chargera uniquement des templates dans cette balise main afin de garder une page unique.-->
         <main class='mainContent'>
             <?php if(!empty($content)){ echo $content;}?>                        
         </main>
