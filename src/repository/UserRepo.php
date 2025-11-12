@@ -1,6 +1,9 @@
 <?php
 
 namespace App\repository;
+
+use App\model\Role;
+use App\model\Status;
 use App\model\UserModel;
 
 class UserRepo extends BaseRepoSql
@@ -48,6 +51,25 @@ class UserRepo extends BaseRepoSql
         } else {
             return null; // Retourne null si l'utilisateur n'existe pas
         }
+    }
+
+    public function findUserByRole(Role $role): array
+    {
+        $query ="SELECT * FROM {$this->tableName} WHERE role = :role";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(':role', $role->value , \PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        if ($result) {
+
+            $users = [];
+
+            foreach ($result as $row){
+
+                $users[] = UserModel::createAndHydrate($row);
+            }
+        } 
+        return $users;
     }
 
 }

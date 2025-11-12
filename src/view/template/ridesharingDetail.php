@@ -4,6 +4,8 @@
     $car = $ridesharingDetails['car'];
     $brand = $ridesharingDetails['brand'];
     ?>
+
+    
 <section class='ridesharingDetail robotoRegular'>
     <?php if(!empty($flash)):?>
         <div class='errorInfo'>

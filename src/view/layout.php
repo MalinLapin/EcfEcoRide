@@ -67,7 +67,7 @@
                             <!--L'admin aura accès à toutes les page en plus de son espace-->
                             <?php if($_SESSION['role'] == 'admin'):?>
                                 <li><a href="/employeeSpace"><span class="material-symbols-outlined">work</span> Espace Employer</a></li>
-                                <li><a href="/adminSpace"><span class="material-symbols-outlined">work</span> Espace Admin</a></li>
+                                <li><a href="/adminSpace"><span class="material-symbols-outlined">admin_panel_settings</span> Espace Admin</a></li>
                             <?php endif;?>
                             <!--Les utilisateurs auront accès aux pages de service de l'application. -->
                             <li><a href="/profile"><span class="material-symbols-outlined">person</span> Mon profil</a></li>
