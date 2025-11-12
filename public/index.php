@@ -62,6 +62,8 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
     $r->addRoute('POST', '/approvedReview', [App\controller\EmployeeController::class, 'approvedReview']);
     $r->addRoute('POST', '/rejectReview', [App\controller\EmployeeController::class, 'rejectReview']);
 
+    /* --------------------Route gérer par AdminController----------------------------- */
+    $r->addRoute('GET', '/adminSpace', [App\controller\AdminController::class, 'showAdminSpace']);
 });
 
 // Traitement de la requête
