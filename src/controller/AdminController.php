@@ -41,37 +41,6 @@ class AdminController extends BaseController
         ]);
     }
 
-    public function getCreditInfoPerDay():int
-    {
-        $itsOk = $this->verifAllBeforFunction();
-
-        if($itsOk == false){
-            http_response_code(500);
-            echo json_encode(['success' => false, 'message' => 'MON RACOURCI NE FONCTIONNE PAS']);
-            exit;
-        }
-
-        // Récupération des données du formulaire
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        $data = $this->validator->sanitize($data);
-
-        try{
-            $nbSeatReserved = $this->participateRepo->findParticipationByDay($data['day']);
-        }catch(\Exception $e){
-            $this->logger->log('ERROR', 'Erreur lors de la recherche de participation : ' . $e->getMessage());
-            http_response_code(500);
-            echo json_encode([
-                'success' => false,
-                'message' => 'Une erreur est survenue, veuillez réessayer.'
-            ]);
-            exit;
-        }
-
-        // Pour avoir le nombre de crédit il faut multiplier le nombre de siège par 2 car la plateforme prend 2 crédit par siège reserver.
-        return $nbSeatReserved * 2;
-    }
-
     public function getParticipationInfoPerWeek():void
     {
         $itsOk = $this->verifAllBeforFunction();

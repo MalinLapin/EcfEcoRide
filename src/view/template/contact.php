@@ -26,7 +26,7 @@
                     <?php endforeach;}?>
                 </ul>    
             </div>
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
+            <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
             <button type="submit" class='contactBtn'>Envoyer</button>
         </form>
 

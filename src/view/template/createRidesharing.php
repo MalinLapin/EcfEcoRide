@@ -42,7 +42,7 @@
                         <?php foreach ($listCar as $car):
                             $brand = $car['brandInfo'];
                             $car = $car['carInfo']; ?>
-                        <option value="<?=$car->getIdCar()?>"><span class="robotoBold"><?=$brand->getLabel()?></span> <?=$car->getModel()?></option>
+                        <option value="<?=$car->getIdCar()?>"><span class="robotoBold"><?=htmlspecialchars($brand->getLabel())?></span> <?=htmlspecialchars($car->getModel())?></option>
                         <?php endforeach; ?>
                         <?php endif;?>
                     </select>
@@ -67,7 +67,7 @@
 
                 <div>
                     <input type="hidden" name="status" value="pending">
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
+                    <input type="hidden" name="csrf_token" value="<?=$csrf_token ?>">
                     <button type="submit" class="btnSearch">C'est partie!</button>
                 </div>
             </form>

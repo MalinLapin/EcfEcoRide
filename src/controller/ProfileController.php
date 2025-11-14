@@ -35,16 +35,6 @@ class ProfileController extends BaseController
 
     public function addCar():void
     {
-        // On vérifie si la requête du front est bien en AJAX
-        $isAjax = isset($_SERVER['HTTP_TYPEREQUETE']) && strtolower($_SERVER['HTTP_TYPEREQUETE']) === 'ajax';
-        
-
-        // Si c'est le cas on définit le header JSON
-        if($isAjax){
-            header('Content-Type: application/json; charset=utf-8');
-        }
-        
-        
         // On vérifie que l'utilisateur est bien connecter.
         $this->requireAuth();
         

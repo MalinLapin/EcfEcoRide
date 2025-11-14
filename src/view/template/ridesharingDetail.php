@@ -16,12 +16,12 @@
         <h3 class ='montserratBold'>Trajet</h3>
         <div class='rideAddress'>
             <div class='departure'>
-                <p class='robotoBold'><?=$ride->getDepartureCity()?>,<br><span class='robotoRegular'><?=$ride->getDepartureAddress()?></span></p>
+                <p class='robotoBold'><?=htmlspecialchars($ride->getDepartureCity())?>,<br><span class='robotoRegular'><?=htmlspecialchars($ride->getDepartureAddress())?></span></p>
                 <p><?=$ride->getDepartureDate()->format('H:i')?></p>
             </div>
             <span class="material-symbols-outlined">arrow_right_alt</span>
             <div class='arrival'>
-                <p class='robotoBold'><?=$ride->getArrivalCity()?><br><span class='robotoRegular'><?=$ride->getArrivalAddress()?></span></p>
+                <p class='robotoBold'><?=htmlspecialchars($ride->getArrivalCity())?><br><span class='robotoRegular'><?=htmlspecialchars($ride->getArrivalAddress())?></span></p>
                 <?php if($ride->getArrivalDate()):?>
                 <p class='robotoRegular'><?=$ride->getArrivalDate()->format('H:i')?></p>
                 <?php endif; ?>
@@ -71,7 +71,7 @@
         <div class='infoDriver'>
             <img src="#" alt="Photo de profil">
             <div>
-                <p class='robotoBold'><?=$driver->getPseudo()?></p>
+                <p class='robotoBold'><?=htmlspecialchars($driver->getPseudo())?></p>
                 <p><?=$driver->getGrade()?> /5</p>
             </div>
         </div>           
@@ -84,9 +84,9 @@
         </div>
         <div class='carInfo '>
             <div><p>Marque: <span><?= $brand?></span></p></div>
-            <div><p>Modele: <span><?=$car->getModel()?></span></p></div>
-            <div><p>Energie: <span><?=$car->getEnergyType()->value ?></span></p></div>
-            <div><p>Couleur: <span><?=$car->getColor()?></span></p></div>           
+            <div><p>Modele: <span><?=htmlspecialchars($car->getModel())?></span></p></div>
+            <div><p>Energie: <span><?=htmlspecialchars($car->getEnergyType())->value ?></span></p></div>
+            <div><p>Couleur: <span><?=htmlspecialchars($car->getColor())?></span></p></div>           
         </div>
         
         <?php if (!empty($listPreference)):?>
@@ -95,7 +95,7 @@
             <h4>Préférence du conducteur</h4>           
             <ul>
                 <?php foreach($listPreference as $preference):?>
-                <li><?=$preference->getLabel()?></li>
+                <li><?=htmlspecialchars($preference->getLabel())?></li>
                 <?php endforeach; ?>                    
             </ul>
         </div>
@@ -122,7 +122,7 @@
                 <p><?=$reviewContent->getRating() ?? null ?> /5 </p>
             </div>
             <div class='commentReview'>
-                <p><?=$reviewContent->getComment() ?? null ?></p>
+                <p><?=htmlspecialchars($reviewContent->getComment()) ?? null ?></p>
             </div>
         </div>
         <?php endforeach; ?>        

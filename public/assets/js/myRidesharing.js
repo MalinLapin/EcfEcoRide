@@ -173,8 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'csrfToken': getToken(),
-                'typeRequete': 'ajax'
+                'csrfToken': getToken()
             },
             body: JSON.stringify({
                 idDriver: parseInt(idDriver),
@@ -284,8 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'csrfToken': getToken(),
-                'typeRequete': 'ajax'
+                'csrfToken': getToken()
             }
         })
             .then(response => response.json())
@@ -309,8 +307,7 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'csrfToken': getToken(),
-                'typeRequete': 'ajax'
+                'csrfToken': getToken()
             }
         })
             .then(response => response.json())

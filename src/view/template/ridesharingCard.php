@@ -14,14 +14,14 @@
             </div>
             <div class='driver robotoBold'>
                 <img src="" alt="photo">
-                <p><?=$driver->getPseudo()?></p>
+                <p><?=htmlspecialchars($driver->getPseudo())?></p>
                 <p><?=$driver->getGrade()?></p>  
             </div>
         </div>
         <div class='infoDrive'>
             <div class='ridesharing robotoBold'>
-                <p><?= $ride->getDepartureCity()?> <br><span class='robotoRegular'><?= $ride->getDepartureAddress()?></span></p>
-                <p><?= $ride->getArrivalCity()?> <br><span class='robotoRegular'><?= $ride->getArrivalAddress()?></span></p>
+                <p><?= htmlspecialchars($ride->getDepartureCity())?> <br><span class='robotoRegular'><?= htmlspecialchars($ride->getDepartureAddress())?></span></p>
+                <p><?= htmlspecialchars($ride->getArrivalCity())?> <br><span class='robotoRegular'><?= htmlspecialchars($ride->getArrivalAddress())?></span></p>
             </div>
             <div class='otherInfo robotoBold'>
                 <p class="departureDate"><?= $ride->getDepartureDate()->format('Y-m-d H:i')?></p>

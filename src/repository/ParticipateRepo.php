@@ -5,6 +5,7 @@ namespace App\repository;
 use App\model\ParticipateModel;
 use App\model\UserModel;
 use App\model\RidesharingModel;
+use DateTimeImmutable;
 
 class ParticipateRepo extends BaseRepoSql
 {
@@ -204,10 +205,41 @@ class ParticipateRepo extends BaseRepoSql
         return [];
     }
 
-    public function findDetailDriverAndPassangerByParticipation()
+    public function findParticipationByWeek(DateTimeImmutable $day):array
     {
+        // Il faut déjà définir les 7 jours qui suivent le jour fournie.
+        $start = $day->format('Y-m-d 00:00:00');
+        $end = $day->modify('+7 days')->format('Y-m-d 00:00:00');
 
-    }
+        $query="SELECT DAYNAME(completed_at) AS day, 
+                    SUM(nb_seats) AS total_seats
+                    FROM {$this->tableName}
+                    WHERE completed_at >= :start AND completed_at < :end
+                    GROUP BY day
+                    ORDER BY FIELD (day, 'monday','tuesday','wednesday','thursdays','friday','saturday','sunday')";
 
-    
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(':start', $start);
+        $stmt->bindValue(':end', $end);
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        //On convertie les noms des jour en français
+        $jours = [
+            'Monday' => 'Lundi',
+            'Tuesday' => 'Mardi',
+            'Wednesday' => 'Mercredi',
+            'Thursdays' => 'Jeudi',
+            'Friday' => 'Vendredi',
+            'Saturday' => 'Samedi',
+            'Sunday' => 'Dimanche'
+        ];
+
+        // on boucle sur le résultat pour changer le nom du jour en cas de correspondance.
+        foreach ($result as &$row) {
+            $row['day'] = $jours[$row['day']] ?? $row['day'];
+        }
+
+        return $result;
+    }    
 } 

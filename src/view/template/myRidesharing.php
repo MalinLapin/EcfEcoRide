@@ -50,12 +50,12 @@
                                 <div class="rideRoute">
                                     <div class="routePoint">
                                         <span class="material-symbols-outlined">trip_origin</span>
-                                        <p class="robotoBold"><?=$ride->getDepartureCity()?></p>
+                                        <p class="robotoBold"><?=htmlspecialchars($ride->getDepartureCity())?></p>
                                     </div>
                                     <div class="routeLine"></div>
                                     <div class="routePoint">
                                         <span class="material-symbols-outlined">location_on</span>
-                                        <p class="robotoBold"><?=$ride->getArrivalCity()?></p>
+                                        <p class="robotoBold"><?=htmlspecialchars($ride->getArrivalCity())?></p>
                                     </div>
                                 </div>
 
@@ -131,12 +131,12 @@
                                 <div class="rideRoute">
                                     <div class="routePoint">
                                         <span class="material-symbols-outlined">trip_origin</span>
-                                        <p class="robotoBold"><?=$ride->getDepartureCity()?></p>
+                                        <p class="robotoBold"><?=htmlspecialchars($ride->getDepartureCity())?></p>
                                     </div>
                                     <div class="routeLine"></div>
                                     <div class="routePoint">
                                         <span class="material-symbols-outlined">location_on</span>
-                                        <p class="robotoBold"><?=$ride->getArrivalCity()?></p>
+                                        <p class="robotoBold"><?=htmlspecialchars($ride->getArrivalCity())?></p>
                                     </div>
                                 </div>
 

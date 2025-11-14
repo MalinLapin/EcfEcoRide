@@ -5,7 +5,7 @@
     </section>
     <?php if(!empty($flash)):?>
         <div class='flashInfo'>
-            <p class='robotoBold'><?=$flash['message']?></p>
+            <p class='robotoBold'><?=htmlspecialchars($flash['message'])?></p>
         </div>
         <?php endif; ?>
     <section class="searchSection">

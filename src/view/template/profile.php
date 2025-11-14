@@ -17,7 +17,7 @@
             <img src="" alt="photo de profil">
         </div>
         <div class='userInfo'>
-            <p class='pseudo'><?=$user->getPseudo()?></p>
+            <p class='pseudo'><?=htmlspecialchars($user->getPseudo())?></p>
             <p class='creationDate'><?=$user->getCreatedAt()->format('d-m-Y')?></p>
             <p class='creditBalance'><span class="robotoBold"><?=$user->getCreditBalance()?> </span>crédits</p>
         </div>
@@ -34,10 +34,10 @@
                     <span class="material-symbols-outlined">directions_car</span>
                 </div>
                 <div class ="brandCar">
-                    <p><?=$brand->getLabel()?></p>
+                    <p><?=htmlspecialchars($brand->getLabel())?></p>
                 </div>
                 <div class="modelCar">
-                    <p><?=$car->getModel()?></p>
+                    <p><?=htmlspecialchars($car->getModel())?></p>
                 </div>
                 <?php if ($car->getEnergyType()->value=='electric'):?>
                     <div class="energyType">
@@ -76,7 +76,7 @@
                     <select id="brandId" name="brandId" required>
                         <option value="">-- Choisir --</option>
                         <?php foreach ($listBrand as $brand): ?>
-                            <option value="<?=$brand->getIdBrand()?>"><?=$brand->getLabel()?></option>
+                            <option value="<?=$brand->getIdBrand()?>"><?=htmlspecialchars($brand->getLabel())?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>

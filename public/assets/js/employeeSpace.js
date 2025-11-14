@@ -133,8 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'csrfToken': getCsrfToken(),
-                'typeRequete': 'ajax'
+                'csrfToken': getCsrfToken()
             },
             body: JSON.stringify({
                 reviewId: currentReviewId,
@@ -188,8 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'csrfToken': getCsrfToken(),
-                'typeRequete': 'ajax'
+                'csrfToken': getCsrfToken()
             },
             body: JSON.stringify({
                 reviewId: currentReviewId,

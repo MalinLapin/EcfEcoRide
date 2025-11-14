@@ -50,7 +50,7 @@
                     <?php if (isset($_SESSION['pseudo'])): ?>
                 <button class="profilToggle" id="profilToggle" aria-label="Menu profil" aria-expanded="false">
                     <span class="material-symbols-outlined">account_circle</span>
-                    <p class='robotoBold'><?=$_SESSION['pseudo']?></p>
+                    <p class='robotoBold'><?=htmlspecialchars($_SESSION['pseudo'])?></p>
                 </button>
                 <nav class="navMenu" id="navMenu">
                     <ul>
@@ -102,6 +102,7 @@
             <a href="/mentionLegal" class="robotoRegular">Mention-légales</a>
         </footer>
         <script src="/assets/js/navbar.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <?php if (!empty($scriptJs)): ?>
         <script src="/assets/js/<?=$scriptJs?>.js"></script>
         <?php endif; ?>
