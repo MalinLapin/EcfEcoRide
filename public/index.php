@@ -9,7 +9,7 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 // Import des classes
 use App\config\Config;
-use App\Utils\Response;
+use App\Utils\Response; 
 
 // Charger nos variable d'environnement
 Config::load();
@@ -64,6 +64,10 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
 
     /* --------------------Route gérer par AdminController----------------------------- */
     $r->addRoute('GET', '/adminSpace', [App\controller\AdminController::class, 'showAdminSpace']);
+    $r->addRoute('POST', '/getParticipationInfoPerWeek', [App\controller\AdminController::class, 'getParticipationInfoPerWeek']);
+    $r->addRoute('POST', '/getCreditInfoPerWeek', [App\controller\AdminController::class, 'getCreditInfoPerWeek']);
+    $r->addRoute('POST', '/createEmployee', [App\controller\AdminController::class, 'createEmployee']);
+    $r->addRoute('POST', '/suspendUser', [App\controller\AdminController::class, 'suspendUser']);
 });
 
 // Traitement de la requête
