@@ -9,7 +9,7 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 // Import des classes
 use App\config\Config;
-use App\Utils\Response; 
+use App\utils\Response; 
 
 // Charger nos variable d'environnement
 Config::load();
