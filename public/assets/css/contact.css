@@ -35,3 +35,25 @@
   margin: 30px 0 30px;
   width: 120px;
 }
+
+/*-------- Responsive ------*/
+@media (min-width: 768px) {
+  .contactSection {
+    max-width: 900px;
+  }
+
+  h3 {
+    font-size: 30px;
+  }
+
+  label,
+  input {
+    font-size: 20px;
+  }
+
+  .contactBtn {
+    height: 50px;
+    width: 200px;
+    font-size: 20px;
+  }
+}
