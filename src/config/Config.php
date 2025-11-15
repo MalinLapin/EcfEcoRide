@@ -21,6 +21,26 @@ class Config
             // On charge les variables d'environnement dans $_ENV
             $dotenv->load();
         }
+
+        // On analyse JAWSDB_URL si présent, (Bdd en ligne via heroku)
+        $jawsdbUrl = getenv('JAWSDB_URL');
+        if ($jawsdbUrl !== false && !empty($jawsdbUrl)) {
+            $dbparts = parse_url($jawsdbUrl);
+            
+            // Alimente $_ENV avec les variables parsées
+            $_ENV['DB_HOST'] = $dbparts['host'];
+            $_ENV['DB_PORT'] = $dbparts['port'] ?? '3306';
+            $_ENV['DB_NAME'] = ltrim($dbparts['path'], '/');
+            $_ENV['DB_USER'] = $dbparts['user'];
+            $_ENV['DB_PASSWORD'] = $dbparts['pass'];
+        }
+
+        // On charge toutes les variables système dans $_ENV pour SMTP par Ex.
+        foreach ($_SERVER as $key => $value) {
+            if (!isset($_ENV[$key])) {
+                $_ENV[$key] = $value;
+            }
+        }
     }
 
     /**
