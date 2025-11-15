@@ -225,9 +225,12 @@ class AuthController extends BaseController
                     ->setCreditBalance(20);
         
 
-            $result = $this->userRepo->create($newUser);
+            $newIdUser = $this->userRepo->create($newUser);
             
-            if ($result) {
+            if ($newIdUser) {
+
+                // On recupere notre nouvel user
+                $newUser = $this->userRepo->findById($newIdUser);
 
                 session_regenerate_id(true);
                 // Si l'utilisateur est créé avec succès, on enregistre les informations en session
