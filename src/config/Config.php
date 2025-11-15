@@ -51,6 +51,17 @@ class Config
      */
     public static function get(string $key, $default = null)
     {
-        return $_ENV[$key] ?? $default;
+            // 1. Priorité : variables d'environnement Heroku
+        $value = getenv($key);
+        if ($value !== false && $value !== '') {
+            return $value;
+        }
+
+        // 2. Fallback : fichier .env (développement local)
+        if (!isset(self::$config)) {
+            self::load();
+        }
+
+        return self::$config[$key] ?? null;
     }
 }
