@@ -56,3 +56,18 @@
   margin: 20px 0 30px;
   width: 120px;
 }
+
+/*--------Responsive------------*/
+
+@media (min-width: 768px) {
+  .searchContent {
+    max-width: 900px;
+  }
+  .searchForm {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 100px;
+    padding: 10px 0 20px 30px;
+  }
+}
