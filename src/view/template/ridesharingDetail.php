@@ -47,13 +47,15 @@
     </div>
     
     <div class='participationInfo'>
-        <form action="/participate" method='POST' class='seatForm' id="reservationForm">
+        <form action="/participate" method='POST' class='participateForm' id="reservationForm">
             <div class='participationCard'>
                 <div class='ridesharingPrice' id="ridesharingPrice" data-price="<?=$ride->getPricePerSeat()?>">
                     <p><span class='robotoBold' id="totalAmount"><?=$ride->getPricePerSeat()?> </span>Crédits /places</p>
                 </div>
-                <label for="nbSeat">Veuillez choisir le nombre de siège désiré :</label>
-                <input type="number" name="nbSeats" id="nbSeats" value="1" max='6' placeholder="Nombre de place">
+                <div class="ridesharingSeats">
+                    <label for="nbSeats">Veuillez choisir le nombre de siège désiré :</label>
+                    <input type="number" name="nbSeats" id="nbSeats" value="1" max='6' placeholder="Nombre de place">
+                </div>                
             </div>
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
             <input type="hidden" name="idRidesharing" value="<?=$ride->getIdRidesharing() ?>">
@@ -85,7 +87,7 @@
         <div class='carInfo '>
             <div><p>Marque: <span><?= $brand?></span></p></div>
             <div><p>Modele: <span><?=htmlspecialchars($car->getModel())?></span></p></div>
-            <div><p>Energie: <span><?=htmlspecialchars($car->getEnergyType())->value ?></span></p></div>
+            <div><p>Energie: <span><?=$car->getEnergyType()->value ?></span></p></div>
             <div><p>Couleur: <span><?=htmlspecialchars($car->getColor())?></span></p></div>           
         </div>
         

@@ -30,7 +30,9 @@
             </div>
         </div>
     </div>
-    <a href="/ridesharingDetail/<?= $ride->getIdRidesharing() ?>" class="robotoBold detailBtn">
-        <button type="submit" class="robotoBold detailBtn">Détails</button>
-    </a>    
+    <div>
+        <a href="/ridesharingDetail/<?= $ride->getIdRidesharing() ?>" class="robotoBold detailBtn">
+            <button type="submit" class="robotoBold detailBtn">Détails</button>
+        </a> 
+    </div>
 </article>

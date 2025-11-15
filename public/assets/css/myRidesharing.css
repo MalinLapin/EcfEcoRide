@@ -68,10 +68,6 @@
   color: white;
 }
 
-.rideTab:hover {
-  opacity: 0.8;
-}
-
 /* Contenu des onglets */
 .ridesContent {
   display: none;
@@ -331,10 +327,6 @@
   color: #666;
 }
 
-.reviewModal .closeBtn:hover {
-  color: #000;
-}
-
 .reviewModal h3 {
   margin: 0 0 20px 0;
   text-align: center;
@@ -355,7 +347,6 @@
   transition: color 0.2s;
 }
 
-.star:hover,
 .star.active {
   color: #f39c12;
 }

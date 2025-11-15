@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 90%;
 }
 
 h1 {
@@ -72,9 +73,96 @@ h1 {
 .card p,
 .card ul {
   margin: 15px 0;
-  padding-left: 15px;
+  padding-left: 10px;
 }
 
 .card ul {
-  padding-left: 20px;
+  padding-left: 30px;
+  list-style: disc;
+}
+
+/* ---------------Responsive---------------- */
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 40px;
+  }
+  h2 {
+    font-size: 32px;
+  }
+
+  h3 {
+    font-size: 28px;
+  }
+  h4 {
+    font-size: 24px;
+  }
+
+  .searchSection {
+    width: 760px;
+  }
+
+  .searchContent {
+    width: 100%;
+    margin: 20px 0;
+    padding-top: 20px;
+  }
+
+  .searchContent div {
+    flex-direction: row;
+    margin: 1rem;
+  }
+
+  .searchForm {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 100px;
+  }
+
+  .searchForm label {
+    font-size: 20px;
+  }
+
+  .searchForm:last-child {
+    justify-content: center;
+  }
+
+  .btnSearch {
+    width: 100px;
+    height: 30px;
+    font-size: 20px;
+  }
+
+  .searchContent div label {
+    margin-right: 10px;
+  }
+
+  .aboutContent {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .card {
+    width: 45%;
+    margin: 20px 0;
+  }
+
+  .card p,
+  .card li {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .searchContent {
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .searchContent div {
+    justify-content: flex-start;
+    gap: 20px;
+  }
 }

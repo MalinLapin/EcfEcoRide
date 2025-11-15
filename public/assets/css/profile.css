@@ -1,4 +1,4 @@
-.profilSection {
+.profileSection {
   width: 100%;
 }
 
@@ -238,19 +238,8 @@
 
 /* -------------Responsive------------------ */
 
-@media (max-width: 768px) {
-  .addCarModal .modalContent {
-    width: 95%;
-    padding: 20px;
-    margin: 10px;
-  }
-
-  .addCarModal .form-actions {
-    flex-direction: column;
-  }
-
-  .addCarModal .btn-submit,
-  .addCarModal .btn-cancel {
-    width: 100%;
+@media (min-width: 900px) {
+  .profileSection {
+    max-width: 900px;
   }
 }
