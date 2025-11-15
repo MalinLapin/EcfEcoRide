@@ -1,5 +1,5 @@
 #Permet de metre en place le CI (Continus Integration)
-name: CI EcoRide
+name: CI EcfEcoRide
 
 on: 
   push: 
