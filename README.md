@@ -56,8 +56,6 @@ Une fois dans le dossier il faut cloner le repo github grâce à :
 git clone https://github.com/MalinLapin/EcfEcoRide.git
 ```
 
-Lisez la liste des [contributeurs](https://github.com/your/project/contributors) pour voir qui à aidé au projet !
-
 Toujours dans notre dossier en ligne commande il va falloir installer Composer, afin d'avoir accès à ses dépendances.
 
 ```bash
