@@ -36,12 +36,12 @@ déplacements.
 
 ## Prérequis
 
-    Avant d'installer le projet, assurez-vous d'avoir :
+Avant d'installer le projet, assurez-vous d'avoir :
 
-    - **XAMPP** (version 8.2+) : https://www.apachefriends.org/
-    - **Composer** : https://getcomposer.org/
-    - **MongoDB Community Server** : https://www.mongodb.com/try/download/community
-    - **Git** : https://git-scm.com/
+- **XAMPP** (version 8.2+) : https://www.apachefriends.org/
+- **Composer** : https://getcomposer.org/
+- **MongoDB Community Server** : https://www.mongodb.com/try/download/community
+- **Git** : https://git-scm.com/
 
 ---
 
@@ -49,6 +49,7 @@ déplacements.
 
 ### 1.Cloner le projet
 
+<<<<<<< Updated upstream
 Listez les versions ici
 _exemple :_
 **Dernière version stable :** 5.0
@@ -61,10 +62,44 @@ _(pour le lien mettez simplement l'URL de votre projets suivi de `/tags`)_
 Listez le(s) auteur(s) du projet ici !
 
 - **Jhon doe** _alias_ [@outout14](https://github.com/outout14)
+=======
+En invite de commande se rendre dans le dossier de destination de notre projet local. Ici, nous le nommerons ecfBackup, avec ce chemin :
+
+```bash
+cd C:/Env/workSpace/ecfBackup
+```
+
+Une fois dans le dossier il faut cloner le repo github grâce à :
+
+```bash
+git clone https://github.com/MalinLapin/EcfEcoRide.git
+```
+>>>>>>> Stashed changes
 
 Lisez la liste des [contributeurs](https://github.com/your/project/contributors) pour voir qui à aidé au projet !
 
+<<<<<<< Updated upstream
 _(pour le lien mettez simplement l'URL de votre projet suivi de `/contirubors`)_
+=======
+Toujours dans notre dossier en ligne commande il va falloir installer Composer, afin d'avoir accès à ses dépendances.
+
+```bash
+composer install
+```
+
+### 3.Configurer la base de données MySQL
+
+#### 3.1.Créer la base de données
+
+1. Démarrez XAMPP et lancez Apache et MySQL
+2. Accédez à phpMyAdmin via l'URL : http://localhost/phpmyadmin
+3. Créez une nouvelle base de données nommée **ecoridebBackup**
+
+#### 3.2.Importer le schéma SQL
+
+1. Séléctionnez la base **ecorideBackup**
+2. Allez dans l'onglet Importer
+>>>>>>> Stashed changes
 
 ## License
 
