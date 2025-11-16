@@ -2,12 +2,7 @@
 
 ## Description
 
-    EcoRide est une startup française, ayant pour objectif de réduire l'impact
-
-environnemental des déplacements en encourageant le covoiturage. Elle prône une approche
-écologique et aspire à devenir la principale plateforme de covoiturage pour les voyageurs
-soucieux de l'environnement et ceux recherchant une solution économique pour leurs
-déplacements.
+EcoRide est une startup française, ayant pour objectif de réduire l'impact environnemental des déplacements en encourageant le covoiturage. Elle prône une approche écologique et aspire à devenir la principale plateforme de covoiturage pour les voyageurs soucieux de l'environnement et ceux recherchant une solution économique pour leurs déplacements.
 
 ## Technologies utilisées
 
