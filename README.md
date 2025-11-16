@@ -35,7 +35,7 @@ Avant d'installer le projet, assurez-vous d'avoir :
 
 - **XAMPP** (version 8.2+) : https://www.apachefriends.org/
 - **Composer** : https://getcomposer.org/
-- **MongoDB Community Server** : https://www.mongodb.com/try/download/community
+- **MongoDB Community Server** : https://www.mongodb.com/try/download/community bien installé avec l'option "install as a Service".
 - **Git** : https://git-scm.com/
 
 ---
@@ -76,7 +76,55 @@ composer install
 
 1. Séléctionnez la base **ecorideBackup**
 2. Allez dans l'onglet Importer
+3. Executer le fichier `DataBase.sql`situé dans `src/bdd/sql`.
 
-## License
+### 4.Configuration MongoDB
 
-Ce projet est sous licence `exemple: WTFTPL` - voir le fichier [LICENSE.md](LICENSE.md) pour plus d'informations
+Si vous avez installer MongoDB comme un service en cochant l'option "Install as a Service" ce dernier doit démarrer automatiquement.
+Pour vérifier, dans un terminal :
+
+```bash
+mongosh
+```
+
+Ensuite dans mongosh il faut renseigner le nom de notre bdd:
+
+```bash
+use ecoride_nosql
+```
+
+Puis charger le init.mongo qui contient les collections ainsi que leurs règles:
+
+```bash
+load("src/bdd/mongo/init.mongodb")
+```
+
+Pour vérifier visionnons nos collections nouvellement créées:
+
+```bash
+show collection
+```
+
+### 5.Configuration des variables d'environnement
+
+Pour ce faire il faut faire une copie de `.env.example` et la renommer `.env`.
+Dans un terminal:
+
+```bash
+copy .env.example .env
+```
+
+Il va ensuite falloir renseigné vos donnée personnel de connexion..
+
+## Lancer l'application
+
+1. Avec XAMPP : placez votre projet dans `C:\xampp\htdocs\ecoride`.
+2. Puis accédez via l'url : http://localhost/ecoride/public
+
+---
+
+## Contact
+
+**Auteur** : UNY Marc
+**Formation** : Développeur Web et Web Mobile
+**Email** : marc.uny@orange.fr
