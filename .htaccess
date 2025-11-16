@@ -1,10 +1,5 @@
-# Sécurité Apache: Masquer les informations du serveur
-ServerTokens Prod
-ServerSignature Off
-
 # Redirection vers public/
 <IfModule mod_rewrite.c>
-    ERREUR_VOLONTAIRE_POUR_TEST
     RewriteEngine On
     
     # Si la requête ne commence pas par /public/ ET que ce n'est pas un fichier existant
