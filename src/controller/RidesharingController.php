@@ -320,7 +320,7 @@ class RidesharingController extends BaseController
         }
 
         // On retire les préférences du tableau envoyé par la vue si ce dernier en a renseigné
-        if($data['preferenceChoice']){
+        if(!empty($data['preferenceChoice'])){
 
             $preferenceList = $data['preferenceChoice'];
             unset($data['preferenceChoice']);
@@ -345,6 +345,7 @@ class RidesharingController extends BaseController
             return;
         }
 
+        
         // Recupération des preferences défini par le conducteur.
         foreach ($preferenceList as $pref) 
         {
