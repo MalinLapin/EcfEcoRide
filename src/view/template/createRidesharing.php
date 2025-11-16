@@ -1,5 +1,5 @@
 <section class="createRidesharing robotoBold">
-        <h2 class="montserratBold titleColor">créer votre covoiturage</h2>
+        <h2 class="montserratBold titleColor">Créer votre covoiturage</h2>
         <div class="searchContent">
             <form method="POST" action="/createRidesharing" class='searchForm'>
                 <div class='departureCity'>
@@ -65,7 +65,7 @@
                     </ul>    
                 </div>
 
-                <div>
+                <div class="btnDiv">
                     <input type="hidden" name="status" value="pending">
                     <input type="hidden" name="csrf_token" value="<?=$csrf_token ?>">
                     <button type="submit" class="btnSearch">C'est partie!</button>

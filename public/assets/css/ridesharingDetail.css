@@ -160,6 +160,11 @@
     flex-direction: column;
     row-gap: 30px;
   }
+  .nbSeats {
+    height: 50px;
+    font-size: 20px;
+    text-align: center;
+  }
 
   .btnSearch {
     height: 50px;

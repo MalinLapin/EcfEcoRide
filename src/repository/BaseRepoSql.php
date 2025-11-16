@@ -30,7 +30,7 @@ abstract class BaseRepoSql
      * @param BaseModel $model Le modèle à insérer dans la base de données.
      * @return bool Retourne true si l'insertion a réussi, false sinon.
      */
-    public function create(BaseModel $model):bool
+    public function create(BaseModel $model):int
     {
         
         // On vérifie que le modèle est une instance de BaseModel
@@ -52,7 +52,9 @@ abstract class BaseRepoSql
             $stmt->bindValue(":{$key}", $this->prepareParamForDatabase($value));
 
         }
-        return $stmt->execute();        
+        $stmt->execute();
+        
+        return $this->pdo->lastInsertId();
     }
 
     /**

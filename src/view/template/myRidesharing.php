@@ -99,7 +99,7 @@
                 <div class="emptyState">
                     <span class="material-symbols-outlined">info</span>
                     <p>Vous n'avez participé à aucun trajet pour le moment.</p>
-                    <a href="/searchRidesharing" class="searchRideBtn robotoBold">Rechercher un trajet</a>
+                    <a href="/search" class="searchRideBtn robotoBold">Rechercher un trajet</a>
                 </div>
             <?php endif; ?>
         </div>

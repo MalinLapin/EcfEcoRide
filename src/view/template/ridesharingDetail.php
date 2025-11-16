@@ -54,7 +54,7 @@
                 </div>
                 <div class="ridesharingSeats">
                     <label for="nbSeats">Veuillez choisir le nombre de siège désiré :</label>
-                    <input type="number" name="nbSeats" id="nbSeats" value="1" max='6' placeholder="Nombre de place">
+                    <input type="number" name="nbSeats" id="nbSeats" value="1" max='6' placeholder="Nombre de place" class="nbSeats">
                 </div>                
             </div>
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
