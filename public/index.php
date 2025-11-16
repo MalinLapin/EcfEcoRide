@@ -1,9 +1,5 @@
 <?php
 
-// Affiche les erreurs directement dans notre page.
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 // Inclure l'autoloader
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -16,6 +12,7 @@ Config::load();
 
 // Démarrer une séssion ou reprendre la séssion existante
 session_start();
+
 
 // Définir des routes avec la bibliothèque FastRoute
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){

@@ -337,7 +337,7 @@ class RidesharingController extends BaseController
                     ->setCreatedAt(new DateTimeImmutable());
 
         // Création du covoiturage
-        $newIdRide = $this->ridesharingRepo->creatRide($ridesharing);
+        $newIdRide = $this->ridesharingRepo->create($ridesharing);
 
         if(!$newIdRide)
         {

@@ -7,26 +7,35 @@ use Dotenv\Dotenv;
 class Config
 {
     /**
+     * Indique si le .env a déjà été chargé (pour éviter de le recharger)
+     */
+    private static bool $loaded = false;
+
+    /**
      * Charge le fichier .env (par défaut) ou un autre (ex: .env.test)
      * @param string $path Dossier contenant le .env
      * @param string $envFile Nom du fichier d'environnement à charger
      */
-    public static function load($path = __DIR__ . '/../../', $envFile ='.env'):void
+    public static function load(string $path = __DIR__ . '/../../', string $envFile = '.env'): void
     {
-        // On vérifie que le fichier .env existe avant de le charger
-        if(file_exists($path . $envFile))
-        {
+        // Éviter de recharger plusieurs fois
+        if (self::$loaded) {
+            return;
+        }
+
+        // On vérifie que le fichier .env existe avant de le charger (LOCAL)
+        if (file_exists($path . $envFile)) {
             // On utilise la librairie vlucas/phpdotenv pour charger les variables d'environnement
             $dotenv = Dotenv::createImmutable($path, $envFile);
             // On charge les variables d'environnement dans $_ENV
             $dotenv->load();
         }
 
-        // On analyse JAWSDB_URL si présent, (Bdd en ligne via heroku)
+        // On analyse JAWSDB_URL si présent (HEROKU)
         $jawsdbUrl = getenv('JAWSDB_URL');
         if ($jawsdbUrl !== false && !empty($jawsdbUrl)) {
             $dbparts = parse_url($jawsdbUrl);
-            
+
             // Alimente $_ENV avec les variables parsées
             $_ENV['DB_HOST'] = $dbparts['host'];
             $_ENV['DB_PORT'] = $dbparts['port'] ?? '3306';
@@ -35,12 +44,14 @@ class Config
             $_ENV['DB_PASSWORD'] = $dbparts['pass'];
         }
 
-        // On charge toutes les variables système dans $_ENV pour SMTP par Ex.
+        // On charge toutes les variables système dans $_ENV (pour SMTP, etc.)
         foreach ($_SERVER as $key => $value) {
             if (!isset($_ENV[$key])) {
                 $_ENV[$key] = $value;
             }
         }
+
+        self::$loaded = true;
     }
 
     /**
@@ -51,17 +62,24 @@ class Config
      */
     public static function get(string $key, $default = null)
     {
-            // 1. Priorité : variables d'environnement Heroku
+        // S'assurer que le .env est chargé (si on est en local)
+        if (!self::$loaded) {
+            self::load();
+        }
+
+        // 1. Priorité : variables d'environnement système (Heroku, Docker, etc.)
         $value = getenv($key);
         if ($value !== false && $value !== '') {
             return $value;
         }
 
-        // 2. Fallback : fichier .env (développement local)
-        if (!isset(self::$config)) {
-            self::load();
+        // 2. Fallback : fichier .env via $_ENV (développement local)
+        if (isset($_ENV[$key]) && $_ENV[$key] !== '') {
+            return $_ENV[$key];
         }
 
-        return self::$config[$key] ?? null;
+        // 3. Valeur par défaut
+        return $default;
     }
+
 }
