@@ -319,7 +319,7 @@ class RidesharingController extends BaseController
             return;
         }
 
-        // On retire les préférences du tableau envoyé par la vue si ce dernier en a renseigné
+        // On retire les préférences du tableau envoyé par la vue si ce dernier en a renseigné si ces dernière existe.
         if(!empty($data['preferenceChoice'])){
 
             $preferenceList = $data['preferenceChoice'];
@@ -345,32 +345,34 @@ class RidesharingController extends BaseController
             return;
         }
 
-        
-        // Recupération des preferences défini par le conducteur.
-        foreach ($preferenceList as $pref) 
-        {
-
-            $preferenceData = [
-                'label' => $pref,
-                'idRidesharing' => $newIdRide
-            ];
-            $preferenceModel = PreferenceModel::createAndHydrate($preferenceData);
-
-            $isCreated = $this->preferenceRepo->create($preferenceModel);
-
-
-            if(!$isCreated) 
+        // Si l'utilisateur a soumis une liste de préférence.
+        if(!empty($preferenceList)){
+            // Recupération des preferences défini par le conducteur.
+            foreach ($preferenceList as $pref) 
             {
-                $this->ridesharingRepo->delete($ridesharing->getIdRidesharing()); // Suppression du covoiturage créé précédemment en cas d'erreur.
-                $errors[] = "Une erreur est survenue lors de l'enregistrement des préférences.";
-                $this->render('createRidesharing', [
-                    'errors' => $errors,
-                    'csrf_token' => $this->tokenManager->generateCsrfToken()
-                ]);
+
+                $preferenceData = [
+                    'label' => $pref,
+                    'idRidesharing' => $newIdRide
+                ];
+                $preferenceModel = PreferenceModel::createAndHydrate($preferenceData);
+
+                $isCreated = $this->preferenceRepo->create($preferenceModel);
+
+
+                if(!$isCreated) 
+                {
+                    $this->ridesharingRepo->delete($ridesharing->getIdRidesharing()); // Suppression du covoiturage créé précédemment en cas d'erreur.
+                    $errors[] = "Une erreur est survenue lors de l'enregistrement des préférences.";
+                    $this->render('createRidesharing', [
+                        'errors' => $errors,
+                        'csrf_token' => $this->tokenManager->generateCsrfToken()
+                    ]);
+                    
+                    return;
+                }
                 
-                return;
             }
-            
         }
 
         // Redirection vers la page de détails du covoiturage nouvellement créé
