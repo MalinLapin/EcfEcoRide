@@ -49,20 +49,6 @@ Avant d'installer le projet, assurez-vous d'avoir :
 
 ### 1.Cloner le projet
 
-<<<<<<< Updated upstream
-Listez les versions ici
-_exemple :_
-**Dernière version stable :** 5.0
-**Dernière version :** 5.1
-Liste des versions : [Cliquer pour afficher](https://github.com/your/project-name/tags)
-_(pour le lien mettez simplement l'URL de votre projets suivi de `/tags`)_
-
-## Auteurs
-
-Listez le(s) auteur(s) du projet ici !
-
-- **Jhon doe** _alias_ [@outout14](https://github.com/outout14)
-=======
 En invite de commande se rendre dans le dossier de destination de notre projet local. Ici, nous le nommerons ecfBackup, avec ce chemin :
 
 ```bash
@@ -74,13 +60,9 @@ Une fois dans le dossier il faut cloner le repo github grâce à :
 ```bash
 git clone https://github.com/MalinLapin/EcfEcoRide.git
 ```
->>>>>>> Stashed changes
 
 Lisez la liste des [contributeurs](https://github.com/your/project/contributors) pour voir qui à aidé au projet !
 
-<<<<<<< Updated upstream
-_(pour le lien mettez simplement l'URL de votre projet suivi de `/contirubors`)_
-=======
 Toujours dans notre dossier en ligne commande il va falloir installer Composer, afin d'avoir accès à ses dépendances.
 
 ```bash
@@ -99,7 +81,6 @@ composer install
 
 1. Séléctionnez la base **ecorideBackup**
 2. Allez dans l'onglet Importer
->>>>>>> Stashed changes
 
 ## License
 
