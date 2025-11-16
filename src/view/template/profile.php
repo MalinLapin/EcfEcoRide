@@ -123,7 +123,9 @@
         </div>
     </div>
 
+    <?php if (!empty($listCar)): ?>
     <div class='newRide'>
         <a href="/showCreateRidesharing" class="newRideBtn robotoBold">Proposer un trajet.</a>
     </div>
+    <?php endif; ?>
 </section> 
