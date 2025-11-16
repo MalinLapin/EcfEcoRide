@@ -1,4 +1,4 @@
-.searchRidesharing {
+.createRidesharing {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
@@ -60,14 +60,43 @@
 /*--------Responsive------------*/
 
 @media (min-width: 768px) {
+  h2 {
+    font-size: 30px;
+  }
+
   .searchContent {
     max-width: 900px;
   }
   .searchForm {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-around;
     column-gap: 100px;
-    padding: 10px 0 20px 30px;
+    padding: 10px 30px 20px 30px;
+  }
+
+  .searchForm div {
+    width: 100%;
+  }
+
+  .searchForm label,
+  .searchForm input,
+  .searchForm select {
+    font-size: 20px;
+  }
+
+  .btnDiv {
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+
+  .btnSearch {
+    height: 50px;
+    width: 200px;
+    font-size: 20px;
+  }
+  .errorsList {
+    grid-column: 1 / -1;
+    justify-self: center;
   }
 }
