@@ -248,39 +248,39 @@ class RidesharingController extends BaseController
     public function createRidesharing(): void
     {
         error_log("=== createRidesharing START ===");
-    error_log("POST data: " . json_encode($_POST));
-    error_log("SESSION user: " . ($_SESSION['idUser'] ?? 'NOT SET'));
+        error_log("POST data: " . json_encode($_POST));
+        error_log("SESSION user: " . ($_SESSION['idUser'] ?? 'NOT SET'));
         
         $this->requireAuth();
-
+        
         // On s'assure que la requête est de type POST.
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
-        {
+            {
             $this->redirect('createRidesharing');
             return;
         }
-
+        
         // Récupération et nettoyage des données du formulaire
         $data = $this->getPostData();
-
+        
         // Validation du token CSRF
         if (!$this->tokenManager->validateCsrfToken($data['csrf_token']??''))
-        {
+            {
             $this->response->error('Token de sécurité invalide.', 403);
             return;
         }
-
+        
         // Validation des données de création de covoiturage
         $errors = [];
-
+        
         if (empty($data['departureCity'])) {
             $errors['departureCity'] = "La ville de départ est requise.";
         }
-
+        
         if (empty($data['departureAddress'])) {
             $errors['departureAddress'] = "L'adresse de départ est requise.";
         }
-
+        
         if (empty($data['departureDate']) || !strtotime($data['departureDate'])) {
             $errors['departureDate'] = "La date de départ est requise et doit être au format valide.";
         } else { // On vérifie que la date de départ est bien dans le futur.
@@ -290,29 +290,29 @@ class RidesharingController extends BaseController
                 $errors['departureDate'] = "La date de départ doit être dans le futur.";
             }
         }
-
+        
         if (empty($data['arrivalCity'])) {
             $errors['arrivalCity'] = "La ville d'arrivée est requise.";
         }
-
+        
         if (empty($data['arrivalCity'])) {
             $errors['pricePerSeat'] = "Veuillez indiquer un prix par participant";
         }
-
+        
         if (empty($data['availableSeats']) || !is_numeric($data['availableSeats']) || $data['availableSeats'] < 1 || $data['availableSeats'] > 6) {
             $errors['nbSeats'] = "Le nombre de places doit être un nombre entre 1 et 6.";
         }
-
+        
         if (empty($data['idCar'])) {
             $errors['idCar'] = "Veuillez selectionner un véhicule.";
         }
-
+        
         if (!empty($data['arrivalDate']) < $data['departureDate']){
             $errors ['arrivalDate'] = "La date d'arrivée ne peut être antérieur à la date de départ.";
         }
-
+        
         if (!empty($errors)) 
-        {
+            {
             $this->render('createRidesharing', [
                 'pageCss' => 'createRidesharing',
                 'errors' => $errors,
@@ -321,113 +321,102 @@ class RidesharingController extends BaseController
             ]);
             return;
         }
-
-        // On retire les préférences du tableau envoyé par la vue si ce dernier en a renseigné si ces dernière existe.
-        if(!empty($data['preferenceChoice'])){
-
-            $preferenceList = $data['preferenceChoice'];
+        
+        if (!empty($data['preferenceChoice']) && is_array($data['preferenceChoice'])) {
+            // Filtre les valeurs vides
+            $preferenceList = array_filter(
+                $data['preferenceChoice'], 
+                fn($p) => !empty(trim($p))
+            );
+            
+            error_log("✅ Preferences submitted: " . count($preferenceList));
+            error_log("Preferences raw: " . json_encode($preferenceList));
+            
             unset($data['preferenceChoice']);
+        } else {
+            error_log("ℹ️ No preferences submitted (field empty or missing)");
         }
         
-        // Il faut aussi retiré le token maintenant qu'il à été vérifier.
+        // On retire le token CSRF maintenant qu'il a été vérifié
         unset($data['csrf_token']);
         $data['idDriver'] = $_SESSION['idUser'];
-
-        // on hydrate et crée un objet ridesharing avec le reste des données envoyé par la vue
+        
+        // Création de l'objet Ridesharing
         $ridesharing = RidesharingModel::createAndHydrate($data);
-
         $ridesharing->setIdDriver($_SESSION['idUser'])
-                    ->setCreatedAt(new DateTimeImmutable());
-
-       /*  // Création du covoiturage
-        $newIdRide = $this->ridesharingRepo->create($ridesharing); */
-        error_log("Calling create() with ridesharing object");
-    $newIdRide = $this->ridesharingRepo->create($ridesharing);
-    error_log("create() returned: " . var_export($newIdRide, true));
-    
-    if (!$newIdRide) {
-        error_log("ERROR: create() returned false/null - STOPPING");
-        header('Location: /showCreateRidesharing');
-        exit;
-    }
-
-        if(!$newIdRide)
-        {
+        ->setCreatedAt(new DateTimeImmutable());
+        
+        // ========== CRÉATION DU TRAJET ==========
+        error_log("=== Creating ridesharing in MySQL ===");
+        $newIdRide = $this->ridesharingRepo->create($ridesharing);
+        error_log("Ridesharing created with id: " . var_export($newIdRide, true));
+        
+        if (!$newIdRide) {
+            error_log("❌ ERROR: Ridesharing creation failed");
             $this->response->error('Une erreur est survenue lors de la création du covoiturage.', 500);
             return;
         }
-
-
-        // AVANT la boucle des préférences
-    error_log("Starting preferences loop, count: " . count($preferenceList));
-    
-    foreach ($preferenceList as $index => $pref) {
-        error_log("Processing pref #$index: $pref");
-        $preferenceData = [
-                    'label' => $pref,
-                    'idRidesharing' => $newIdRide
-                ];
-
-        try {
-            error_log("Creating RidesharingPreferenceModel object");
-            $preference = PreferenceModel::createAndHydrate($preferenceData);
-            error_log("Model created, calling repository->create()");
-            $isCreated = $this->preferenceRepo->create($preference);
-            error_log("create() returned: " . var_export($isCreated, true));
-            if (!$isCreated) {
-            error_log("WARNING: Preference not created");
-        } else {
-            error_log("SUCCESS: Preference saved");
-        }
-        }catch (\Exception $e) {
-        error_log("EXCEPTION while saving preference #$index");
-        error_log("Message: " . $e->getMessage());
-        error_log("File: " . $e->getFile() . ":" . $e->getLine());
-        error_log("Trace: " . $e->getTraceAsString());
         
-        // ⚠️ On continue pour les autres préférences
-        // (tu peux aussi choisir de throw pour tout annuler)
-    }
-    error_log("All preferences processed");
-    
-        /* // Si l'utilisateur a soumis une liste de préférence.
-        if(!empty($preferenceList)){
-            // Recupération des preferences défini par le conducteur.
-            foreach ($preferenceList as $pref) 
-            {
-
-                $preferenceData = [
-                    'label' => $pref,
-                    'idRidesharing' => $newIdRide
-                ];
-                $preferenceModel = PreferenceModel::createAndHydrate($preferenceData);
-
-                $isCreated = $this->preferenceRepo->create($preferenceModel);
-
-
-                if(!$isCreated) 
-                {
-                    $this->ridesharingRepo->delete($ridesharing->getIdRidesharing()); // Suppression du covoiturage créé précédemment en cas d'erreur.
-                    $errors[] = "Une erreur est survenue lors de l'enregistrement des préférences.";
-                    $this->render('createRidesharing', [
-                        'errors' => $errors,
-                        'csrf_token' => $this->tokenManager->generateCsrfToken()
-                    ]);
-                    
-                    return;
-                }
+        // ========== CRÉATION DES PRÉFÉRENCES (SI PRÉSENTES) ==========
+        if (!empty($preferenceList)) {
+            error_log("=== Starting preferences insertion ===");
+            error_log("Preferences to insert: " . count($preferenceList));
+            
+            $failedPreferences = [];
+            
+            foreach ($preferenceList as $index => $pref) {
+                error_log("--- Processing preference #$index: '$pref' ---");
                 
+                try {
+                    $preferenceData = [
+                        'label' => trim($pref),
+                        'idRidesharing' => $newIdRide
+                    ];
+                    
+                    error_log("Creating PreferenceModel with data: " . json_encode($preferenceData));
+                    $preferenceModel = PreferenceModel::createAndHydrate($preferenceData);
+                    
+                    error_log("Calling preferenceRepo->create()");
+                    $isCreated = $this->preferenceRepo->create($preferenceModel);
+                    
+                    if (!$isCreated) {
+                        error_log("❌ FAILED to insert preference #$index");
+                        $failedPreferences[] = $pref;
+                    } else {
+                        error_log("✅ SUCCESS: Preference #$index inserted");
+                    }
+                    
+                } catch (\Exception $e) {
+                    error_log("🔥 EXCEPTION while saving preference #$index");
+                    error_log("Message: " . $e->getMessage());
+                    error_log("File: " . $e->getFile() . ":" . $e->getLine());
+                    error_log("Trace: " . $e->getTraceAsString());
+                    
+                    $failedPreferences[] = $pref;
+                }
             }
-        } */
-
-        error_log("=== createRidesharing END - Redirecting ===");
-    header('Location: /myRidesharing');
-    exit;
-
-        // Redirection vers la page de détails du covoiturage nouvellement créé
-        $this->redirect("myRidesharing");
+            
+            // Résumé final
+            $successCount = count($preferenceList) - count($failedPreferences);
+            error_log("=== Preferences insertion complete ===");
+            error_log("Success: $successCount / " . count($preferenceList));
+            
+            if (!empty($failedPreferences)) {
+                error_log("⚠️ Failed preferences: " . json_encode($failedPreferences));
+                
+                $this->ridesharingRepo->delete($newIdRide);
+                $this->response->error('Erreur lors de l\'enregistrement des préférences.', 500);
+                return;
+            }
+        } else {
+            error_log("ℹ️ No preferences to insert (user didn't fill any)");
+        }
+        
+        // ========== REDIRECTION ==========
+        error_log("=== createRidesharing END - Redirecting to /myRidesharing ===");
+        header('Location: /myRidesharing');
+        exit;
     }
-}
 
     /**
      * Permet au conducteur de démarrer un covoiturage.
