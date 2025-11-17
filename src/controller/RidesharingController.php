@@ -363,19 +363,29 @@ class RidesharingController extends BaseController
     
     foreach ($preferenceList as $index => $pref) {
         error_log("Processing pref #$index: $pref");
-        
-        $preferenceData = [
-                    'label' => $pref,
-                    'idRidesharing' => $newIdRide
-                ];
-                $preferenceModel = PreferenceModel::createAndHydrate($preferenceData);
 
-                $isCreated = $this->preferenceRepo->create($preferenceModel);
-        
-        if (!$isCreated) {
-            error_log("ERROR: Failed to create preference $pref for ride $newIdRide");
+        try {
+            error_log("Creating RidesharingPreferenceModel object");
+            $preference = new PreferenceModel(null,$newIdRide,$pref);
+            error_log("Model created, calling repository->create()");
+            $isCreated = $this->preferenceRepo->create($preference);
+            error_log("create() returned: " . var_export($isCreated, true));
+            if (!$isCreated) {
+            error_log("WARNING: Preference not created");
+        } else {
+            error_log("SUCCESS: Preference saved");
         }
+        }catch (\Exception $e) {
+        error_log("EXCEPTION while saving preference #$index");
+        error_log("Message: " . $e->getMessage());
+        error_log("File: " . $e->getFile() . ":" . $e->getLine());
+        error_log("Trace: " . $e->getTraceAsString());
+        
+        // ⚠️ On continue pour les autres préférences
+        // (tu peux aussi choisir de throw pour tout annuler)
     }
+    error_log("All preferences processed");
+    
         /* // Si l'utilisateur a soumis une liste de préférence.
         if(!empty($preferenceList)){
             // Recupération des preferences défini par le conducteur.
