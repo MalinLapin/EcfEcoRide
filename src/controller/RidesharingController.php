@@ -376,7 +376,7 @@ class RidesharingController extends BaseController
         }
 
         // Redirection vers la page de détails du covoiturage nouvellement créé
-        $this->redirect("/myRidesharing");
+        $this->redirect("myRidesharing");
     }
 
     /**
