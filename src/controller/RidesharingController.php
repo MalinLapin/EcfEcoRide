@@ -247,6 +247,9 @@ class RidesharingController extends BaseController
      */
     public function createRidesharing(): void
     {
+        error_log("=== createRidesharing START ===");
+    error_log("POST data: " . json_encode($_POST));
+    error_log("SESSION user: " . ($_SESSION['idUser'] ?? 'NOT SET'));
         
         $this->requireAuth();
 
@@ -336,8 +339,17 @@ class RidesharingController extends BaseController
         $ridesharing->setIdDriver($_SESSION['idUser'])
                     ->setCreatedAt(new DateTimeImmutable());
 
-        // Création du covoiturage
-        $newIdRide = $this->ridesharingRepo->create($ridesharing);
+       /*  // Création du covoiturage
+        $newIdRide = $this->ridesharingRepo->create($ridesharing); */
+        error_log("Calling create() with ridesharing object");
+    $newIdRide = $this->ridesharingRepo->create($ridesharing);
+    error_log("create() returned: " . var_export($newIdRide, true));
+    
+    if (!$newIdRide) {
+        error_log("ERROR: create() returned false/null - STOPPING");
+        header('Location: /showCreateRidesharing');
+        exit;
+    }
 
         if(!$newIdRide)
         {
@@ -345,7 +357,26 @@ class RidesharingController extends BaseController
             return;
         }
 
-        // Si l'utilisateur a soumis une liste de préférence.
+
+        // AVANT la boucle des préférences
+    error_log("Starting preferences loop, count: " . count($preferenceList));
+    
+    foreach ($preferenceList as $index => $pref) {
+        error_log("Processing pref #$index: $pref");
+        
+        $preferenceData = [
+                    'label' => $pref,
+                    'idRidesharing' => $newIdRide
+                ];
+                $preferenceModel = PreferenceModel::createAndHydrate($preferenceData);
+
+                $isCreated = $this->preferenceRepo->create($preferenceModel);
+        
+        if (!$isCreated) {
+            error_log("ERROR: Failed to create preference $pref for ride $newIdRide");
+        }
+    }
+        /* // Si l'utilisateur a soumis une liste de préférence.
         if(!empty($preferenceList)){
             // Recupération des preferences défini par le conducteur.
             foreach ($preferenceList as $pref) 
@@ -373,7 +404,11 @@ class RidesharingController extends BaseController
                 }
                 
             }
-        }
+        } */
+
+        error_log("=== createRidesharing END - Redirecting ===");
+    header('Location: /myRidesharing');
+    exit;
 
         // Redirection vers la page de détails du covoiturage nouvellement créé
         $this->redirect("myRidesharing");
