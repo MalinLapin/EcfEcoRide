@@ -51,6 +51,13 @@ class Database
         if (self::$db === null) {
             $uri = Config::get('MONGODB_URI');
             $dbName = Config::get('MONGO_DB');
+
+             // 🔍 LOGS DE DEBUG
+        error_log("=== MONGODB CONNECTION DEBUG ===");
+        error_log("URI présent: " . (!empty($uri) ? "YES" : "NO"));
+        error_log("URI starts with mongodb+srv: " . (strpos($uri, 'mongodb+srv://') === 0 ? "YES" : "NO"));
+        error_log("DB Name: " . $dbName);
+
             try{
                 $client = new Client($uri, [
                 'typeMap' => [
@@ -62,9 +69,16 @@ class Database
                 'serverSelectionTimeoutMS' => 5000,
                 'connectTimeoutMS' => 10000,
             ]);
+
+            error_log("Client MongoDB créé");
+
             self::$db = $client->selectDatabase($dbName);
+            error_log("Base de données sélectionnée");
+
             }catch(Exception $e){
-                die("Erreur de connexion à la base de donnée NoSql : ". $e->getMessage());
+                error_log("❌ MongoDB Exception: " . $e->getMessage());
+            error_log("❌ Code: " . $e->getCode());
+            die("Erreur de connexion à la base de donnée NoSql : ". $e->getMessage());
             }            
         }
         return self::$db;    
