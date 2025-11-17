@@ -107,6 +107,10 @@
   border-left-color: #f39c12;
 }
 
+.rideCard.canceled {
+  border-left-color: #c0392b;
+}
+
 /* En-tête du trajet */
 .rideHeader {
   display: flex;
@@ -139,6 +143,11 @@
 
 .statusBadge.pending {
   background-color: #f39c12;
+  color: white;
+}
+
+.statusBadge.canceled {
+  background-color: #c0392b;
   color: white;
 }
 

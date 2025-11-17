@@ -35,7 +35,9 @@
                                     <?php if ($ride->getStatus()->value == 'ongoing'): ?>
                                         <span class="statusBadge inProgress">En cours</span>
                                     <?php elseif ($ride->getStatus()->value == 'pending'): ?>
-                                        <span class="statusBadge upcoming">À venir</span>
+                                        <span class="statusBadge pending">En attente</span>
+                                    <?php elseif($ride->getStatus()->value == 'canceled'): ?>
+                                        <span class="statusBadge canceled">Annulé</span>
                                     <?php else: ?>
                                         <span class="statusBadge completed">Effectué</span>
                                     <?php endif; ?>
@@ -117,6 +119,8 @@
                                         <span class="statusBadge inProgress">En cours</span>
                                     <?php elseif ($ride->getStatus()->value == 'pending'): ?>
                                         <span class="statusBadge pending">En attente</span>
+                                    <?php elseif($ride->getStatus()->value == 'canceled'): ?>
+                                        <span class="statusBadge canceled">Annulé</span>
                                     <?php else: ?>
                                         <span class="statusBadge completed">Effectué</span>
                                     <?php endif; ?>
