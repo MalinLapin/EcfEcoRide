@@ -58,6 +58,9 @@ class Database
                     'document' => 'array',
                     'array' => 'array',
                 ],
+                'tls' => true,
+                'serverSelectionTimeoutMS' => 5000,
+                'connectTimeoutMS' => 10000,
             ]);
             self::$db = $client->selectDatabase($dbName);
             }catch(Exception $e){
