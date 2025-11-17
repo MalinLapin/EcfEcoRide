@@ -28,10 +28,14 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log("Élément trouvé ?", pricePerSeat);
 
     const message = "Afin de garantir le bon fonctionnement de la plateforme, veuillez prendre en compte que 2 crédits/passager seront prélevé par Ecoride.";
+    let messageShown = false;
 
     function showMessage() {
-        alert(message);
+        if (!messageShown) {
+            alert(message)
+            messageShown = true;
+        }
     }
 
-    pricePerSeat.addEventListener('click', showMessage);
+    pricePerSeat.addEventListener('focus', showMessage);
 });
