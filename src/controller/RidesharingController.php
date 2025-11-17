@@ -363,10 +363,14 @@ class RidesharingController extends BaseController
     
     foreach ($preferenceList as $index => $pref) {
         error_log("Processing pref #$index: $pref");
+        $preferenceData = [
+                    'label' => $pref,
+                    'idRidesharing' => $newIdRide
+                ];
 
         try {
             error_log("Creating RidesharingPreferenceModel object");
-            $preference = new PreferenceModel(null,$newIdRide,$pref);
+            $preference = PreferenceModel::createAndHydrate($preferenceData);
             error_log("Model created, calling repository->create()");
             $isCreated = $this->preferenceRepo->create($preference);
             error_log("create() returned: " . var_export($isCreated, true));
