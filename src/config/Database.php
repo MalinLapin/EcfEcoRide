@@ -49,7 +49,7 @@ class Database
     public static function getInstanceMongo():MongoDatabase
     {
         if (self::$db === null) {
-            $uri = Config::get('MONGO_URL');
+            $uri = Config::get('MONGODB_URI');
             $dbName = Config::get('MONGO_DB');
             try{
                 $client = new Client($uri, [
