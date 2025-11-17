@@ -79,31 +79,24 @@ abstract class BaseRepoMongo
      */
     public function create(object|array $model): bool
     {
-        error_log("=== BaseRepoMongo::create START ===");
-        error_log("Collection: " . $this->collectionName);
         try{
             $doc = $this->toDocument($model);
-            error_log("Document to insert: " . json_encode($doc));
 
             $result = $this->collection->insertOne($doc);
-            
+
             $insertedCount = $result->getInsertedCount();
-            error_log("Inserted count: $insertedCount");
 
             if ($insertedCount === 1) {
                 $insertedId = (string)$result->getInsertedId();
-                error_log("Document inserted with _id: $insertedId");
                 return true;
             }
             return false;
         }catch (\MongoDB\Driver\Exception\Exception $e) {
             error_log("MongoDB Exception: " . $e->getMessage());
-            error_log("Error code: " . $e->getCode());
             return false; // Ou throw $e; selon ton besoin
             
         } catch (\Exception $e) {
             error_log("Exception: " . $e->getMessage());
-            error_log("Stack trace: " . $e->getTraceAsString());
             return false;
         }
         
