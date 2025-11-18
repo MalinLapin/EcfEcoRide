@@ -21,6 +21,8 @@
         <!-- Meta contenant le token CSRF-->
         <meta name="csrfToken" content="<?= htmlspecialchars($csrf_token) ?>">
 
+        <link rel="shortcut icon" type="image/x-icon" href="/assets/images/LogoSF.ico">
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto&display=swap" rel="stylesheet">

@@ -116,8 +116,20 @@ Il va ensuite falloir renseigné vos donnée personnel de connexion.
 
 ## Lancer l'application
 
+### En Local après avoir suivi la procédure
+
 1. Avec XAMPP : placez votre projet dans `C:\xampp\htdocs\ecoride`.
 2. Puis accédez via l'url : http://localhost/ecoride/public
+
+### La version déployé en ligne
+
+Scannez le QR Code pour accéder à l'application en ligne :
+
+<p align="center">
+  <img src="public/assets/images/EcorideQRCode.svg" alt="QR Code EcoRide" width="200"/>
+</p>
+
+**OU accédez directement via :** [https://EcoRide.com/](https://stark-mountain-00422-f4d7d334b310.herokuapp.com)
 
 ---
 
