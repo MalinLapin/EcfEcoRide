@@ -79,7 +79,7 @@ composer install
 ### 4.Configuration MongoDB
 
 Si vous avez installer MongoDB comme un service en cochant l'option "Install as a Service" ce dernier doit démarrer automatiquement.
-Pour vérifier, dans un terminal :
+Pour vérifier, dans un terminal ce rendre a la racine de notre projet puis:
 
 ```bash
 mongosh
@@ -100,7 +100,7 @@ load("src/bdd/mongo/init.mongodb")
 Pour vérifier visionnons nos collections nouvellement créées:
 
 ```bash
-show collection
+show collections
 ```
 
 ### 5.Configuration des variables d'environnement
@@ -112,7 +112,7 @@ Dans un terminal:
 copy .env.example .env
 ```
 
-Il va ensuite falloir renseigné vos donnée personnel de connexion..
+Il va ensuite falloir renseigné vos donnée personnel de connexion.
 
 ## Lancer l'application
 
