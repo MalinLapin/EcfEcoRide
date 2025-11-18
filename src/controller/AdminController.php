@@ -23,7 +23,7 @@ class AdminController extends BaseController
 
         $users = $this->userRepo->findUserByRole(Role::user);
 
-        $employees = $this->userRepo->findUserByRole(Role::employe);
+        $employees = $this->userRepo->findUserByRole(Role::employee);
 
         $countUsers = count($users);
         $countEmployees = count($employees);
@@ -210,7 +210,7 @@ class AdminController extends BaseController
                     ->setPassword(($data['password']))
                     ->setCreatedAt(new DateTimeImmutable())
                     ->setCreditBalance(0) // un employer n'as pas besoin de crédit
-                    ->setRole(Role::employe);
+                    ->setRole(Role::employee);
         
 
             $this->userRepo->create($newUser);

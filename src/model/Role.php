@@ -11,5 +11,5 @@ enum Role: string
 {
         case user = 'user'; // Rôle par défaut pour les utilisateurs normaux.
         case admin = 'admin'; // Rôle pour les administrateurs du système.
-        case employe = 'employe';// Rôle pour les employés du service client ou de la gestion des covoiturages.
+        case employee = 'employee';// Rôle pour les employés du service client ou de la gestion des covoiturages.
 }

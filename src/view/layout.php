@@ -55,7 +55,7 @@
                 <nav class="navMenu" id="navMenu">
                     <ul>
                         <!--Les employer aurons accès uniquement à leur espace.-->
-                        <?php if($_SESSION['role'] == 'employe'):?>
+                        <?php if($_SESSION['role'] == 'employee'):?>
                             <li><a href="/employeeSpace"><span class="material-symbols-outlined">work</span> Espace Employer</a></li>
                             <li>
                                 <form method="POST" action="/logout">

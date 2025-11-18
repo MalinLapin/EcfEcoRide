@@ -106,7 +106,7 @@ class AuthController extends BaseController
                 //Si c'est un admin il est rediriger directement sur son espace de travail.
                 $this->redirect('/adminSpace');
                 return;
-            }elseif ($_SESSION['role'] == 'employe'){
+            }elseif ($_SESSION['role'] == 'employee'){
                 //Si c'est un employer il est rediriger directement sur son espace de travail.
                 $this->redirect('/employeeSpace');
                 return;
