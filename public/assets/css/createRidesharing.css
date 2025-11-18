@@ -41,6 +41,10 @@
   background-color: #27ae60;
 }
 
+.infoCredit span {
+  color: #c0392b;
+}
+
 .errorsList {
   margin-left: 5px;
   padding-inline-start: 20px;

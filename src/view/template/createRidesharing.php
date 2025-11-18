@@ -33,6 +33,7 @@
                 <div class="pricePerSeat">
                     <label for="pricePerSeat">Prix de la place :</label>
                     <input type="number" name="pricePerSeat" id="pricePerSeat" required>
+                    <small class="infoCredit"> <span class="material-symbols-outlined">warning</span>2 crédits par passager prélevés par EcoRide</small>
                 </div>
                 <div class="voitureList">
                     <label for="carSelect">Veuillez choisir une voiture.</label>
