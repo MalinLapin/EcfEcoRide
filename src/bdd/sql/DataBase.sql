@@ -1,5 +1,4 @@
 -- Active: 1741707596826@@127.0.0.1@3306
-
 CREATE TABLE brand (
     id_brand INT PRIMARY KEY AUTO_INCREMENT,
     label VARCHAR(30) NOT NULL UNIQUE
@@ -14,7 +13,7 @@ CREATE TABLE user (
     credit_balance INT,
     photo VARCHAR(255),
     grade DECIMAL(2, 1),
-    role ENUM('user', 'employe', 'admin') NOT NULL DEFAULT 'user',
+    role ENUM('user', 'employee', 'admin') NOT NULL DEFAULT 'user',
     is_active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
@@ -78,7 +77,7 @@ CREATE TABLE participate (
     FOREIGN KEY (id_ridesharing) REFERENCES ridesharing (id_ridesharing)
 );
 
-/* Mock pour test */
+/* valeur par défaut pour tester les utilisateurs */
 INSERT INTO
     user (
         pseudo,
@@ -98,7 +97,7 @@ VALUES (
         100,
         'marc.jpg',
         5.0,
-        'admin'
+        'employee'
     ),
     (
         'elinauny',
@@ -138,7 +137,17 @@ VALUES (
         30,
         'milka.jpg',
         NULL,
-        'employe'
+        'employee'
+    ),
+    (
+        'José',
+        'jose.ecoride@test.com',
+        '$2y$10$A1vWrB6MeA/4y06As54BR.rvFOgrxUX/YjOveiUyP2FWVw6l9MSya',
+        NOW(),
+        100,
+        NULL,
+        NULL,
+        'admin'
     );
 
 INSERT INTO
@@ -146,8 +155,43 @@ INSERT INTO
 VALUES ('Toyota'),
     ('Ford'),
     ('BMW'),
-    ('Mercedes');
+    ('Mercedes'),
+    ('Peugeot'),
+    ('Renault'),
+    ('Citroën'),
+    ('Volkswagen'),
+    ('Audi'),
+    ('Opel'),
+    ('Nissan'),
+    ('Fiat'),
+    ('Dacia'),
+    ('Seat'),
+    ('Skoda'),
+    ('Hyundai'),
+    ('Kia'),
+    ('Mazda'),
+    ('Honda'),
+    ('Volvo'),
+    ('Mini'),
+    ('Alfa Romeo'),
+    ('Jeep'),
+    ('Land Rover'),
+    ('Porsche'),
+    ('Tesla'),
+    ('Suzuki'),
+    ('Mitsubishi'),
+    ('Lexus'),
+    ('Jaguar'),
+    ('DS Automobiles'),
+    ('Smart'),
+    ('Subaru'),
+    ('Chevrolet');
 
+/* fixture générer par IA pour compléter les données de départ et effectuer plusieur test.*/
+
+/* Insertion des voitures */
+
+-- Voiture d'elinaUny (électrique)
 INSERT INTO
     car (
         model,
@@ -159,51 +203,129 @@ INSERT INTO
         id_user
     )
 VALUES (
-        'Corolla',
-        'ABC123',
-        '2020-01-15 00:00:00',
-        'escence',
-        'Red',
-        1,
-        2
-    ),
-    (
-        'Focus',
-        'XYZ456',
-        '2019-05-20 00:00:00',
-        'diesel',
-        'Blue',
-        2,
-        3
-    ),
-    (
-        'X5',
-        'LMN789',
-        '2021-03-10 00:00:00',
+        'Zoe',
+        'AB-123-CD',
+        '2021-03-15',
         'electric',
-        'Black',
-        3,
-        3
-    ),
-    (
-        'A-Class',
-        'OPQ012',
-        '2018-07-25 00:00:00',
+        'Blanc',
+        7,
+        2
+    );
+-- Renault Zoe pour elina
+
+-- Voiture de mystereuny (hybride)
+INSERT INTO
+    car (
+        model,
+        registration_number,
+        first_registration,
+        energy_type,
+        color,
+        id_brand,
+        id_user
+    )
+VALUES (
+        'Prius',
+        'EF-456-GH',
+        '2020-06-20',
         'hybrid',
-        'White',
-        4,
-        4
-    ),
-    (
-        'Civic',
-        'RST345',
-        '2022-11-30 00:00:00',
-        'escence',
-        'Green',
+        'Gris',
         1,
         4
     );
+-- Toyota Prius pour mystere
 
+-- Deuxième voiture de mystereuny (diesel)
+INSERT INTO
+    car (
+        model,
+        registration_number,
+        first_registration,
+        energy_type,
+        color,
+        id_brand,
+        id_user
+    )
+VALUES (
+        '308',
+        'IJ-789-KL',
+        '2019-11-10',
+        'diesel',
+        'Noir',
+        5,
+        4
+    );
+-- Peugeot 308 pour mystere
+
+-- Voiture de marctest (essence)
+INSERT INTO
+    car (
+        model,
+        registration_number,
+        first_registration,
+        energy_type,
+        color,
+        id_brand,
+        id_user
+    )
+VALUES (
+        'Golf',
+        'MN-012-OP',
+        '2022-01-05',
+        'escence',
+        'Bleu',
+        8,
+        1
+    );
+-- VW Golf pour marc
+
+-- Voiture de milkauny (électrique)
+INSERT INTO
+    car (
+        model,
+        registration_number,
+        first_registration,
+        energy_type,
+        color,
+        id_brand,
+        id_user
+    )
+VALUES (
+        'Model 3',
+        'QR-345-ST',
+        '2023-05-12',
+        'electric',
+        'Rouge',
+        26,
+        5
+    );
+-- Tesla Model 3 pour milka
+
+-- Voiture de José (GPL)
+INSERT INTO
+    car (
+        model,
+        registration_number,
+        first_registration,
+        energy_type,
+        color,
+        id_brand,
+        id_user
+    )
+VALUES (
+        'Duster',
+        'UV-678-WX',
+        '2020-09-18',
+        'gpl',
+        'Vert',
+        13,
+        6
+    );
+-- Dacia Duster pour José
+
+/* Trajets d'elinaUny - Saint-Étienne <-> Lyon (réguliers) */
+
+-- Trajet 1 : Saint-Étienne -> Lyon (complété)
 INSERT INTO
     ridesharing (
         departure_date,
@@ -220,137 +342,536 @@ INSERT INTO
         id_car
     )
 VALUES (
-        '2026-12-12 12:00:00',
-        'Paris',
-        '123 Rue de Paris',
+        '2024-01-15 08:00:00',
+        'Saint-Étienne',
+        '10 Place Jean Jaurès',
         'Lyon',
-        '456 Avenue de Lyon',
-        '2026-10-01 12:00:00',
-        3,
-        20,
-        'pending',
-        NOW(),
-        2,
-        1
-    ),
-    (
-        '2026-10-01 08:00:00',
-        'Paris',
-        '123 Rue de Paris',
-        'Lyon',
-        '456 Avenue de Lyon',
-        NULL,
-        1,
-        12,
-        'ongoing',
-        NOW(),
-        3,
-        2
-    ),
-    (
-        '2026-10-01 09:00:00',
-        'Paris',
-        '123 Rue de Paris',
-        'Lyon',
-        '3 Avenue des test',
-        NULL,
-        3,
+        '25 Rue de la République',
+        '2024-01-15 09:00:00',
+        0,
         8,
-        'pending',
-        NOW(),
-        2,
-        3
-    ),
-    (
-        '2025-10-16 09:00:00',
-        'Marseille',
-        '789 Boulevard de Marseille',
-        'Nice',
-        '321 Rue de Nice',
-        '2023-10-02 11:00:00',
-        2,
-        25,
-        'ongoing',
-        NOW(),
-        4,
-        2
-    ),
-    (
-        '2025-11-03 07:30:00',
-        'Bordeaux',
-        '654 Avenue de Bordeaux',
-        'Toulouse',
-        '987 Rue de Toulouse',
-        NULL,
-        4,
-        30,
-        'pending',
-        NOW(),
-        2,
-        3
-    ),
-    (
-        '2024-10-04 10:15:00',
-        'Nantes',
-        '159 Boulevard de Nantes',
-        'Rennes',
-        '753 Rue de Rennes',
-        NULL,
-        1,
-        15,
         'completed',
-        NOW(),
+        '2025-11-18 17:12:00',
         2,
-        4
-    ),
-    (
-        '2024-10-05 06:45:00',
-        'Strasbourg',
-        '852 Avenue de Strasbourg',
-        'Mulhouse',
-        '951 Rue de Mulhouse',
-        NULL,
-        5,
-        40,
-        'cancelled',
-        NOW(),
-        4,
-        5
-    ),
-    (
-        '2025-11-06 08:30:00',
-        'Lille',
-        '258 Boulevard de Lille',
-        'Roubaix',
-        NULL,
-        NULL,
-        2,
-        18,
-        'pending',
-        NOW(),
-        1,
         1
     );
 
+-- Trajet 2 : Saint-Étienne -> Lyon (complété)
+INSERT INTO
+    ridesharing (
+        departure_date,
+        departure_city,
+        departure_address,
+        arrival_city,
+        arrival_address,
+        arrival_date,
+        available_seats,
+        price_per_seat,
+        status,
+        created_at,
+        id_driver,
+        id_car
+    )
+VALUES (
+        '2024-01-18 07:30:00',
+        'Saint-Étienne',
+        '10 Place Jean Jaurès',
+        'Lyon',
+        '25 Rue de la République',
+        '2024-01-18 08:30:00',
+        1,
+        8,
+        'completed',
+        '2025-11-18 17:12:00',
+        2,
+        1
+    );
+
+-- Trajet 3 : Lyon -> Saint-Étienne (complété)
+INSERT INTO
+    ridesharing (
+        departure_date,
+        departure_city,
+        departure_address,
+        arrival_city,
+        arrival_address,
+        arrival_date,
+        available_seats,
+        price_per_seat,
+        status,
+        created_at,
+        id_driver,
+        id_car
+    )
+VALUES (
+        '2024-01-18 18:00:00',
+        'Lyon',
+        '25 Rue de la République',
+        'Saint-Étienne',
+        '10 Place Jean Jaurès',
+        '2024-01-18 19:00:00',
+        2,
+        8,
+        'completed',
+        '2025-11-18 17:12:00',
+        2,
+        1
+    );
+
+-- Trajet 4 : Saint-Étienne -> Lyon (complété)
+INSERT INTO
+    ridesharing (
+        departure_date,
+        departure_city,
+        departure_address,
+        arrival_city,
+        arrival_address,
+        arrival_date,
+        available_seats,
+        price_per_seat,
+        status,
+        created_at,
+        id_driver,
+        id_car
+    )
+VALUES (
+        '2025-11-10 08:00:00',
+        'Saint-Étienne',
+        '10 Place Jean Jaurès',
+        'Lyon',
+        '25 Rue de la République',
+        '2025-11-10 09:00:00',
+        0,
+        8,
+        'completed',
+        '2025-11-18 17:12:00',
+        2,
+        1
+    );
+
+-- Trajet 5 : Saint-Étienne -> Lyon (en attente)
+INSERT INTO
+    ridesharing (
+        departure_date,
+        departure_city,
+        departure_address,
+        arrival_city,
+        arrival_address,
+        arrival_date,
+        available_seats,
+        price_per_seat,
+        status,
+        created_at,
+        id_driver,
+        id_car
+    )
+VALUES (
+        '2025-12-05',
+        'Saint-Étienne',
+        '10 Place Jean Jaurès',
+        'Lyon',
+        '25 Rue de la République',
+        '2025-12-05 09:00:00',
+        2,
+        8,
+        'pending',
+        '2025-11-18 17:12:00',
+        2,
+        1
+    );
+
+-- Trajet 6 : Lyon -> Saint-Étienne (en attente)
+INSERT INTO
+    ridesharing (
+        departure_date,
+        departure_city,
+        departure_address,
+        arrival_city,
+        arrival_address,
+        arrival_date,
+        available_seats,
+        price_per_seat,
+        status,
+        created_at,
+        id_driver,
+        id_car
+    )
+VALUES (
+        '2025-12-10 18:30:00',
+        'Lyon',
+        '25 Rue de la République',
+        'Saint-Étienne',
+        '10 Place Jean Jaurès',
+        '2025-12-10 19:30:00',
+        3,
+        8,
+        'pending',
+        '2025-11-18 17:12:00',
+        2,
+        1
+    );
+
+/* Trajets de mystereuny - Trajets variés */
+
+-- Trajet 7 : Paris -> Marseille (complété)
+INSERT INTO
+    ridesharing (
+        departure_date,
+        departure_city,
+        departure_address,
+        arrival_city,
+        arrival_address,
+        arrival_date,
+        available_seats,
+        price_per_seat,
+        status,
+        created_at,
+        id_driver,
+        id_car
+    )
+VALUES (
+        '2024-01-10 06:00:00',
+        'Paris',
+        'Gare de Lyon',
+        'Marseille',
+        'Vieux Port',
+        '2025-12-20 14:00:00',
+        1,
+        45,
+        'pending',
+        '2025-11-18 17:12:00',
+        4,
+        2
+    );
+
+-- Trajet 8 : Bordeaux -> Toulouse (complété)
+INSERT INTO
+    ridesharing (
+        departure_date,
+        departure_city,
+        departure_address,
+        arrival_city,
+        arrival_address,
+        arrival_date,
+        available_seats,
+        price_per_seat,
+        status,
+        created_at,
+        id_driver,
+        id_car
+    )
+VALUES (
+        '2024-01-14 10:00:00',
+        'Bordeaux',
+        'Place de la Bourse',
+        'Toulouse',
+        'Capitole',
+        '2024-01-14 12:30:00',
+        2,
+        18,
+        'completed',
+        '2025-11-18 17:12:00',
+        4,
+        3
+    );
+
+-- Trajet 9 : Lyon -> Grenoble (complété)
+INSERT INTO
+    ridesharing (
+        departure_date,
+        departure_city,
+        departure_address,
+        arrival_city,
+        arrival_address,
+        arrival_date,
+        available_seats,
+        price_per_seat,
+        status,
+        created_at,
+        id_driver,
+        id_car
+    )
+VALUES (
+        '2024-01-20 14:00:00',
+        'Lyon',
+        'Part-Dieu',
+        'Grenoble',
+        'Gare SNCF',
+        '2024-01-20 15:30:00',
+        1,
+        12,
+        'completed',
+        '22025-11-18 17:12:00',
+        4,
+        2
+    );
+
+-- Trajet 10 : Lille -> Strasbourg (en cours)
+INSERT INTO
+    ridesharing (
+        departure_date,
+        departure_city,
+        departure_address,
+        arrival_city,
+        arrival_address,
+        arrival_date,
+        available_seats,
+        price_per_seat,
+        status,
+        created_at,
+        id_driver,
+        id_car
+    )
+VALUES (
+        '2024-02-08 07:00:00',
+        'Lille',
+        'Grand Place',
+        'Strasbourg',
+        'Place Kléber',
+        '2024-02-08 12:00:00',
+        3,
+        35,
+        'pending',
+        '2025-11-18 17:12:00',
+        4,
+        3
+    );
+
+-- Trajet 11 : Nice -> Montpellier (en attente)
+INSERT INTO
+    ridesharing (
+        departure_date,
+        departure_city,
+        departure_address,
+        arrival_city,
+        arrival_address,
+        arrival_date,
+        available_seats,
+        price_per_seat,
+        status,
+        created_at,
+        id_driver,
+        id_car
+    )
+VALUES (
+        '2024-02-12 09:00:00',
+        'Nice',
+        'Promenade des Anglais',
+        'Montpellier',
+        'Place de la Comédie',
+        '2024-02-12 12:30:00',
+        4,
+        28,
+        'pending',
+        '2025-11-18 17:12:00',
+        4,
+        2
+    );
+
+-- Trajet 12 : Nantes -> Rennes (en attente)
+INSERT INTO
+    ridesharing (
+        departure_date,
+        departure_city,
+        departure_address,
+        arrival_city,
+        arrival_address,
+        arrival_date,
+        available_seats,
+        price_per_seat,
+        status,
+        created_at,
+        id_driver,
+        id_car
+    )
+VALUES (
+        '2024-02-15 16:00:00',
+        'Nantes',
+        'Place Royale',
+        'Rennes',
+        'Place de la Mairie',
+        '2024-02-15 17:30:00',
+        3,
+        10,
+        'pending',
+        '2025-11-18 17:12:00',
+        4,
+        3
+    );
+
+/* Participations de mystereuny aux trajets d'elina */
+
+-- mystereuny participe au trajet 1 d'elina (Saint-Étienne -> Lyon) - complété
 INSERT INTO
     participate (
         id_participant,
         id_ridesharing,
+        confirmed,
         nb_seats,
         created_at,
         completed_at
     )
-VALUES (3, 1, 1, NOW(), NULL),
-    (4, 1, 1, NOW(), NULL),
-    (2, 4, 1, NOW(), NULL),
-    (
-        3,
-        6,
+VALUES (
+        4,
         1,
-        NOW(),
-        '2023-10-02 11:00:00'
+        TRUE,
+        2,
+        '2025-11-18 17:12:00',
+        '2024-01-15 09:00:00'
     );
 
-SELECT p.*, r.id_driver
-FROM participate p
-    JOIN ridesharing r ON p.id_ridesharing = r.id_ridesharing;
+-- mystereuny participe au trajet 4 d'elina (Saint-Étienne -> Lyon) - complété
+INSERT INTO
+    participate (
+        id_participant,
+        id_ridesharing,
+        confirmed,
+        nb_seats,
+        created_at,
+        completed_at
+    )
+VALUES (
+        4,
+        4,
+        TRUE,
+        1,
+        '2025-11-18 17:12:00',
+        '2024-01-22 09:00:00'
+    );
+
+/* Participations d'axeluny aux trajets d'elina */
+
+-- axeluny participe au trajet 2 d'elina (Saint-Étienne -> Lyon) - complété
+INSERT INTO
+    participate (
+        id_participant,
+        id_ridesharing,
+        confirmed,
+        nb_seats,
+        created_at,
+        completed_at
+    )
+VALUES (
+        3,
+        2,
+        TRUE,
+        1,
+        '2025-11-18 17:12:00',
+        '2024-01-18 08:30:00'
+    );
+
+-- axeluny participe au trajet 3 d'elina (Lyon -> Saint-Étienne) - complété
+INSERT INTO
+    participate (
+        id_participant,
+        id_ridesharing,
+        confirmed,
+        nb_seats,
+        created_at,
+        completed_at
+    )
+VALUES (
+        3,
+        3,
+        TRUE,
+        1,
+        '2025-11-18 17:12:00',
+        '2024-01-18 19:00:00'
+    );
+
+-- axeluny participe au trajet 5 d'elina (Saint-Étienne -> Lyon) - en attente
+INSERT INTO
+    participate (
+        id_participant,
+        id_ridesharing,
+        confirmed,
+        nb_seats,
+        created_at,
+        completed_at
+    )
+VALUES (
+        3,
+        5,
+        TRUE,
+        1,
+        '2025-11-18 17:12:00',
+        NULL
+    );
+
+/* Participations d'axeluny aux trajets de mystereuny */
+
+-- axeluny participe au trajet 7 de mystere (Paris -> Marseille) - complété
+INSERT INTO
+    participate (
+        id_participant,
+        id_ridesharing,
+        confirmed,
+        nb_seats,
+        created_at,
+        completed_at
+    )
+VALUES (
+        3,
+        7,
+        TRUE,
+        2,
+        '2025-11-18 17:12:00',
+        NULL
+    );
+
+-- axeluny participe au trajet 8 de mystere (Bordeaux -> Toulouse) - complété
+INSERT INTO
+    participate (
+        id_participant,
+        id_ridesharing,
+        confirmed,
+        nb_seats,
+        created_at,
+        completed_at
+    )
+VALUES (
+        3,
+        8,
+        TRUE,
+        1,
+        '2025-11-18 17:12:00',
+        '2024-01-14 12:30:00'
+    );
+
+-- axeluny participe au trajet 9 de mystere (Lyon -> Grenoble) - complété
+INSERT INTO
+    participate (
+        id_participant,
+        id_ridesharing,
+        confirmed,
+        nb_seats,
+        created_at,
+        completed_at
+    )
+VALUES (
+        3,
+        9,
+        TRUE,
+        2,
+        '2025-11-18 17:12:00',
+        '2024-01-20 15:30:00'
+    );
+
+-- axeluny participe au trajet 10 de mystere (Lille -> Strasbourg) - en attente
+INSERT INTO
+    participate (
+        id_participant,
+        id_ridesharing,
+        confirmed,
+        nb_seats,
+        created_at,
+        completed_at
+    )
+VALUES (
+        3,
+        10,
+        TRUE,
+        1,
+        '2025-11-18 17:12:00',
+        NULL
+    );
