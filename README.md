@@ -129,7 +129,7 @@ Scannez le QR Code pour accéder à l'application en ligne :
   <img src="public/assets/images/EcorideQRCode.svg" alt="QR Code EcoRide" width="200"/>
 </p>
 
-**OU accédez directement via :** [https://stark-mountain-00422-f4d7d334b310.herokuapp.com/](https://ecoride.votredomaine.fr)
+**OU accédez directement via :** [https://EcoRide.com/](https://stark-mountain-00422-f4d7d334b310.herokuapp.com)
 
 ---
 
