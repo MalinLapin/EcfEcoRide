@@ -50,7 +50,7 @@ En invite de commande se rendre dans le dossier de destination de notre projet l
 cd C:/Env/workSpace/ecfBackup
 ```
 
-Une fois dans le dossier il faut cloner le repo github grâce à :
+Une fois dans le dossier, il faut cloner le repo github grâce à :
 
 ```bash
 git clone https://github.com/MalinLapin/EcfEcoRide.git
@@ -79,7 +79,11 @@ composer install
 ### 4.Configuration MongoDB
 
 Si vous avez installer MongoDB comme un service en cochant l'option "Install as a Service" ce dernier doit démarrer automatiquement.
+<<<<<<< HEAD
 Pour vérifier, dans un terminal ce rendre a la racine de notre projet puis:
+=======
+Pour vérifier, dans un terminal se rendre à la racine de notre projet puis:
+>>>>>>> 3f5cefd573edcd0bd7aebb57cec53149a87f9a1c
 
 ```bash
 mongosh
@@ -105,14 +109,18 @@ show collections
 
 ### 5.Configuration des variables d'environnement
 
-Pour ce faire il faut faire une copie de `.env.example` et la renommer `.env`.
+Pour ce faire, il faut faire une copie de `.env.example` et la renommer `.env`.
 Dans un terminal:
 
 ```bash
 copy .env.example .env
 ```
 
+<<<<<<< HEAD
 Il va ensuite falloir renseigné vos donnée personnel de connexion.
+=======
+Il va ensuite falloir renseigner vos données personnelles de connexion.
+>>>>>>> 3f5cefd573edcd0bd7aebb57cec53149a87f9a1c
 
 ## Lancer l'application
 
@@ -121,7 +129,7 @@ Il va ensuite falloir renseigné vos donnée personnel de connexion.
 1. Avec XAMPP : placez votre projet dans `C:\xampp\htdocs\ecoride`.
 2. Puis accédez via l'url : http://localhost/ecoride/public
 
-### La version déployé en ligne
+### La version déployée en ligne
 
 Scannez le QR Code pour accéder à l'application en ligne :
 
