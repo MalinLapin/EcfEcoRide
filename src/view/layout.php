@@ -19,7 +19,7 @@
         <meta name="twitter:image" content="https://www.exemple.com/assets/images/Logo_Slogan.jpeg">
 
         <!-- Meta contenant le token CSRF-->
-        <meta name="csrfToken" content="<?= htmlspecialchars($csrf_token) ?>">
+        <meta name="csrfToken" content="<?php if(!empty($csrf_token)){ echo htmlspecialchars($csrf_token);}  ?>">
 
         <link rel="shortcut icon" type="image/x-icon" href="/assets/images/LogoSF.ico">
 

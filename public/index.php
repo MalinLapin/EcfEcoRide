@@ -106,7 +106,7 @@ switch ($routeInfo[0]) {
             if(Config::get('APP_DEBUG') === 'true'){
                 $response->error("Erreur 500 : " . $e->getMessage() . " dans " . $e->getFile() . ":" . $e->getLine(), 500);
             }else{
-                (new \App\Utils\Logger())->log('ERROR', 'Erreur Serveur :' . $e->getMessage());
+                (new \App\utils\Logger())->log('ERROR', 'Erreur Serveur :' . $e->getMessage());
                 $response->error("Une erreur interne est survenue.", 500);
             }
         }
