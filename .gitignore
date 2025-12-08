@@ -34,8 +34,3 @@ Thumbs.db          # Windows
 # Fichiers de test (rapports, couvertures)
 /coverage/
 .phpunit.result.cache
-
-# Fichiers de nœuds (si vous utilisez Node.js pour le frontend)
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
