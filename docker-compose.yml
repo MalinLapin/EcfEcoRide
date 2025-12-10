@@ -1,0 +1,55 @@
+
+services:
+# On liste nos container.
+
+# Notre container PHP de notre dockerfile sera appeler "app"
+  app:
+    # On indique comment app sera construit. Ici "." signifie le dockerfile du dossier courant.
+    build: .
+    # On map les ports de mon PC et celui du container.
+    ports:
+      - "8080:80"
+    # On crée une synchronisation entre mon projet et ce qui ce trouve dans le container. (évite de "docker build" à chaque modification du code.)
+    volumes:
+      - .:/var/www/html
+    # On indique où ce trouve les variables d'environnements.
+    environment:           
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    depends_on:
+      - db
+    networks:
+      - ecoride-network
+
+  # Notre second container sera pour la BDD relationnel.
+  db:
+    # On indique par quelle image il se construit
+    image: mysql:8.0
+    # On nomme le container
+    container_name: ecoride-db
+    environment:                            # ← GARDE POUR MAPPER
+      # On mappe les variables chargées depuis .env.docker
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./init-db:/docker-entrypoint-initdb.d
+      - db-data:/var/lib/mysql
+    networks:
+      - ecoride-network
+
+
+
+networks:
+  ecoride-network:
+    driver: bridge
+
+volumes:
+  db-data:
