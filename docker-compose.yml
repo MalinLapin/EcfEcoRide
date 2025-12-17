@@ -31,12 +31,12 @@ services:
     image: mysql:8.0
     # On nomme le container
     container_name: ecoride-db
-    environment:                            # ← GARDE POUR MAPPER
+    environment:                            
       # On mappe les variables chargées depuis .env.docker
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3307:3306"
     volumes:
