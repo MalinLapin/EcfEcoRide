@@ -85,9 +85,9 @@
             <h3 class='montserratBold'>Information du véhicule</h3>
         </div>
         <div class='carInfo '>
-            <div><p>Marque: <span><?= $brand?></span></p></div>
-            <div><p>Modele: <span><?=htmlspecialchars($car->getModel())?></span></p></div>
-            <div><p>Energie: <span><?=$car->getEnergyType()->value ?></span></p></div>
+            <div><p>Marque: <span><?= htmlspecialchars($brand)?></span></p></div>
+            <div><p>Modèle: <span><?=htmlspecialchars($car->getModel())?></span></p></div>
+            <div><p>Energie: <span><?=htmlspecialchars($car->getEnergyType()->value) ?></span></p></div>
             <div><p>Couleur: <span><?=htmlspecialchars($car->getColor())?></span></p></div>           
         </div>
         

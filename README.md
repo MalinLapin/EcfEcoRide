@@ -134,7 +134,7 @@ Il va ensuite falloir renseigner vos données personnelles de connexion.
 Scannez le QR Code pour accéder à l'application en ligne :
 
 <p align="center">
-  <img src="public/assets/images/EcorideQRCode.svg" alt="QR Code EcoRide" width="200"/>
+  <img src="public/assets/images/QrCode.png" alt="QR Code EcoRide" width="200"/>
 </p>
 
 **OU accédez directement via :** [https://EcoRide.com/](https://stark-mountain-00422-f4d7d334b310.herokuapp.com)

@@ -35,7 +35,6 @@ class TokenManager
     public function validateCsrfToken(string $token): bool
     {
         // On vérifie que le jeton du formulaire n'est pas vide, que le jeton en session existe et que les deux sont identiques.
-        // `hash_equals()` est utilisée pour comparer les jetons. C'est une fonction qui prend un temps constant, ce qui la protège contre les attaques par analyse temporelle ("timing attacks").
         return !empty($token) && !empty($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
     }
 }

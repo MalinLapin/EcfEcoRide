@@ -26,7 +26,7 @@ class AuthController extends BaseController
     {
         $user = $this->userRepo->getUserByEmail($email);
 
-        // On vérifie que l'utilisateur existe et que le MDP fourni correspond au MDP hashé stocké
+        // On vérifie que l'utilisateur existe et que le MDP fourni correspond au MDP haché stocké
         if ($user instanceof UserModel && password_verify($password, $user->getPassword())){
             return $user;
         }
@@ -101,7 +101,7 @@ class AuthController extends BaseController
             $_SESSION['role']=$user->getRole()->value;
             $_SESSION['pseudo']=$user->getPseudo();
 
-            // Si la personne est un user on ajoute sa photo et il est rediriger sur la page d'acceuil
+            // Si la personne est un user on ajoute sa photo et il est rediriger sur la page d'accueil
             if ($_SESSION['role'] == 'admin'){
                 //Si c'est un admin il est rediriger directement sur son espace de travail.
                 $this->redirect('/adminSpace');
@@ -229,7 +229,7 @@ class AuthController extends BaseController
             
             if ($newIdUser) {
 
-                // On recupere notre nouvel user
+                // On récupère notre nouvel user
                 $newUser = $this->userRepo->findById($newIdUser);
 
                 session_regenerate_id(true);
@@ -297,7 +297,7 @@ class AuthController extends BaseController
         $attempts = $_SESSION[$key] ?? 0;
         $lastAttempt = $_SESSION[$key . '_time'] ?? 0;
         
-        // Reset après 15 minutes
+        // Reset après 1 minutes
         if (time() - $lastAttempt > 60) {
             $_SESSION[$key] = 0;
             $attempts = 0;

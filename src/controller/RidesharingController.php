@@ -100,7 +100,7 @@ class RidesharingController extends BaseController
             return;
         }
 
-        // On parcour le tableau $data pour supprimer les données vides.
+        // On parcoure le tableau $data pour supprimer les données vides.
         foreach($data as $key =>$value){
             if ($value === ''){
                 unset($data[$key]);
@@ -151,7 +151,7 @@ class RidesharingController extends BaseController
         // On récupère l'id du driver dans l'objet ridesharing présent dans le tableau ridesharingDetails.
         $idDriver = $ridesharingDetails['ridesharing']->getIdDriver();
         
-        // Récuperer les avis du conducteur, uniquement les avis approuver par les employers.
+        // Récupérer les avis du conducteur, uniquement les avis approuver par les employers.
         $listReview = $this->reviewRepo->findByTarget($idDriver);
 
         $listReviewForView = [];
@@ -167,7 +167,7 @@ class RidesharingController extends BaseController
             ];
         }
 
-        // Récuperer les préférences du conducteur pour le trajet.
+        // Récupérer les préférences du conducteur pour le trajet.
         $listPreference = $this->preferenceRepo->findByRidesharing($idRide);
 
         $flashMessage = $this->getFlashMessage();

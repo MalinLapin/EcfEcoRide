@@ -43,7 +43,7 @@ class ReviewRepo extends BaseRepoMongo
     // Calcule la note moyenne d'un conducteur via les avis qui lui sont addresser
     public function getAverageRatingByIdUser(int $id): float
     {
-        // On selectionne ques les avis approved par les employés
+        // On sélectionne ques les avis approved par les employés
         $filters = ['idTarget' => $id,
                     'statusReview'=> StatusReview::approved];
         
@@ -61,25 +61,25 @@ class ReviewRepo extends BaseRepoMongo
             $totalRating += $review->getRating();
         }
 
-        $avergareRating = round(($totalRating / $totalDocument),1);
+        $averageRating = round(($totalRating / $totalDocument),1);
 
         // on retourne le total / le nombre d'avis arrondi à un chiffre apres la virgule.
-        return $avergareRating;
+        return $averageRating;
     }
 
     //
     public function countReviewApprovedByDay (DateTimeImmutable $date):int
     {
-        // on convertie déjà le propriété pour récupere le début de journée.
-        $startdate = $date->setTimezone(new DateTimeZone("UTC"))->setTime(0, 0, 0);
+        // on convertie déjà le propriété pour récupère le début de journée.
+        $startDate = $date->setTimezone(new DateTimeZone("UTC"))->setTime(0, 0, 0);
         // on recherche la date du lendemain
-        $endDate = $$startdate->modify('+1 day');
+        $endDate = $startDate->modify('+1 day');
 
-        // on génere le filtre de recherche.
+        // on génère le filtre de recherche.
         $filter = ['statusReview'=>'approved', // uniquement les avis approuvés
                     // on défini la date d'approbation en donnant une fourchette de début et de fin.
                     'reviewedAt'=>[
-                        '$gte'=>new UTCDateTime($startdate->getTimestamp() * 1000), 
+                        '$gte'=>new UTCDateTime($startDate->getTimestamp() * 1000), 
                         '$lt'=>new UTCDateTime($endDate->getTimestamp() * 1000)
                     ]];
 

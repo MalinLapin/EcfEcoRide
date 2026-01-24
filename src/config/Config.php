@@ -1,6 +1,6 @@
 <?php
 
-// Fichier contenant notre classe de configuration. C'est lui qui va charger nos variable d'environement et charger notre .env
+// Fichier contenant notre classe de configuration. C'est lui qui va charger nos variable d’environnement et charger notre .env
 namespace App\config;
 use Dotenv\Dotenv;
 
@@ -23,12 +23,19 @@ class Config
             return;
         }
 
+        // On charge toutes les variables système dans $_ENV (pour SMTP, etc.)
+        foreach ($_SERVER as $key => $value) {
+            if (!isset($_ENV[$key])) {
+                $_ENV[$key] = $value;
+            }
+        }
+
         // On vérifie que le fichier .env existe avant de le charger (LOCAL)
         if (file_exists($path . $envFile)) {
             // On utilise la librairie vlucas/phpdotenv pour charger les variables d'environnement
             $dotenv = Dotenv::createImmutable($path, $envFile);
             // On charge les variables d'environnement dans $_ENV
-            $dotenv->load();
+            $dotenv->safeLoad();
         }
 
         // On analyse JAWSDB_URL si présent (HEROKU)
@@ -44,12 +51,6 @@ class Config
             $_ENV['DB_PASSWORD'] = $dbparts['pass'];
         }
 
-        // On charge toutes les variables système dans $_ENV (pour SMTP, etc.)
-        foreach ($_SERVER as $key => $value) {
-            if (!isset($_ENV[$key])) {
-                $_ENV[$key] = $value;
-            }
-        }
 
         self::$loaded = true;
     }
