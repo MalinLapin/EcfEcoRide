@@ -5,13 +5,6 @@
 # Dépendances du gestionnaire de paquets PHP (Composer)
 /vendor/
 
-
-# Logs de l'application
-/storage/*.log
-/storage/logs/
-/storage/cache/
-/storage/app/
-
 # Fichiers de cache et temporaires générés par l'application
 /cache/
 /tmp/
@@ -22,15 +15,4 @@
 
 # Fichiers d'IDE et d'éditeurs de texte
 .vscode/           # VS Code (extensions, paramètres de workspace)
-.DS_Store          # macOS
-Thumbs.db          # Windows
 *.log              # Fichiers de log génériques
-
-# Fichiers de base de données générés localement (si pas dans sql/)
-*.sqlite3
-*.db
-*.mdb
-
-# Fichiers de test (rapports, couvertures)
-/coverage/
-.phpunit.result.cache

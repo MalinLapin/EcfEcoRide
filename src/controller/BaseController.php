@@ -16,8 +16,8 @@ use App\repository\CarRepo;
 use App\repository\BrandRepo;
 
 /**
- * Controler de base
- * Toutes les autres classe de controlleru hériteront de celle ci
+ * Controller de base
+ * Toutes les autres classe de controller hériteront de celle ci
  * 
  */
 abstract class BaseController
@@ -54,7 +54,7 @@ abstract class BaseController
     /**
      * Affiche une vue en l'injectant dans le layout principale
      * @param string $view le nom de fichier de vue
-     * @param array $data les données à rendres accéssible dans la vue
+     * @param array $data les données à rendre accessible dans la vue
      */
     protected function render(string $view, array $data = []):void
     {
@@ -137,7 +137,7 @@ abstract class BaseController
         {
             $this->render('login', [
             'csrf_token'=>$this->tokenManager->generateCsrfToken(),
-            'message'=>'Il faut etre connecter pour participer à un covoiturage',
+            'message'=>'Il faut être connecter pour avoir accès à cette fonctionnalité',
             'pageCss'=>'login']);
 
             exit;

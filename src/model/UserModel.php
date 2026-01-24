@@ -98,8 +98,8 @@ class UserModel extends BaseModel
 
     /**
      * Set the value of password
-     * On Vérifie la complexiter du mot de passe en passant par le service de validation
-     * Puis on hash le mot de passe en séléctionnant le PASSWORD_DEFAULT afin d'avoir le dernier procéder de hashage fournie par PHP.
+     * On Vérifie la complexité du mot de passe en passant par le service de validation
+     * Puis on hash le mot de passe en sélectionnant le PASSWORD_DEFAULT afin d'avoir le dernier procéder de hachage fournie par PHP.
      */
     public function setPassword(string $password): self
     {

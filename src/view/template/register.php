@@ -32,7 +32,7 @@
                 </div>
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
             <button type="submit" class='registerBtn'>Monter à bord !</button>
-            <div class="message">Déjà un comtpe ? <a href="/login">Connexion</a></div>
+            <div class="message">Déjà un compte ? <a href="/login">Connexion</a></div>
         </form>
     </div>
 </section>

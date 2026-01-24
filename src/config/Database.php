@@ -16,13 +16,13 @@ class Database
     // Propriété static privée pour stocker l'instance unique de MongoDatabase.
     private static ?MongoDatabase $db = null;
 
-    //Le constructeur est private pour empècher la création d'objet via new database.
+    //Le constructeur est private pour empêcher la création d'objet via new database.
     private function __construct(){}
 
-    //La méthode de clonnage est privé pour évite de clonner l'instance.
+    //La méthode de clonage est privé pour évite de cloner l'instance.
     private function __clone(){}
 
-    //Permet le point d'accès unique à la bdd relationnel (Patern Singleton)
+    //Permet le point d'accès unique à la bdd relationnel (Pattern Singleton)
     public static function getInstancePDO():PDO
     {
         // Si l'instance n'a pas été créée
@@ -32,8 +32,8 @@ class Database
             $dsn = sprintf("mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4", Config::get('DB_HOST'), Config::get('DB_PORT', '3306'), Config::get('DB_NAME'));
 
             $options = [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Lance des exeptions en cas d'erreur SQL
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC// Récupere les résultats sous forme de tableau associatif
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Lance des exceptions en cas d'erreur SQL
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC// Récupère les résultats sous forme de tableau associatif
             ];
             try{
                 // On crée l'instance de PDO et on la stock

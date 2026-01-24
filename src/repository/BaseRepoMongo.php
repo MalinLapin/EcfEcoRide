@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace App\repository;
 
 use Exception;
@@ -256,7 +254,6 @@ abstract class BaseRepoMongo
         $data = [];
         $ref = new \ReflectionClass($model);
         foreach ($ref->getProperties() as $prop) {
-            $prop->setAccessible(true);
             $data[$prop->getName()] = $prop->getValue($model);
         }
         return $data;

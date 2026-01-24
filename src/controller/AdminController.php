@@ -15,11 +15,25 @@ class AdminController extends BaseController
 
     public function showAdminSpace():void
     {
+        $this->requireAuth();
+
+        if($_SESSION['role'] != 'admin'){
+            $this->render('/login', [
+                'csrf_token'=>$this->tokenManager->generateCsrfToken(),
+                'pageCss'=>'login'
+            ]);
+        }
+
         $participates = $this->participateRepo->findAll();
         $totalCredit = 0;
-        foreach($participates as $participate){
-            $totalCredit += $participate->getNbSeats()*2;
+        if ($participates)
+        {
+            foreach($participates as $participate)
+            {
+                $totalCredit += $participate->getNbSeats()*2;
+            }
         }
+        
 
         $users = $this->userRepo->findUserByRole(Role::user);
 
@@ -41,7 +55,7 @@ class AdminController extends BaseController
         ]);
     }
 
-    public function getParticipationInfoPerWeek():void
+    public function getParticipationInfoPerWeek():void 
     {
         $itsOk = $this->verifAllBeforFunction();
 

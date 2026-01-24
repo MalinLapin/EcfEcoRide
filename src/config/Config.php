@@ -1,6 +1,6 @@
 <?php
 
-// Fichier contenant notre classe de configuration. C'est lui qui va charger nos variable d'environement et charger notre .env
+// Fichier contenant notre classe de configuration. C'est lui qui va charger nos variable d’environnement et charger notre .env
 namespace App\config;
 use Dotenv\Dotenv;
 

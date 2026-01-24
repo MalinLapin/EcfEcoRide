@@ -1,6 +1,6 @@
 <?php
 
-// Inclure l'autoloader
+// Inclure autoLoader
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 // Import des classes
@@ -10,7 +10,7 @@ use App\utils\Response;
 // Charger nos variable d'environnement
 Config::load();
 
-// Démarrer une séssion ou reprendre la séssion existante
+// Démarrer une session ou reprendre la session existante
 session_start();
 
 
@@ -86,7 +86,7 @@ if (empty($uri)) {
 $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 $response = new Response();
 
-// 3. Annalyse du résultat du Dispatching
+// 3. Analyse du résultat du Dispatching
 switch ($routeInfo[0]) {
     case FastRoute\Dispatcher::NOT_FOUND:
         $response->error('404 - Page non trouvée', 404);

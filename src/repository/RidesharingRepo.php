@@ -71,8 +71,7 @@ class RidesharingRepo extends BaseRepoSql
             {                
                 $userData = [];
                 $carData = [];
-                $ridesharingData = [];
-                
+                $ridesharingData = [];                
                 foreach ($row as $key => $value)
                 {
                     if (str_starts_with($key, 'user_')) {
@@ -82,13 +81,10 @@ class RidesharingRepo extends BaseRepoSql
                     } else {
                         $ridesharingData[$key] = $value;
                     }
-                }
-                
+                }                
                 // Créer et assembler les objets
                 $ridesharingInfo = RidesharingModel::createAndHydrate($ridesharingData);
-
-                $driverInfo = UserModel::createAndHydrate($userData);                    
-                
+                $driverInfo = UserModel::createAndHydrate($userData);
                 $carEnergyType = $carData['energy_type'];          
 
                 $rides[] = [
@@ -259,7 +255,7 @@ class RidesharingRepo extends BaseRepoSql
      *
      * @param int $rideId L'identifiant du trajet.
      * @return bool Vrai si la mise à jour a réussi, faux sinon.
-     * On en pourra pas supprimer un trajet completment de la bdd on changera seulement sont status en 'canceled'.
+     * On en pourra pas supprimer un trajet complètement de la bdd on changera seulement sont status en 'canceled'.
      */
     public function cancelRide(int $rideId): bool
     {

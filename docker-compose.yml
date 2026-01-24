@@ -9,10 +9,10 @@ services:
     # On map les ports de mon PC et celui du container.
     ports:
       - "8080:80"
-    # On crée une synchronisation entre mon projet et ce qui ce trouve dans le container. (évite de "docker build" à chaque modification du code.)
+    # On crée une synchronisation entre mon projet et ce qui ce trouve dans le container (évite de "docker build" à chaque modification du code).
     volumes:
       - .:/var/www/html
-    # On indique où ce trouve les variables d'environnements.
+    # Variables d'environnements injecter depuis notre .env.
     environment:           
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
@@ -28,11 +28,11 @@ services:
   # Notre second container sera pour la BDD relationnel.
   db:
     # On indique par quelle image il se construit
-    image: mysql:8.0
+    image: mariadb:10.6
     # On nomme le container
     container_name: ecoride-db
     environment:                            
-      # On mappe les variables chargées depuis .env.docker
+      # On mappe les variables chargées depuis .env
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MARIADB_DATABASE: ${DB_NAME}
       MARIADB_USER: ${DB_USER}
@@ -40,7 +40,7 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - ./init-db:/docker-entrypoint-initdb.d
+      - ./src/bdd/sql:/docker-entrypoint-initdb.d
       - db-data:/var/lib/mysql
     networks:
       - ecoride-network
@@ -49,7 +49,6 @@ services:
 
 networks:
   ecoride-network:
-    driver: bridge
 
 volumes:
   db-data:

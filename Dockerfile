@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install zip pdo pdo_mysql \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# on ajoute l'extension pour mongodb (qui ne provient pas de php) d'où PECL pour PHP Extension Community Library
+# on ajoute l'extension pour MongoDB (qui ne provient pas de php) d'où PECL pour PHP Extension Community Library
 RUN pecl install  mongodb && docker-php-ext-enable mongodb
 
 
