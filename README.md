@@ -72,18 +72,14 @@ composer install
 
 #### 3.2.Importer le schéma SQL
 
-1. Séléctionnez la base **ecorideBackup**
+1. Sélectionnez la base **ecorideBackup**
 2. Allez dans l'onglet Importer
 3. Executer le fichier `DataBase.sql`situé dans `src/bdd/sql`.
 
 ### 4.Configuration MongoDB
 
 Si vous avez installer MongoDB comme un service en cochant l'option "Install as a Service" ce dernier doit démarrer automatiquement.
-<<<<<<< HEAD
-Pour vérifier, dans un terminal ce rendre a la racine de notre projet puis:
-=======
 Pour vérifier, dans un terminal se rendre à la racine de notre projet puis:
->>>>>>> 3f5cefd573edcd0bd7aebb57cec53149a87f9a1c
 
 ```bash
 mongosh
@@ -116,11 +112,7 @@ Dans un terminal:
 copy .env.example .env
 ```
 
-<<<<<<< HEAD
-Il va ensuite falloir renseigné vos donnée personnel de connexion.
-=======
 Il va ensuite falloir renseigner vos données personnelles de connexion.
->>>>>>> 3f5cefd573edcd0bd7aebb57cec53149a87f9a1c
 
 ## Lancer l'application
 
