@@ -207,16 +207,17 @@ class ParticipateRepo extends BaseRepoSql
 
     public function findParticipationByWeek(DateTimeImmutable $day):array
     {
-        // Il faut déjà définir les 7 jours qui suivent le jour fournie.
-        $start = $day->format('Y-m-d 00:00:00');
-        $end = $day->modify('+7 days')->format('Y-m-d 00:00:00');
+        // Il faut déjà définir les 7 jours qui précèdent le jour fournie.
+        $end = $day->modify('+1 day');
+        $start = $end->modify('-7 days');
 
-        $query="SELECT DAYNAME(completed_at) AS day, 
+        $query="SELECT DATE(completed_at) AS day, 
                     SUM(nb_seats) AS total_seats
                     FROM {$this->tableName}
-                    WHERE completed_at >= :start AND completed_at < :end
+                    WHERE completed_at >= :start 
+                    AND completed_at < :end
                     GROUP BY day
-                    ORDER BY FIELD (day, 'monday','tuesday','wednesday','thursday','friday','saturday','sunday')";
+                    ORDER BY day";
 
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(':start', $start);
@@ -224,22 +225,26 @@ class ParticipateRepo extends BaseRepoSql
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        //On convertie les noms des jour en français
-        $jours = [
-            'Monday' => 'Lundi',
-            'Tuesday' => 'Mardi',
-            'Wednesday' => 'Mercredi',
-            'Thursday' => 'Jeudi',
-            'Friday' => 'Vendredi',
-            'Saturday' => 'Samedi',
-            'Sunday' => 'Dimanche'
-        ];
+        $resultFinal = [];
 
-        // on boucle sur le résultat pour changer le nom du jour en cas de correspondance.
-        foreach ($result as &$row) {
-            $row['day'] = $jours[$row['day']] ?? $row['day'];
+        // On crée une semaine complète de 0 participation. Les jours sans participation ne sont pas donnés par la requête.
+        for ($i = 6; $i >= 0; $i--) {
+            $date = $day->modify("-$i days");
+            $key = $date->format('Y-m-d');
+
+            $resultFinal[$key] = [
+                'day' => $date->format('D d'), // Lun 09
+                'total_seats' => 0
+            ];
         }
 
-        return $result;
+        // On remplis le tableaux avec les valeurs trouver en Bdd.
+        foreach ($result as $row) {
+            if (isset($resultFinal[$row['day']])) {
+                $resultFinal[$row['day']]['total_seats'] = (int) $row['total_seats'];
+            }
+        }
+
+        return array_values($resultFinal);
     }    
 } 
