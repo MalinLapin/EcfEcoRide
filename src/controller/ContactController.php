@@ -66,7 +66,7 @@ class ContactController extends BaseController
             $errors['subject'] = 'Le sujet ne peut dépasser 200 caractères.';
         }
         
-        // On néttoie les données.
+        // On nettoie les données.
         $subject = htmlspecialchars(trim($data['subject']));
 
         if (empty($data['content'])) {

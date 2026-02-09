@@ -1,4 +1,18 @@
 -- Active: 1741707596826@@127.0.0.1@3306
+
+/* Force la mise a jour pour les démos. */
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS brand;
+
+DROP TABLE IF EXISTS user;
+
+DROP TABLE IF EXISTS car;
+
+DROP TABLE IF EXISTS ridesharing;
+
+DROP TABLE IF EXISTS participate;
+
 CREATE TABLE brand (
     id_brand INT PRIMARY KEY AUTO_INCREMENT,
     label VARCHAR(30) NOT NULL UNIQUE
@@ -187,7 +201,7 @@ VALUES ('Toyota'),
     ('Subaru'),
     ('Chevrolet');
 
-/* fixture générer par IA pour compléter les données de départ et effectuer plusieur test.*/
+/* fixture générer par IA pour compléter les données de départ et effectuer plusieurs test.*/
 
 /* Insertion des voitures */
 
@@ -342,16 +356,16 @@ INSERT INTO
         id_car
     )
 VALUES (
-        '2024-01-15 08:00:00',
+        '2025-02-05 08:00:00',
         'Saint-Étienne',
         '10 Place Jean Jaurès',
         'Lyon',
         '25 Rue de la République',
-        '2024-01-15 09:00:00',
+        '2025-02-05 09:00:00',
         0,
         8,
         'completed',
-        '2025-11-18 17:12:00',
+        '2025-01-14 17:12:00',
         2,
         1
     );
@@ -373,16 +387,16 @@ INSERT INTO
         id_car
     )
 VALUES (
-        '2024-01-18 07:30:00',
+        '2025-02-06 07:30:00',
         'Saint-Étienne',
         '10 Place Jean Jaurès',
         'Lyon',
         '25 Rue de la République',
-        '2024-01-18 08:30:00',
+        '2025-02-06 08:30:00',
         1,
         8,
         'completed',
-        '2025-11-18 17:12:00',
+        '2025-02-01 17:12:00',
         2,
         1
     );
@@ -404,12 +418,12 @@ INSERT INTO
         id_car
     )
 VALUES (
-        '2024-01-18 18:00:00',
+        '2025-02-08 18:00:00',
         'Lyon',
         '25 Rue de la République',
         'Saint-Étienne',
         '10 Place Jean Jaurès',
-        '2024-01-18 19:00:00',
+        '2025-02-08 19:00:00',
         2,
         8,
         'completed',
@@ -435,12 +449,12 @@ INSERT INTO
         id_car
     )
 VALUES (
-        '2025-11-10 08:00:00',
+        '2025-02-07 08:00:00',
         'Saint-Étienne',
         '10 Place Jean Jaurès',
         'Lyon',
         '25 Rue de la République',
-        '2025-11-10 09:00:00',
+        '2025-02-07 09:00:00',
         0,
         8,
         'completed',
@@ -466,12 +480,12 @@ INSERT INTO
         id_car
     )
 VALUES (
-        '2025-12-05',
+        '2025-02-20',
         'Saint-Étienne',
         '10 Place Jean Jaurès',
         'Lyon',
         '25 Rue de la République',
-        '2025-12-05 09:00:00',
+        '2025-02-20 09:00:00',
         2,
         8,
         'pending',
@@ -497,12 +511,12 @@ INSERT INTO
         id_car
     )
 VALUES (
-        '2025-12-10 18:30:00',
+        '2025-02-20 18:30:00',
         'Lyon',
         '25 Rue de la République',
         'Saint-Étienne',
         '10 Place Jean Jaurès',
-        '2025-12-10 19:30:00',
+        '2025-02-20 19:30:00',
         3,
         8,
         'pending',
@@ -530,12 +544,12 @@ INSERT INTO
         id_car
     )
 VALUES (
-        '2024-01-10 06:00:00',
+        '2025-02-05 06:00:00',
         'Paris',
         'Gare de Lyon',
         'Marseille',
         'Vieux Port',
-        '2025-12-20 14:00:00',
+        '2025-02-05 14:00:00',
         1,
         45,
         'pending',
@@ -561,12 +575,12 @@ INSERT INTO
         id_car
     )
 VALUES (
-        '2024-01-14 10:00:00',
+        '2025-02-06 10:00:00',
         'Bordeaux',
         'Place de la Bourse',
         'Toulouse',
         'Capitole',
-        '2024-01-14 12:30:00',
+        '2025-02-06 12:30:00',
         2,
         18,
         'completed',
@@ -592,16 +606,16 @@ INSERT INTO
         id_car
     )
 VALUES (
-        '2024-01-20 14:00:00',
+        '2025-02-05 14:00:00',
         'Lyon',
         'Part-Dieu',
         'Grenoble',
         'Gare SNCF',
-        '2024-01-20 15:30:00',
+        '2025-02-05 15:30:00',
         1,
         12,
         'completed',
-        '22025-11-18 17:12:00',
+        '2025-11-18 17:12:00',
         4,
         2
     );
@@ -623,12 +637,12 @@ INSERT INTO
         id_car
     )
 VALUES (
-        '2024-02-08 07:00:00',
+        '2025-02-09 07:00:00',
         'Lille',
         'Grand Place',
         'Strasbourg',
         'Place Kléber',
-        '2024-02-08 12:00:00',
+        '2025-02-09 20:00:00',
         3,
         35,
         'pending',
@@ -654,12 +668,12 @@ INSERT INTO
         id_car
     )
 VALUES (
-        '2024-02-12 09:00:00',
+        '2025-02-10 09:00:00',
         'Nice',
         'Promenade des Anglais',
         'Montpellier',
         'Place de la Comédie',
-        '2024-02-12 12:30:00',
+        '2025-02-10 12:30:00',
         4,
         28,
         'pending',
@@ -685,12 +699,12 @@ INSERT INTO
         id_car
     )
 VALUES (
-        '2024-02-15 16:00:00',
+        '2025-02-12 16:00:00',
         'Nantes',
         'Place Royale',
         'Rennes',
         'Place de la Mairie',
-        '2024-02-15 17:30:00',
+        '2025-02-12 17:30:00',
         3,
         10,
         'pending',

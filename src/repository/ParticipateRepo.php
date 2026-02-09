@@ -58,7 +58,7 @@ class ParticipateRepo extends BaseRepoSql
             
             foreach($result as $row)
             {   
-                $paricipateData = [];
+                $participateData = [];
                 $ridesharingData = [];
 
                 foreach ($row as $key => $value)
@@ -66,11 +66,11 @@ class ParticipateRepo extends BaseRepoSql
                     if (str_starts_with($key, 'ridesharing_')) {
                         $ridesharingData[substr($key, 12)] = $value;
                     } else {
-                        $paricipateData[$key] = $value;
+                        $participateData[$key] = $value;
                     }
                 }
 
-                $participation = ParticipateModel::createAndHydrate($paricipateData);
+                $participation = ParticipateModel::createAndHydrate($participateData);
                 $ride = RidesharingModel::createAndHydrate($ridesharingData);
                 
                 $participationList [] = [
