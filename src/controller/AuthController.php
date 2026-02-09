@@ -19,7 +19,7 @@ class AuthController extends BaseController
     }
 
     /**
-    *Verifie les identifiants de l'utilisateur
+    *Verifies les identifiants de l'utilisateur
     *@return UserModel|null l'objet user si l'authentification réussi sinon null
     */
     public function authenticate (string $email, string $password): ?UserModel
@@ -86,6 +86,15 @@ class AuthController extends BaseController
 
         // Validation des données de connexion 
         $user = $this->authenticate($data['email'], $data['password']);
+
+        if($user->getIsActive() === false){
+            $this->render('login', [
+                'error'=>'Votre compte est suspendu pour le moment.',
+                'csrf_token'=>$this->tokenManager->generateCsrfToken(),
+                'pageCss'=>'login'
+            ]);
+            return;
+        }
 
         if($user)
         {
