@@ -101,7 +101,7 @@ class AuthController extends BaseController
             $_SESSION['role']=$user->getRole()->value;
             $_SESSION['pseudo']=$user->getPseudo();
 
-            // Si la personne est un user on ajoute sa photo et il est rediriger sur la page d'accueil
+            // On vérifie ensuite le Role de la personne qui tente la connexion
             if ($_SESSION['role'] == 'admin'){
                 //Si c'est un admin il est rediriger directement sur son espace de travail.
                 $this->redirect('/adminSpace');
@@ -111,7 +111,6 @@ class AuthController extends BaseController
                 $this->redirect('/employeeSpace');
                 return;
             }else{
-                $_SESSION['photo']=$user->getPhoto();
                 $this->redirect('/');
                 return;
             }

@@ -41,7 +41,7 @@ class UserRepo extends BaseRepoSql
      */
     public function getUserByEmail(string $email): ?UserModel
     {
-        $query = "SELECT * FROM {$this->tableName} WHERE email = :email";
+        $query = "SELECT * FROM {$this->tableName} WHERE email = :email AND is_active='true'";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(':email', $email, \PDO::PARAM_STR);
         $stmt->execute();

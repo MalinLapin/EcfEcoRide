@@ -61,7 +61,7 @@ class AdminController extends BaseController
 
         if($itsOk == false){
             http_response_code(500);
-            echo json_encode(['success' => false, 'message' => 'MON RACOURCI NE FONCTIONNE PAS']);
+            echo json_encode(['success' => false, 'message' => 'MON RACCOURCI NE FONCTIONNE PAS']);
             exit;
         }
 
@@ -103,7 +103,7 @@ class AdminController extends BaseController
 
         if($itsOk == false){
             http_response_code(500);
-            echo json_encode(['success' => false, 'message' => 'MON RACOURCI NE FONCTIONNE PAS']);
+            echo json_encode(['success' => false, 'message' => 'MON RACCOURCI NE FONCTIONNE PAS']);
             exit;
         }
 

@@ -58,124 +58,6 @@ abstract class BaseRepoSql
     }
 
     /**
-    * Extrait les données d'un modèle en utilisant la réflexion.
-    * @param BaseModel $model Le modèle dont on veut extraire les données.
-    * @return array Un tableau associatif contenant les noms des propriétés et leurs valeurs.
-    */
-    protected function extractData(BaseModel $model): array
-    {
-        // On initialise un tableau vide pour stocker les données  
-        $data = [];
-        // On utilise la réflexion pour accéder aux propriétés du modèle
-        $reflection = new \ReflectionClass($model);
-
-        // On parcourt les propriétés du modèle et on les ajoute au tableau de données
-        foreach ($reflection->getProperties() as $property) 
-        {
-            // On vérifie si la propriété a l'attribut #[NotMapped]
-            $attributes = $property->getAttributes(NotMapped::class);
-
-            if (!empty($attributes))
-            {
-                // Cette propriété est marquée #[NotMapped], on la saute
-                continue;
-            }
-
-
-            // On rend la propriété accessible même si elle est privée ou protégée
-            $property->setAccessible(true);
-            // On vérifie si la propriété est initialisée avant de tenter de récupérer sa valeur
-            if ($property->isInitialized($model)) {
-                // 
-                $data[self::camelToSnake($property->getName())] = $property->getValue($model);
-            }else { // Si la propriété n'est pas initialisée, on peut choisir de l'ignorer ou de lui attribuer une valeur par défaut (comme null)
-                $data[self::camelToSnake($property->getName())] = null;
-            }
-        }
-        return $data;
-    }
-
-    /**
-     * Convertie le camelCase en snake_case pour coller aux noms des colonnes de ma Bdd.
-     * @param string $input string a convertir
-     * @return string Nouvelle string en snake_case.
-     */
-    public static function camelToSnake(string $input): string 
-    {
-        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $input));
-    }
-
-    /**
-     * Récupère le nom du champ ID pour la table associée.
-     * @return string Le nom du champ ID.
-     */
-    protected function getPrimaryKeyField(): string
-    {
-        // La colonne ID est nommée 'id_' suivie du nom de la table.
-        return 'id_' . $this->tableName;
-    }
-
-    /**
-     * Met à jour une entrée dans la base de données à partir d'un modèle.
-     * @param BaseModel $model Le modèle à mettre à jour dans la base de données.
-     * @return bool Retourne true si la mise à jour a réussi, false sinon.
-     */
-    public function update(BaseModel $model): bool
-    {
-        // On extrait les données du modèle
-        $data = $this->extractData($model);
-        
-        // On s'assure que le champ ID est présent dans les données
-        $idField = $this->getPrimaryKeyField();
-        if (!isset($data[$idField])) {
-            throw new \Exception("Le champ ID est nécéssaire à la modification.");
-        }
-
-        // On prépare la requête de mise à jour
-        $setClause = '';
-        foreach ($data as $key => $value) {
-            if ($key !== $idField) {
-                $setClause .= "{$key} = :{$key}, ";
-            }
-        }
-        $setClause = rtrim($setClause, ', ');
-
-        // On construit la requête SQL
-        $sql = "UPDATE {$this->tableName} SET {$setClause} WHERE {$idField} = :{$idField}";
-        $stmt = $this->pdo->prepare($sql);
-
-        // On lie les valeurs aux paramètres de la requête
-        foreach ($data as $key => $value) {
-            $preparedValue = self::prepareParamForDatabase($value);
-            $stmt->bindValue(":{$key}", $preparedValue);
-        }
-        
-        $stmt->execute();
-        
-        // On test si le nombre de ligne à bien été modifier
-        return $stmt->rowCount() > 0;
-    }
-
-    /**
-     * Supprime une entrée de la base de données par son ID.
-     * @param int $id L'ID de l'entrée à supprimer.
-     * @return bool Retourne true si la suppression a réussi, false sinon.
-     */
-    public function delete(int $id): bool
-    {
-        // On prépare la requête de suppression
-        $idField = $this->getPrimaryKeyField();
-        $sql = "DELETE FROM {$this->tableName} WHERE {$idField} = :{$idField}";
-        $stmt = $this->pdo->prepare($sql);
-        
-        // On lie l'ID à la requête
-        $stmt->bindValue(":{$idField}", $id, \PDO::PARAM_INT);
-        
-        $stmt->execute();
-        return $stmt->rowCount() > 0;
-    }
-
-    /**
      * Trouve une entrée par son ID.
      * @param int $id L'ID de l'entrée à trouver.
      * @return BaseModel|null Retourne une instance du modèle si trouvé, null sinon.
@@ -230,6 +112,121 @@ abstract class BaseRepoSql
 
         // Si aucun résultat on retourne null
         return null;
+    }
+
+    /**
+     * Met à jour une entrée dans la base de données à partir d'un modèle.
+     * @param BaseModel $model Le modèle à mettre à jour dans la base de données.
+     * @return bool Retourne true si la mise à jour a réussi, false sinon.
+     */
+    public function update(BaseModel $model): bool
+    {
+        // On extrait les données du modèle
+        $data = $this->extractData($model);
+        
+        // On s'assure que le champ ID est présent dans les données
+        $idField = $this->getPrimaryKeyField();
+        if (!isset($data[$idField])) {
+            throw new \Exception("Le champ ID est nécessaire à la modification.");
+        }
+
+        // On prépare la requête de mise à jour
+        $setClause = '';
+        foreach ($data as $key => $value) {
+            if ($key !== $idField) {
+                $setClause .= "{$key} = :{$key}, ";
+            }
+        }
+        $setClause = rtrim($setClause, ', ');
+
+        // On construit la requête SQL
+        $sql = "UPDATE {$this->tableName} SET {$setClause} WHERE {$idField} = :{$idField}";
+        $stmt = $this->pdo->prepare($sql);
+
+        // On lie les valeurs aux paramètres de la requête
+        foreach ($data as $key => $value) {
+            $preparedValue = self::prepareParamForDatabase($value);
+            $stmt->bindValue(":{$key}", $preparedValue);
+        }
+        
+        $stmt->execute();
+        
+        // On test si le nombre de ligne à bien été modifier
+        return $stmt->rowCount() > 0;
+    }
+
+    /**
+     * Supprime une entrée de la base de données par son ID.
+     * @param int $id L'ID de l'entrée à supprimer.
+     * @return bool Retourne true si la suppression a réussi, false sinon.
+     */
+    public function delete(int $id): bool
+    {
+        // On prépare la requête de suppression
+        $idField = $this->getPrimaryKeyField();
+        $sql = "DELETE FROM {$this->tableName} WHERE {$idField} = :{$idField}";
+        $stmt = $this->pdo->prepare($sql);
+        
+        // On lie l'ID à la requête
+        $stmt->bindValue(":{$idField}", $id, \PDO::PARAM_INT);
+        
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
+    }
+
+    /**
+    * Extrait les données d'un modèle en utilisant la réflexion.
+    * @param BaseModel $model Le modèle dont on veut extraire les données.
+    * @return array Un tableau associatif contenant les noms des propriétés et leurs valeurs.
+    */
+    protected function extractData(BaseModel $model): array
+    {
+        // On initialise un tableau vide pour stocker les données  
+        $data = [];
+        // On utilise la réflexion pour accéder aux propriétés du modèle
+        $reflection = new \ReflectionClass($model);
+
+        // On parcourt les propriétés du modèle et on les ajoute au tableau de données
+        foreach ($reflection->getProperties() as $property) 
+        {
+            // On vérifie si la propriété a l'attribut #[NotMapped]
+            $attributes = $property->getAttributes(NotMapped::class);
+
+            if (!empty($attributes))
+            {
+                // Cette propriété est marquée #[NotMapped], on la saute
+                continue;
+            }
+
+            // On vérifie si la propriété est initialisée avant de tenter de récupérer sa valeur
+            if ($property->isInitialized($model)) {
+                // 
+                $data[self::camelToSnake($property->getName())] = $property->getValue($model);
+            }else { // Si la propriété n'est pas initialisée, on peut choisir de l'ignorer ou de lui attribuer une valeur par défaut (comme null)
+                $data[self::camelToSnake($property->getName())] = null;
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * Convertie le camelCase en snake_case pour coller aux noms des colonnes de ma Bdd.
+     * @param string $input string a convertir
+     * @return string Nouvelle string en snake_case.
+     */
+    public static function camelToSnake(string $input): string 
+    {
+        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $input));
+    }
+
+    /**
+     * Récupère le nom du champ ID pour la table associée.
+     * @return string Le nom du champ ID.
+     */
+    protected function getPrimaryKeyField(): string
+    {
+        // La colonne ID est nommée 'id_' suivie du nom de la table.
+        return 'id_' . $this->tableName;
     }
 
     /**

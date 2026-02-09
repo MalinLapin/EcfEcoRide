@@ -52,14 +52,14 @@ class ParticipateController extends BaseController
         if(!$ridesharing)
         {
             $this->response->redirect("ridesharingDetail", [
-                'message' => 'Une erreur est survenue veuillez éssayer plus tard',
+                'message' => 'Une erreur est survenue veuillez essayer plus tard',
                 'type'=>'error'
             ]);
             return;
         }
 
-        // On vérifie que le nombre de siège reserve ne dépasse pas le nombre de siège encore disponible et qu'il soit bien suppérieur à 0.
-        if ($data['nbSeats'] == 0 || $data['nbSeats'] < 0) 
+        // On vérifie que le nombre de siège reserve ne dépasse pas le nombre de siège encore disponible et qu'il soit bien supérieur à 0.
+        if ($data['nbSeats'] <= 0) 
         {
             $this->redirect("ridesharingDetail/{$idRidesharing}", [
                 'message' => 'Le nombre de place réservée doit être supérieur à 0.',
@@ -75,7 +75,7 @@ class ParticipateController extends BaseController
             return;
         }
 
-        // On créer la demande de participation en fonction des donées transmisent.
+        // On créer la demande de participation en fonction des données transmissent.
         $newparticipate = new ParticipateModel();
 
         $newparticipate->setIdParticipant($_SESSION['idUser'])
@@ -109,29 +109,19 @@ class ParticipateController extends BaseController
                 $this->logger->log('ERROR','Inscription déjà effectuée : ' . $e->getMessage());
                 // On ré-affiche le formulaire d'inscription avec un message d'erreur
                 $this->redirect("ridesharingDetail/{$idRidesharing}", [
-                    'message' => 'Vous etes déjà inscrit pour ce covoiturage veuillez vérifier sur votre profil.',
+                    'message' => 'Vous êtes déjà inscrit pour ce covoiturage veuillez vérifier sur votre profil.',
                     'type'=>'error',
                 ]);
             return; 
             }
             
-            $this->logger->log('ERROR','Erreur lors de l\'inscritpion au covoiturage : ' . $e->getMessage());
+            $this->logger->log('ERROR',"Erreur lors de l’inscription au covoiturage : " . $e->getMessage());
             // On ré-affiche le formulaire d'inscription avec un message d'erreur
             $this->redirect("ridesharingDetail/{$idRidesharing}", [
                 'message' => 'Une erreur est survenue lors de votre inscription, veuillez réessayer plus tard.',
                 'type'=>'error',
             ]);
             return;
-        }
-
-        // Si tout ce passe bien on met à jour le solde de crédit de l'utilisateur
-        $user->setCreditBalance($user->getCreditBalance() - ($ridesharing->getPricePerSeat() * $data['nbSeats']));
-        try{
-            
-            $this->userRepo->update($user);
-        }catch (\Exception $e){
-            $this->logger->log('ERROR','Erreur lors de la mise à jour du solde de crédit : ' . $e->getMessage());
-            // Même si la mise à jour du crédit échoue, on ne bloque pas la participation.
         }
 
         // Maintenant on met a jour le nombre de place disponible du covoiturage
@@ -145,10 +135,21 @@ class ParticipateController extends BaseController
             // Même si la mise à jour des places disponibles échoue, on ne bloque pas la participation.
         }
 
+        // Si tout ce passe bien on met à jour le solde de crédit de l'utilisateur
+        $user->setCreditBalance($user->getCreditBalance() - ($ridesharing->getPricePerSeat() * $data['nbSeats']));
+        try{
+            
+            $this->userRepo->update($user);
+        }catch (\Exception $e){
+            $this->logger->log('ERROR','Erreur lors de la mise à jour du solde de crédit : ' . $e->getMessage());
+            // Même si la mise à jour du crédit échoue, on ne bloque pas la participation.
+        }
+
         $this->redirect('/',[
                 'message'=>'La participation à bien été enregistré.',
                 'type'=>'success'
             ]);
+        
     }
 
 
@@ -198,7 +199,7 @@ class ParticipateController extends BaseController
             exit;
         }
 
-        // on récupere l'objet ridesharing
+        // on récupère l'objet ridesharing
         $ride = $this->ridesharingRepo->findById($participate->getIdRidesharing());
 
         // Si tout ce passe bien on remet à jour le solde de crédit de l'utilisateur
