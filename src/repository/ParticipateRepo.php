@@ -220,8 +220,8 @@ class ParticipateRepo extends BaseRepoSql
                     ORDER BY day";
 
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(':start', $start);
-        $stmt->bindValue(':end', $end);
+        $stmt->bindValue(':start', $start->format('Y-m-d H:i:s'));
+        $stmt->bindValue(':end', $end->format('Y-m-d H:i:s'));
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
