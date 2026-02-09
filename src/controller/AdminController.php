@@ -57,7 +57,7 @@ class AdminController extends BaseController
 
     public function getParticipationInfoPerWeek():void 
     {
-        $itsOk = $this->verifAllBeforFunction();
+        $itsOk = $this->verifAllBeforeFunction();
 
         if($itsOk == false){
             http_response_code(500);
@@ -99,7 +99,7 @@ class AdminController extends BaseController
 
     public function getCreditInfoPerWeek():void
     {
-        $itsOk = $this->verifAllBeforFunction();
+        $itsOk = $this->verifAllBeforeFunction();
 
         if($itsOk == false){
             http_response_code(500);
@@ -168,7 +168,7 @@ class AdminController extends BaseController
     public function createEmployee():void
     {
 
-        $itsOk = $this->verifAllBeforFunction();
+        $itsOk = $this->verifAllBeforeFunction();
 
         if($itsOk == false){
             http_response_code(500);
@@ -242,7 +242,7 @@ class AdminController extends BaseController
         exit;
     }
 
-    private function verifAllBeforFunction():bool
+    private function verifAllBeforeFunction():bool
     {
         try{        
             
@@ -252,7 +252,7 @@ class AdminController extends BaseController
             // On verifie aussi que l'utilisateur soit bien l'admin.
             if($_SESSION['role'] != 'admin'){
                 http_response_code(500);
-                echo json_encode(['success' => false, 'message' => 'Vous devez etre admin pour procéder a cette action.']);
+                echo json_encode(['success' => false, 'message' => 'Vous devez être admin pour procéder a cette action.']);
                 exit; 
             }
 
@@ -283,7 +283,7 @@ class AdminController extends BaseController
 
     public function suspendUser():void
     {
-        $itsOk = $this->verifAllBeforFunction();
+        $itsOk = $this->verifAllBeforeFunction();
 
         if($itsOk == false){
             http_response_code(500);

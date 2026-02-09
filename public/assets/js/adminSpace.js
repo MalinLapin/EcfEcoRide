@@ -258,17 +258,17 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 
-    // ------ Suspention de compte ---------
+    // ------ Suspension de compte ---------
 
-    // on selectionne les tableaux plutot que les lignes pour évite de surcharger la mémoire si bcp de lignes.
+    // on sélectionne les tableaux plutôt que les lignes pour évite de surcharger la mémoire si bcp de lignes.
     document.querySelectorAll('.dataTable tbody').forEach(tbody => {
-        // On créer l'evenement dès le click dans le tbody.
+        // On créer l’événement dès le click dans le tbody.
         tbody.addEventListener('click', function (e) {
 
             // Si on click dans le tbody on remonte jusqu'au bouton
             const btn = e.target.closest('.btnSuspend');
 
-            // on recherche les info qui se trouve dans les balises <tr> dechaque tableau
+            // on recherche les info qui se trouve dans les balises <tr> de chaque tableau
             const userInfo = btn.closest('tr');
 
             // L'id est dans les dataset. 

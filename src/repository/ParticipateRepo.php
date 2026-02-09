@@ -216,7 +216,7 @@ class ParticipateRepo extends BaseRepoSql
                     FROM {$this->tableName}
                     WHERE completed_at >= :start AND completed_at < :end
                     GROUP BY day
-                    ORDER BY FIELD (day, 'monday','tuesday','wednesday','thursdays','friday','saturday','sunday')";
+                    ORDER BY FIELD (day, 'monday','tuesday','wednesday','thursday','friday','saturday','sunday')";
 
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(':start', $start);
@@ -229,7 +229,7 @@ class ParticipateRepo extends BaseRepoSql
             'Monday' => 'Lundi',
             'Tuesday' => 'Mardi',
             'Wednesday' => 'Mercredi',
-            'Thursdays' => 'Jeudi',
+            'Thursday' => 'Jeudi',
             'Friday' => 'Vendredi',
             'Saturday' => 'Samedi',
             'Sunday' => 'Dimanche'
