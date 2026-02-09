@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const ctx = document.getElementById('ridesChart').getContext('2d');
 
         // Exemple de données (vous remplacerez avec vos vraies données)
-        const labels = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
-        let data = [12, 19, 15, 25, 22, 30, 28];
+        const labels = [];
+        let data = [];
 
         return new Chart(ctx, {
             type: 'bar',
@@ -80,8 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const ctx = document.getElementById('creditsChart').getContext('2d');
 
         // Exemple de données (vous remplacerez avec vos vraies données)
-        const labels = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
-        const data = [450, 680, 520, 890, 760, 1020, 950];
+        const labels = [];
+        const data = [];
 
         return new Chart(ctx, {
             type: 'bar',
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'csrfToken': getToken(),
             },
             body: JSON.stringify({
-                date: date,
+                date: date.toISOString().split('T')[0]
             })
         })
             .then(response => response.json())
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'csrfToken': getToken(),
             },
             body: JSON.stringify({
-                date: date,
+                date: date.toISOString().split('T')[0]
             })
         })
             .then(response => response.json())
