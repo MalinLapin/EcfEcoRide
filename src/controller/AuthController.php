@@ -89,7 +89,7 @@ class AuthController extends BaseController
 
         if($user->getIsActive() === false){
             $this->render('login', [
-                'error'=>'Votre compte est suspendu pour le moment.',
+                'message'=>'Trop de tentatives échoué veuillez attendre 1 min. avant de réessayer.',
                 'csrf_token'=>$this->tokenManager->generateCsrfToken(),
                 'pageCss'=>'login'
             ]);
@@ -128,7 +128,7 @@ class AuthController extends BaseController
         }else{
             // Si l'authentification échoue, on ré-affiche le formulaire avec un message d'erreur
             $this->render('login', [
-                'error'=>'Email ou mot de passe incorrect.',
+                'message'=>'Email ou mot de passe incorrect.',
                 'csrf_token'=>$this->tokenManager->generateCsrfToken(),
                 'pageCss'=>'login'
             ]);
