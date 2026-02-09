@@ -89,7 +89,7 @@ class AuthController extends BaseController
 
         if($user->getIsActive() === false){
             $this->render('login', [
-                'message'=>'Trop de tentatives échoué veuillez attendre 1 min. avant de réessayer.',
+                'message'=>'Votre compte à été suspendu.',
                 'csrf_token'=>$this->tokenManager->generateCsrfToken(),
                 'pageCss'=>'login'
             ]);
