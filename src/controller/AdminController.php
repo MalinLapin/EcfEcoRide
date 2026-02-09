@@ -61,7 +61,7 @@ class AdminController extends BaseController
 
         if($itsOk == false){
             http_response_code(500);
-            echo json_encode(['success' => false, 'message' => 'MON RACCOURCI NE FONCTIONNE PAS']);
+            echo json_encode(['success' => false, 'message' => 'Une erreur est survenue']);
             exit;
         }
 
@@ -103,7 +103,7 @@ class AdminController extends BaseController
 
         if($itsOk == false){
             http_response_code(500);
-            echo json_encode(['success' => false, 'message' => 'MON RACCOURCI NE FONCTIONNE PAS']);
+            echo json_encode(['success' => false, 'message' => 'Une erreur est survenue']);
             exit;
         }
 
@@ -146,23 +146,20 @@ class AdminController extends BaseController
 
     private function formatChartData(array $data): array
     {
-        $daysOrder = ['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
+        
         $labels = [];
         $values = [];
         
-        // Crée un tableau associatif pour accès rapide
-        $dataByDay = [];
+        
         foreach ($data as $row) {
-            $dataByDay[strtolower($row['day'])] = intval($row['total_seats']);
+            $labels[] = $row['day'];   
+            $values[] = (int) $row['total_seats'];  
         }
         
-        // Construit les tableaux dans le bon ordre
-        foreach ($daysOrder as $day) {
-            $labels[] = ucfirst(substr($day, 0, 3));  // "Lun", "Mar", etc.
-            $values[] = $dataByDay[$day] ?? 0;  // 0 si pas de données
-        }
-        
-        return ['labels' => $labels, 'values' => $values];
+        return [
+            'labels' => $labels, 
+            'values' => $values
+        ];
     }
 
     public function createEmployee():void
@@ -172,7 +169,7 @@ class AdminController extends BaseController
 
         if($itsOk == false){
             http_response_code(500);
-            echo json_encode(['success' => false, 'message' => 'MON RACOURCI NE FONCTIONNE PAS']);
+            echo json_encode(['success' => false, 'message' => 'Une erreur est survenue']);
             exit;
         }
 
@@ -275,7 +272,7 @@ class AdminController extends BaseController
             // En cas d'erreur lors de la création de l'utilisateur, on affiche un message d'erreur
             $this->logger->log('ERROR','Erreur lors de la vérification : ' . $e->getMessage());
             http_response_code(500);
-            echo json_encode(['success' => false, 'message' => 'Une erreur survenue surveillé']);
+            echo json_encode(['success' => false, 'message' => 'Une erreur est survenue.']);
             exit;
         }
         return true;
