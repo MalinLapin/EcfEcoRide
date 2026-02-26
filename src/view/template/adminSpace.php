@@ -26,7 +26,7 @@
                 </div>
                 <div class="statInfo">
                     <p class="statValue robotoBold" id="totalRides"><?= htmlspecialchars($countParticipates); ?></p>
-                    <p class="statLabel">Participations réalisées</p>
+                    <p class="statLabel">Participations enregistrées</p>
                 </div>
             </div>
 
