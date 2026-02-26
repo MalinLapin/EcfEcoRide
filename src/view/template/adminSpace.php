@@ -25,7 +25,7 @@
                     <span class="material-symbols-outlined">road</span>
                 </div>
                 <div class="statInfo">
-                    <p class="statValue robotoBold" id="totalRides"><?= htmlspecialchars($countUsers); ?></p>
+                    <p class="statValue robotoBold" id="totalRides"><?= htmlspecialchars($countRides); ?></p>
                     <p class="statLabel">Covoiturages réalisés</p>
                 </div>
             </div>

@@ -41,6 +41,7 @@ class AdminController extends BaseController
 
         $countUsers = count($users);
         $countEmployees = count($employees);
+        $countParticipate = count($participate);
 
 
         $this->render('adminSpace', [
@@ -52,6 +53,7 @@ class AdminController extends BaseController
             'countUsers'=>$countUsers,
             'employees'=> $employees,
             'countEmployees'=>$countEmployees,
+            'countParticipate'=>$countParticipate
         ]);
     }
 
