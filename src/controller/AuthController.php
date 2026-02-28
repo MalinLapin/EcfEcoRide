@@ -88,18 +88,6 @@ class AuthController extends BaseController
         // Validation des données de connexion 
         $user = $this->authenticate($data['email'], $data['password']);
 
-<<<<<<< .merge_file_TX83h3
-        if($user->getIsActive() === false){
-            $this->render('login', [
-                'message'=>'Votre compte à été suspendu.',
-                'csrf_token'=>$this->tokenManager->generateCsrfToken(),
-                'pageCss'=>'login'
-            ]);
-            return;
-        }
-
-=======
->>>>>>> .merge_file_a2Ybbf
         if($user)
         {
             if($user->getIsActive() === false){
