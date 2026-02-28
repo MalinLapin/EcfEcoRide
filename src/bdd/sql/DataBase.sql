@@ -222,7 +222,7 @@ VALUES (
         '2021-03-15',
         'electric',
         'Blanc',
-        7,
+        6,
         2
     );
 -- Renault Zoe pour elina

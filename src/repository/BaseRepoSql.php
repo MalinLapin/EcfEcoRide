@@ -5,7 +5,6 @@ namespace App\repository;
 use App\config\Database;
 use App\model\BaseModel;
 use App\Attribute\NotMapped;
-use BackedEnum;
 
 /**
  * Classe de base pour les repositories des models relationnel.
@@ -88,7 +87,7 @@ abstract class BaseRepoSql
      * Trouve toutes les entrées de la table associée.
      * @return BaseModel[] Un tableau d'instances du modèle.
      */
-    public function findAll(): ?array
+    public function findAll(): array
     {
         // On prépare la requête de sélection
         $sql = "SELECT * FROM {$this->tableName}";
@@ -110,8 +109,8 @@ abstract class BaseRepoSql
             return $models; // Retourne un tableau de modèles
         }
 
-        // Si aucun résultat on retourne null
-        return null;
+        // Si aucun résultat on retourne un tableau vide.
+        return [];
     }
 
     /**

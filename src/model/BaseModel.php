@@ -67,7 +67,7 @@ abstract class BaseModel
             if(method_exists($this,$methodName))
                 {
                     
-                // Champs date convertie en intance de DateTimeImmutable
+                // Champs date convertie en instance de DateTimeImmutable
                 if(in_array($normalizedKey, $this->dateFields))
                     {
                     // On s'assure que la valeur est une chaîne de caractères avant de la convertir
