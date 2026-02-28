@@ -22,7 +22,7 @@ class UserModel extends BaseModel
     private int $creditBalance; //Solde de crédit
     private ?string $photo; //String car chemin pour la photo et non la photo elle meme.
     private ?float $grade; //Note générale de l'utilisateur
-    private bool $isActive = true; //Etat de l'utilisateur (actif ou suspendu).
+    private bool $isActive = true; //État de l'utilisateur (actif ou suspendu).
     private Role $role = Role::user; // Rôle de l'utilisateur
 
 
