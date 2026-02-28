@@ -60,9 +60,10 @@ class UserRepo extends BaseRepoSql
         $stmt->bindValue(':role', $role->value , \PDO::PARAM_STR);
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        if ($result) {
 
-            $users = [];
+        $users = [];
+
+        if ($result) {
 
             foreach ($result as $row){
 

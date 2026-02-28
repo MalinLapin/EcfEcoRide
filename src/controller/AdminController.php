@@ -22,6 +22,7 @@ class AdminController extends BaseController
                 'csrf_token'=>$this->tokenManager->generateCsrfToken(),
                 'pageCss'=>'login'
             ]);
+            return;
         }
 
         $participates = $this->participateRepo->findAll();
@@ -41,7 +42,6 @@ class AdminController extends BaseController
 
         $countUsers = count($users);
         $countEmployees = count($employees);
-        $countParticipate = count($participate);
 
 
         $this->render('adminSpace', [
@@ -52,8 +52,7 @@ class AdminController extends BaseController
             'users'=>$users,
             'countUsers'=>$countUsers,
             'employees'=> $employees,
-            'countEmployees'=>$countEmployees,
-            'countParticipate'=>$countParticipate
+            'countEmployees'=>$countEmployees
         ]);
     }
 

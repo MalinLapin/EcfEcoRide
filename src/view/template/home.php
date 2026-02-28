@@ -17,7 +17,7 @@
                     <input type="text" name="departureBar" id="departureBar" placeholder="Ville">
                 </div>
                 <div>
-                    <label for="arrivalBar" class="robotoBold">Déstination :</label>
+                    <label for="arrivalBar" class="robotoBold">Destination :</label>
                     <input type="text" name="arrivalBar" id="arrivalBar" placeholder="Ville">
                 </div>
                 <div>
