@@ -3,6 +3,7 @@
 namespace App\controller;
 
 
+use App\controller\BaseController;
 use App\model\UserModel;
 use DateTimeImmutable;
 
@@ -87,6 +88,7 @@ class AuthController extends BaseController
         // Validation des données de connexion 
         $user = $this->authenticate($data['email'], $data['password']);
 
+<<<<<<< .merge_file_TX83h3
         if($user->getIsActive() === false){
             $this->render('login', [
                 'message'=>'Votre compte à été suspendu.',
@@ -96,8 +98,18 @@ class AuthController extends BaseController
             return;
         }
 
+=======
+>>>>>>> .merge_file_a2Ybbf
         if($user)
         {
+            if($user->getIsActive() === false){
+                $this->render('login', [
+                    'message'=>'Votre Compte à été suspendu, Veuillez contacter nos services.',
+                    'csrf_token'=>$this->tokenManager->generateCsrfToken(),
+                    'pageCss'=>'login'
+                ]);
+                return;
+            }
             // Réinitialisation du compteur de tentatives de connexion réussie
             unset($_SESSION['login_attempts']);
             unset($_SESSION['login_attempts_time']);
@@ -125,7 +137,7 @@ class AuthController extends BaseController
             }
 
             
-        }else{
+        }
             // Si l'authentification échoue, on ré-affiche le formulaire avec un message d'erreur
             $this->render('login', [
                 'message'=>'Email ou mot de passe incorrect.',
@@ -133,7 +145,7 @@ class AuthController extends BaseController
                 'pageCss'=>'login'
             ]);
             return;
-        }
+        
     }
 
     //Méthode qui affiche la page avec le formulaire d'inscription    
