@@ -20,6 +20,16 @@
                 </div>
             </div>
 
+            <div class="statCard totalRides">
+                <div class="statIcon">
+                    <span class="material-symbols-outlined">road</span>
+                </div>
+                <div class="statInfo">
+                    <p class="statValue robotoBold" id="totalRides"><?= htmlspecialchars($countRides); ?></p>
+                    <p class="statLabel">Trajets réalisés</p>
+                </div>
+            </div>
+
             <div class="statCard totalUsers">
                 <div class="statIcon">
                     <span class="material-symbols-outlined">group</span>

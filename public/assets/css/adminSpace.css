@@ -50,11 +50,12 @@
 }
 
 .statCard.totalCredits,
-.statCard.totalEmployees {
+.statCard.totalUsers {
   border-left-color: #27ae60;
 }
 
-.statCard.totalUsers {
+.statCard.totalRides,
+.statCard.totalEmployees {
   border-left-color: #3498db;
 }
 

@@ -37,11 +37,13 @@ class AdminController extends BaseController
         
 
         $users = $this->userRepo->findUserByRole(Role::user);
+        $rides = $this->ridesharingRepo->findAll();
 
         $employees = $this->userRepo->findUserByRole(Role::employee);
 
         $countUsers = count($users);
         $countEmployees = count($employees);
+        $countRides = count($rides);
 
 
         $this->render('adminSpace', [
@@ -52,7 +54,8 @@ class AdminController extends BaseController
             'users'=>$users,
             'countUsers'=>$countUsers,
             'employees'=> $employees,
-            'countEmployees'=>$countEmployees
+            'countEmployees'=>$countEmployees,
+            'countRides'=>$countRides
         ]);
     }
 
